@@ -1,0 +1,230 @@
+{
+  "@@locale": "zh",
+
+  "appName": "太极健身",
+  "home": "首页",
+  "videos": "视频",
+  "practice": "练习",
+  "settings": "设置",
+  "premium": "高级版",
+
+  "allLessons": "所有课程",
+  "aboutUs": "关于我们",
+  "intro": "介绍",
+  "structure": "结构",
+  "flexibility": "柔韧性",
+  "fluidity": "流畅性",
+  "power": "力量",
+
+  "play": "播放",
+  "pause": "暂停",
+  "stop": "停止",
+  "download": "下载",
+  "downloaded": "已下载",
+  "delete": "删除",
+  "retry": "重试",
+  "cancel": "取消",
+
+  "premiumTitle": "解锁高级版",
+  "premiumSubtitle": "获得所有功能的无限访问权限",
+  "premiumFeature1": "离线视频下载",
+  "premiumFeature2": "无广告",
+  "premiumFeature3": "解锁所有课程",
+  "premiumFeature4": "优先支持",
+  "premiumPrice": "$9.99",
+  "purchase": "购买高级版",
+  "restore": "恢复购买",
+  "premiumActive": "高级版已激活",
+  "premiumThankYou": "谢谢您的支持！",
+
+  "music": "音乐",
+  "voiceGuidance": "语音指导",
+  "breathingTimer": "呼吸计时器",
+  "duration": "时长",
+  "inhale": "吸气",
+  "exhale": "呼气",
+  "start": "开始",
+  "minutes": "分钟",
+
+  "theme": "主题",
+  "light": "浅色",
+  "lightThemeDescription": "始终使用浅色主题",
+  "dark": "深色",
+  "darkThemeDescription": "始终使用深色主题",
+  "system": "系统",
+  "systemThemeDescription": "跟随系统设置",
+  "appearance": "外观",
+
+  "language": "语言",
+  "english": "English",
+  "chinese": "简体中文",
+  "spanish": "Español",
+  "japanese": "日本語",
+  "french": "Français",
+  "german": "Deutsch",
+  "korean": "한국어",
+
+  "about": "关于",
+  "aboutApp": "关于应用",
+  "instructor": "教练",
+  "johnSaxxon": "约翰·萨克逊",
+  "privacyPolicy": "隐私政策",
+  "termsOfService": "服务条款",
+  "contactUs": "联系我们",
+  "rateApp": "评价应用",
+  "version": "版本",
+  "support": "支持",
+  "website": "网站",
+
+  "error": "错误",
+  "loading": "加载中...",
+  "noInternet": "无网络连接",
+  "somethingWentWrong": "出现了问题",
+  "videoLoadError": "视频加载失败",
+  "purchaseError": "购买失败",
+  "downloadError": "下载失败",
+
+  "search": "搜索",
+  "searchVideos": "搜索视频...",
+  "noResults": "未找到结果",
+  "filter": "筛选",
+  "sort": "排序",
+
+  "downloading": "下载中",
+  "downloadComplete": "下载完成",
+  "downloadFailed": "下载失败",
+  "downloadPaused": "下载暂停",
+
+  "volume": "音量",
+  "speed": "速度",
+  "quality": "质量",
+  "subtitles": "字幕",
+  "fullscreen": "全屏",
+
+  "notification": "通知",
+  "notificationsEnabled": "通知已启用",
+  "notificationsDisabled": "通知已禁用",
+
+  "aboutJohnSaxxon": "关于约翰·萨克逊",
+  "johnSaxxonBio": "约翰·萨克逊是一位经过认证的太极教练，拥有超过20年的经验。他已经在世界各地培训了数千名学生学习太极和冥想的艺术。",
+  "close": "关闭",
+  "rateOurApp": "评价我们的应用",
+  "rateAppMessage": "如果您喜欢使用我们的太极应用，请花一点时间给它评分。您的反馈帮助我们为每个人改进应用。",
+  "later": "稍后",
+  "rateNow": "立即评价",
+  "thankYouRating": "谢谢您！正在打开应用商店...",
+
+  "video": "{count, plural, =0{没有视频} =1{1个视频} other{{count}个视频}}",
+  "@video": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "lesson": "{count, plural, =0{没有课程} =1{1节课程} other{{count}节课程}}",
+  "@lesson": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "minutes_short": "{count}分",
+  "@minutes_short": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "seconds_short": "{count}秒",
+  "@seconds_short": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "goodMorning": "早上好",
+  "goodAfternoon": "下午好",
+  "goodEvening": "晚上好",
+  "goodNight": "晚安",
+  "readyForTaiChi": "准备好练太极了吗？",
+  "all": "全部",
+  "tryAdjustingFilter": "尝试调整您的搜索或分类筛选",
+  
+  "premiumFeatureOfflineDescription": "随时随地下载视频进行离线练习",
+  "premiumFeatureNoAdsDescription": "享受不间断的练习时间，无广告干扰",
+  "premiumFeatureAllLessonsDescription": "访问我们完整的高级课程库",
+  "premiumFeatureSupportDescription": "获得更快的响应时间以解答任何问题或问题",
+  "monthlySubscription": "月度订阅",
+  "perMonth": "每月",
+  
+  "trackPeacefulMorning": "宁静晨光",
+  "trackFlowingWater": "流水潺潺",
+  "trackMountainBreeze": "山间微风",
+  "trackInnerPeace": "内心平静",
+  "artistTaiChiMasters": "太极大师",
+  "artistNatureSounds": "自然音响",
+  "artistMeditationMusic": "冥想音乐",
+  "artistZenCollection": "禅意合集",
+  "playlist": "播放列表",
+  
+  "hold": "保持",
+  "breathe": "呼吸",
+  "wellDone": "🎉 很棒！",
+  "breathingSessionComplete": "您已完成呼吸练习。花点时间感受一下您现在的感觉。",
+  "holdSeconds": "保持{seconds}秒",
+  "@holdSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "selectDuration": "选择时长",
+  
+  "premiumSubscriptionRequired": "观看此视频需要高级版订阅",
+  "videoPlaybackError": "视频播放错误",
+  "share": "分享",
+  "report": "举报",
+  "getPremium": "获取高级版",
+  "videoPlayerNotAvailable": "视频播放器不可用",
+  "description": "描述",
+  "defaultVideoDescription": "通过这个综合课程掌握太极的艺术。学习正确的姿势、呼吸技巧和流畅的动作，这将提升您的练习水平。",
+  "premiumContent": "高级内容",
+  "premiumContentDescription": "这是订阅者专享的高级内容。",
+  "downloadVideo": "下载视频",
+  "downloadVideoConfirmation": "下载此视频以供离线观看？",
+  
+  "pro": "PRO",
+  "premiumRequired": "需要高级版",
+  
+  "initializationError": "初始化错误",
+  "initializationErrorMessage": "应用程序初始化失败。请检查您的网络连接并重试。",
+  "appTagline": "掌握太极艺术",
+  
+  "noInternetNoCachedData": "无网络连接且无缓存数据",
+  "noInternetNoCachedLessons": "无网络连接且无缓存数据",
+  "videoNotFoundOffline": "本地未找到视频且无网络连接",
+  "lessonNotFoundOffline": "本地未找到课程且无网络连接",
+  "noVideosFoundForCategory": "该分类下未找到视频且无网络连接",
+  
+  "storeNotAvailable": "商店不可用",
+  "productNotFound": "未找到产品",
+  
+  "breathingExercise": "呼吸练习",
+  "findYourCalm": "通过引导呼吸找到你的宁静。选择你的练习时长，让我们开始吧。",
+  "startBreathing": "开始呼吸",
+  "breathingSession": "呼吸练习",
+  "endSession": "结束",
+  "resume": "继续",
+  "breatheInSlowly": "缓慢深呼吸",
+  "holdYourBreath": "轻柔地屏住呼吸",
+  "exhaleSlowly": "缓慢完全地呼气"
+}

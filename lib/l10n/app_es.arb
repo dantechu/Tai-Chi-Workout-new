@@ -1,0 +1,230 @@
+{
+  "@@locale": "es",
+
+  "appName": "Tai Chi Entrenamiento",
+  "home": "Inicio",
+  "videos": "Videos",
+  "practice": "Práctica",
+  "settings": "Configuración",
+  "premium": "Premium",
+
+  "allLessons": "Todas las Lecciones",
+  "aboutUs": "Acerca de Nosotros",
+  "intro": "Introducción",
+  "structure": "Estructura",
+  "flexibility": "Flexibilidad",
+  "fluidity": "Fluidez",
+  "power": "Poder",
+
+  "play": "Reproducir",
+  "pause": "Pausar",
+  "stop": "Detener",
+  "download": "Descargar",
+  "downloaded": "Descargado",
+  "delete": "Eliminar",
+  "retry": "Reintentar",
+  "cancel": "Cancelar",
+
+  "premiumTitle": "Desbloquear Premium",
+  "premiumSubtitle": "Obtén acceso ilimitado a todas las funciones",
+  "premiumFeature1": "Descargas de video sin conexión",
+  "premiumFeature2": "Sin anuncios",
+  "premiumFeature3": "Desbloquear todas las lecciones",
+  "premiumFeature4": "Soporte prioritario",
+  "premiumPrice": "$9.99",
+  "purchase": "Comprar Premium",
+  "restore": "Restaurar Compras",
+  "premiumActive": "Premium Activo",
+  "premiumThankYou": "¡Gracias por tu apoyo!",
+
+  "music": "Música",
+  "voiceGuidance": "Guía de Voz",
+  "breathingTimer": "Temporizador de Respiración",
+  "duration": "Duración",
+  "inhale": "Inhalar",
+  "exhale": "Exhalar",
+  "start": "Comenzar",
+  "minutes": "minutos",
+
+  "theme": "Tema",
+  "light": "Claro",
+  "lightThemeDescription": "Usar siempre tema claro",
+  "dark": "Oscuro",
+  "darkThemeDescription": "Usar siempre tema oscuro",
+  "system": "Sistema",
+  "systemThemeDescription": "Seguir configuración del sistema",
+  "appearance": "Apariencia",
+
+  "language": "Idioma",
+  "english": "English",
+  "chinese": "简体中文",
+  "spanish": "Español",
+  "japanese": "日本語",
+  "french": "Français",
+  "german": "Deutsch",
+  "korean": "한국어",
+
+  "about": "Acerca de",
+  "aboutApp": "Acerca de la Aplicación",
+  "instructor": "Instructor",
+  "johnSaxxon": "John Saxxon",
+  "privacyPolicy": "Política de Privacidad",
+  "termsOfService": "Términos de Servicio",
+  "contactUs": "Contáctanos",
+  "rateApp": "Calificar App",
+  "version": "Versión",
+  "support": "Soporte",
+  "website": "Sitio Web",
+
+  "error": "Error",
+  "loading": "Cargando...",
+  "noInternet": "Sin conexión a internet",
+  "somethingWentWrong": "Algo salió mal",
+  "videoLoadError": "Error al cargar el video",
+  "purchaseError": "Error de compra",
+  "downloadError": "Error de descarga",
+
+  "search": "Buscar",
+  "searchVideos": "Buscar videos...",
+  "noResults": "No se encontraron resultados",
+  "filter": "Filtro",
+  "sort": "Ordenar",
+
+  "downloading": "Descargando",
+  "downloadComplete": "Descarga completa",
+  "downloadFailed": "Descarga fallida",
+  "downloadPaused": "Descarga pausada",
+
+  "volume": "Volumen",
+  "speed": "Velocidad",
+  "quality": "Calidad",
+  "subtitles": "Subtítulos",
+  "fullscreen": "Pantalla completa",
+
+  "notification": "Notificación",
+  "notificationsEnabled": "Notificaciones habilitadas",
+  "notificationsDisabled": "Notificaciones deshabilitadas",
+
+  "aboutJohnSaxxon": "Acerca de John Saxxon",
+  "johnSaxxonBio": "John Saxxon es un instructor certificado de Tai Chi con más de 20 años de experiencia. Ha entrenado a miles de estudiantes en todo el mundo en el arte del Tai Chi y la meditación.",
+  "close": "Cerrar",
+  "rateOurApp": "Califica Nuestra App",
+  "rateAppMessage": "Si disfrutas usando nuestra aplicación de Tai Chi, por favor tómate un momento para calificarla. Tus comentarios nos ayudan a mejorar la app para todos.",
+  "later": "Más Tarde",
+  "rateNow": "Calificar Ahora",
+  "thankYouRating": "¡Gracias! Abriendo la tienda de aplicaciones...",
+
+  "video": "{count, plural, =0{Sin videos} =1{1 video} other{{count} videos}}",
+  "@video": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "lesson": "{count, plural, =0{Sin lecciones} =1{1 lección} other{{count} lecciones}}",
+  "@lesson": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "minutes_short": "{count}m",
+  "@minutes_short": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "seconds_short": "{count}s",
+  "@seconds_short": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "goodMorning": "Buenos Días",
+  "goodAfternoon": "Buenas Tardes",
+  "goodEvening": "Buenas Tardes",
+  "goodNight": "Buenas Noches",
+  "readyForTaiChi": "¿Listo para Tai Chi?",
+  "all": "Todo",
+  "tryAdjustingFilter": "Intenta ajustar tu búsqueda o filtro de categoría",
+  
+  "premiumFeatureOfflineDescription": "Descarga videos para practicar sin conexión en cualquier momento y lugar",
+  "premiumFeatureNoAdsDescription": "Disfruta de sesiones de práctica ininterrumpidas sin anuncios",
+  "premiumFeatureAllLessonsDescription": "Accede a nuestra biblioteca completa de lecciones premium",
+  "premiumFeatureSupportDescription": "Obtén tiempos de respuesta más rápidos para cualquier pregunta o problema",
+  "monthlySubscription": "Suscripción Mensual",
+  "perMonth": "por mes",
+  
+  "trackPeacefulMorning": "Mañana Pacífica",
+  "trackFlowingWater": "Agua Fluyendo",
+  "trackMountainBreeze": "Brisa de Montaña",
+  "trackInnerPeace": "Paz Interior",
+  "artistTaiChiMasters": "Maestros de Tai Chi",
+  "artistNatureSounds": "Sonidos de la Naturaleza",
+  "artistMeditationMusic": "Música de Meditación",
+  "artistZenCollection": "Colección Zen",
+  "playlist": "Lista de Reproducción",
+  
+  "hold": "Mantener",
+  "breathe": "Respirar",
+  "wellDone": "🎉 ¡Bien Hecho!",
+  "breathingSessionComplete": "Has completado tu sesión de respiración. Tómate un momento para notar cómo te sientes.",
+  "holdSeconds": "Mantener {seconds}s",
+  "@holdSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "selectDuration": "Seleccionar Duración",
+  
+  "premiumSubscriptionRequired": "Se requiere suscripción premium para ver este video",
+  "videoPlaybackError": "Error de reproducción de video",
+  "share": "Compartir",
+  "report": "Reportar",
+  "getPremium": "Obtener Premium",
+  "videoPlayerNotAvailable": "Reproductor de video no disponible",
+  "description": "Descripción",
+  "defaultVideoDescription": "Domina el arte del Tai Chi con esta lección integral. Aprende la forma correcta, técnicas de respiración y movimientos fluidos que mejorarán tu práctica.",
+  "premiumContent": "Contenido Premium",
+  "premiumContentDescription": "Este es contenido premium exclusivo para suscriptores.",
+  "downloadVideo": "Descargar Video",
+  "downloadVideoConfirmation": "¿Descargar este video para verlo sin conexión?",
+  
+  "pro": "PRO",
+  "premiumRequired": "Premium Requerido",
+  
+  "initializationError": "Error de Inicialización",
+  "initializationErrorMessage": "No se pudo inicializar la aplicación. Por favor verifica tu conexión a internet y vuelve a intentar.",
+  "appTagline": "Domina el Arte del Tai Chi",
+  
+  "noInternetNoCachedData": "Sin conexión a internet y sin datos en caché",
+  "noInternetNoCachedLessons": "Sin conexión a internet y sin datos en caché",
+  "videoNotFoundOffline": "Video no encontrado localmente y sin conexión a internet",
+  "lessonNotFoundOffline": "Lección no encontrada localmente y sin conexión a internet",
+  "noVideosFoundForCategory": "No se encontraron videos para la categoría y sin conexión a internet",
+  
+  "storeNotAvailable": "Tienda no disponible",
+  "productNotFound": "Producto no encontrado",
+  
+  "breathingExercise": "Ejercicio de Respiración",
+  "findYourCalm": "Encuentra tu calma con respiración guiada. Selecciona la duración de tu sesión y comencemos.",
+  "startBreathing": "Comenzar a Respirar",
+  "breathingSession": "Sesión de Respiración",
+  "endSession": "Finalizar",
+  "resume": "Continuar",
+  "breatheInSlowly": "Inhala lenta y profundamente",
+  "holdYourBreath": "Mantén la respiración suavemente",
+  "exhaleSlowly": "Exhala lenta y completamente"
+}

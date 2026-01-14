@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'core/theme/app_theme.dart';
+import 'injection_container.dart' as di;
+import 'presentation/bloc/locale/locale_bloc.dart';
+import 'presentation/bloc/locale/locale_event.dart';
+import 'presentation/bloc/locale/locale_state.dart';
+import 'presentation/bloc/theme/theme_bloc.dart';
+import 'presentation/bloc/theme/theme_event.dart';
+import 'presentation/bloc/theme/theme_state.dart';
+import 'presentation/bloc/premium/premium_bloc.dart';
+import 'presentation/bloc/premium/premium_event.dart';
+import 'presentation/pages/splash/splash_page.dart';
+import 'presentation/pages/navigation/main_navigation_page.dart';
+import 'presentation/pages/video_player/video_player_page.dart';
+import 'presentation/pages/premium/premium_page.dart';
+import 'domain/entities/video.dart';
+import 'l10n/app_localizations.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive
+  await Hive.initFlutter();
+
+  // Initialize Google Mobile Ads
+  await MobileAds.instance.initialize();
+
+  // Initialize dependency injection
+  await di.init();
+
+  // Set preferred orientations
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  runApp(const TaiChiWorkoutApp());
+}
+
+class TaiChiWorkoutApp extends StatelessWidget {
+  const TaiChiWorkoutApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeBloc>(
+          create: (context) => di.sl<ThemeBloc>()..add(const LoadTheme()),
+        ),
+        BlocProvider<LocaleBloc>(
+          create: (context) => di.sl<LocaleBloc>()..add(const LoadLocale()),
+        ),
+        BlocProvider<PremiumBloc>(
+          create: (context) => di.sl<PremiumBloc>()..add(const CheckPremiumStatus()),
+        ),
+      ],
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, themeState) {
+          return BlocBuilder<LocaleBloc, LocaleState>(
+            builder: (context, localeState) {
+              return MaterialApp(
+                onGenerateTitle: (context) => AppLocalizations.of(context)?.appName ?? 'Tai Chi Workout',
+                debugShowCheckedModeBanner: false,
+                
+                // Theme configuration
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: _getThemeMode(themeState.themeMode),
+                
+                // Localization configuration
+                locale: localeState.locale,
+                supportedLocales: AppLocalizations.supportedLocales,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                
+                // Routes
+                initialRoute: '/',
+                onGenerateRoute: (settings) {
+                  switch (settings.name) {
+                    case '/':
+                      return MaterialPageRoute(
+                        builder: (context) => const SplashPage(),
+                      );
+                    case '/main':
+                      return MaterialPageRoute(
+                        builder: (context) => const MainNavigationPage(),
+                      );
+                    case '/video-player':
+                      final video = settings.arguments as Video;
+                      return MaterialPageRoute(
+                        builder: (context) => VideoPlayerPage(video: video),
+                      );
+                    case '/premium':
+                      return MaterialPageRoute(
+                        builder: (context) => const PremiumPage(),
+                      );
+                    default:
+                      return MaterialPageRoute(
+                        builder: (context) => const MainNavigationPage(),
+                      );
+                  }
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  ThemeMode _getThemeMode(AppThemeMode appThemeMode) {
+    switch (appThemeMode) {
+      case AppThemeMode.light:
+        return ThemeMode.light;
+      case AppThemeMode.dark:
+        return ThemeMode.dark;
+      case AppThemeMode.system:
+        return ThemeMode.system;
+    }
+  }
+}

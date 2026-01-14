@@ -1,0 +1,230 @@
+{
+  "@@locale": "ja",
+
+  "appName": "太極拳ワークアウト",
+  "home": "ホーム",
+  "videos": "ビデオ",
+  "practice": "練習",
+  "settings": "設定",
+  "premium": "プレミアム",
+
+  "allLessons": "すべてのレッスン",
+  "aboutUs": "私たちについて",
+  "intro": "紹介",
+  "structure": "構造",
+  "flexibility": "柔軟性",
+  "fluidity": "流動性",
+  "power": "力",
+
+  "play": "再生",
+  "pause": "一時停止",
+  "stop": "停止",
+  "download": "ダウンロード",
+  "downloaded": "ダウンロード済み",
+  "delete": "削除",
+  "retry": "再試行",
+  "cancel": "キャンセル",
+
+  "premiumTitle": "プレミアムのロック解除",
+  "premiumSubtitle": "すべての機能への無制限アクセスを取得",
+  "premiumFeature1": "オフラインビデオダウンロード",
+  "premiumFeature2": "広告なし",
+  "premiumFeature3": "すべてのレッスンのロック解除",
+  "premiumFeature4": "優先サポート",
+  "premiumPrice": "$9.99",
+  "purchase": "プレミアムを購入",
+  "restore": "購入を復元",
+  "premiumActive": "プレミアム有効",
+  "premiumThankYou": "ご支援ありがとうございます！",
+
+  "music": "音楽",
+  "voiceGuidance": "音声ガイダンス",
+  "breathingTimer": "呼吸タイマー",
+  "duration": "期間",
+  "inhale": "吸う",
+  "exhale": "吐く",
+  "start": "開始",
+  "minutes": "分",
+
+  "theme": "テーマ",
+  "light": "ライト",
+  "lightThemeDescription": "常にライトテーマを使用",
+  "dark": "ダーク",
+  "darkThemeDescription": "常にダークテーマを使用",
+  "system": "システム",
+  "systemThemeDescription": "システム設定に従う",
+  "appearance": "外観",
+
+  "language": "言語",
+  "english": "English",
+  "chinese": "简体中文",
+  "spanish": "Español",
+  "japanese": "日本語",
+  "french": "Français",
+  "german": "Deutsch",
+  "korean": "한국어",
+
+  "about": "情報",
+  "aboutApp": "アプリについて",
+  "instructor": "インストラクター",
+  "johnSaxxon": "ジョン・サクソン",
+  "privacyPolicy": "プライバシーポリシー",
+  "termsOfService": "利用規約",
+  "contactUs": "お問い合わせ",
+  "rateApp": "アプリを評価",
+  "version": "バージョン",
+  "support": "サポート",
+  "website": "ウェブサイト",
+
+  "error": "エラー",
+  "loading": "読み込み中...",
+  "noInternet": "インターネット接続なし",
+  "somethingWentWrong": "問題が発生しました",
+  "videoLoadError": "ビデオの読み込みに失敗しました",
+  "purchaseError": "購入に失敗しました",
+  "downloadError": "ダウンロードに失敗しました",
+
+  "search": "検索",
+  "searchVideos": "ビデオを検索...",
+  "noResults": "結果が見つかりません",
+  "filter": "フィルター",
+  "sort": "並び替え",
+
+  "downloading": "ダウンロード中",
+  "downloadComplete": "ダウンロード完了",
+  "downloadFailed": "ダウンロード失敗",
+  "downloadPaused": "ダウンロード一時停止",
+
+  "volume": "音量",
+  "speed": "速度",
+  "quality": "品質",
+  "subtitles": "字幕",
+  "fullscreen": "全画面",
+
+  "notification": "通知",
+  "notificationsEnabled": "通知が有効",
+  "notificationsDisabled": "通知が無効",
+
+  "aboutJohnSaxxon": "ジョン・サクソンについて",
+  "johnSaxxonBio": "ジョン・サクソンは20年以上の経験を持つ認定太極拳インストラクターです。世界中で何千人もの生徒に太極拳と瞑想の技術を教えています。",
+  "close": "閉じる",
+  "rateOurApp": "アプリを評価する",
+  "rateAppMessage": "太極拳アプリをお楽しみいただいている場合は、ぜひ評価をお願いします。あなたのフィードバックは、すべての人のためにアプリを改善するのに役立ちます。",
+  "later": "後で",
+  "rateNow": "今すぐ評価",
+  "thankYouRating": "ありがとうございます！アプリストアを開いています...",
+
+  "video": "{count, plural, =0{ビデオなし} =1{1つのビデオ} other{{count}つのビデオ}}",
+  "@video": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "lesson": "{count, plural, =0{レッスンなし} =1{1つのレッスン} other{{count}つのレッスン}}",
+  "@lesson": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "minutes_short": "{count}分",
+  "@minutes_short": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "seconds_short": "{count}秒",
+  "@seconds_short": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "goodMorning": "おはようございます",
+  "goodAfternoon": "こんにちは",
+  "goodEvening": "こんばんは",
+  "goodNight": "おやすみなさい",
+  "readyForTaiChi": "太極拳の準備はできましたか？",
+  "all": "すべて",
+  "tryAdjustingFilter": "検索やカテゴリフィルターを調整してみてください",
+  
+  "premiumFeatureOfflineDescription": "いつでもどこでもオフライン練習のためにビデオをダウンロード",
+  "premiumFeatureNoAdsDescription": "広告なしで中断されない練習セッションをお楽しみください",
+  "premiumFeatureAllLessonsDescription": "プレミアムレッスンの完全ライブラリにアクセス",
+  "premiumFeatureSupportDescription": "質問や問題に対してより迅速な応答時間を取得",
+  "monthlySubscription": "月額サブスクリプション",
+  "perMonth": "月額",
+  
+  "trackPeacefulMorning": "平和な朝",
+  "trackFlowingWater": "流れる水",
+  "trackMountainBreeze": "山の風",
+  "trackInnerPeace": "内なる平和",
+  "artistTaiChiMasters": "太極拳マスター",
+  "artistNatureSounds": "自然の音",
+  "artistMeditationMusic": "瞑想音楽",
+  "artistZenCollection": "禅コレクション",
+  "playlist": "プレイリスト",
+  
+  "hold": "止める",
+  "breathe": "呼吸",
+  "wellDone": "🎉 よくできました！",
+  "breathingSessionComplete": "呼吸セッションが完了しました。どのような感覚か確認してみてください。",
+  "holdSeconds": "止める{seconds}秒",
+  "@holdSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "selectDuration": "時間を選択",
+  
+  "premiumSubscriptionRequired": "このビデオを視聴するにはプレミアムサブスクリプションが必要です",
+  "videoPlaybackError": "ビデオ再生エラー",
+  "share": "共有",
+  "report": "報告",
+  "getPremium": "プレミアムを取得",
+  "videoPlayerNotAvailable": "ビデオプレーヤーが利用できません",
+  "description": "説明",
+  "defaultVideoDescription": "この包括的なレッスンで太極拳の芸術を習得してください。適切なフォーム、呼吸法、練習を向上させる流れるような動きを学びます。",
+  "premiumContent": "プレミアムコンテンツ",
+  "premiumContentDescription": "これは購読者専用のプレミアムコンテンツです。",
+  "downloadVideo": "ビデオをダウンロード",
+  "downloadVideoConfirmation": "このビデオをオフライン視聴用にダウンロードしますか？",
+  
+  "pro": "PRO",
+  "premiumRequired": "プレミアムが必要",
+  
+  "initializationError": "初期化エラー",
+  "initializationErrorMessage": "アプリの初期化に失敗しました。インターネット接続を確認して再試行してください。",
+  "appTagline": "太極拳の芸術を習得",
+  
+  "noInternetNoCachedData": "インターネット接続なしでキャッシュデータなし",
+  "noInternetNoCachedLessons": "インターネット接続なしでキャッシュデータなし",
+  "videoNotFoundOffline": "ビデオがローカルで見つからずインターネット接続なし",
+  "lessonNotFoundOffline": "レッスンがローカルで見つからずインターネット接続なし",
+  "noVideosFoundForCategory": "カテゴリのビデオが見つからずインターネット接続なし",
+  
+  "storeNotAvailable": "ストアが利用できません",
+  "productNotFound": "製品が見つかりません",
+  
+  "breathingExercise": "呼吸エクササイズ",
+  "findYourCalm": "ガイド付き呼吸で心の平静を見つけましょう。セッションの時間を選択して始めましょう。",
+  "startBreathing": "呼吸を始める",
+  "breathingSession": "呼吸セッション",
+  "endSession": "終了",
+  "resume": "再開",
+  "breatheInSlowly": "ゆっくりと深く息を吸って",
+  "holdYourBreath": "優しく息を止めて",
+  "exhaleSlowly": "ゆっくりと完全に息を吐いて"
+}
