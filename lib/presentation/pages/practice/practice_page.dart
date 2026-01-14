@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import '../../../l10n/app_localizations.dart';
 
 class PracticePage extends StatelessWidget {
@@ -27,43 +28,52 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     with TickerProviderStateMixin {
   late AnimationController _rotationController;
   late AnimationController _waveController;
+  late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
   int _currentTrackIndex = 0;
   double _volume = 0.7;
   Duration _position = Duration.zero;
   Duration _duration = const Duration(minutes: 5);
 
+  // TODO: Replace these placeholder tracks with real audio files
+  // Add your downloaded MP3 files to assets/audio/music/ and update audioPath
   final List<MusicTrack> _tracks = [
     MusicTrack(
       title: 'Peaceful Morning',
       artist: 'Tai Chi Masters',
       duration: const Duration(minutes: 5, seconds: 32),
       albumArt: '🌅',
+      audioPath: 'assets/audio/music/tai_chi_peaceful_morning.mp3',
     ),
     MusicTrack(
       title: 'Flowing Water',
       artist: 'Nature Sounds',
       duration: const Duration(minutes: 7, seconds: 18),
       albumArt: '🌊',
+      audioPath: 'assets/audio/music/flowing_water_meditation.mp3',
     ),
     MusicTrack(
       title: 'Mountain Breeze',
       artist: 'Meditation Music',
       duration: const Duration(minutes: 6, seconds: 45),
       albumArt: '🏔️',
+      audioPath: 'assets/audio/music/mountain_breeze_zen.mp3',
     ),
     MusicTrack(
       title: 'Inner Peace',
       artist: 'Zen Collection',
       duration: const Duration(minutes: 8, seconds: 12),
       albumArt: '🧘',
+      audioPath: 'assets/audio/music/inner_peace_relaxation.mp3',
     ),
   ];
 
   @override
   void initState() {
     super.initState();
+    _audioPlayer = AudioPlayer();
     _setupAnimations();
+    _setupAudioPlayer();
   }
 
   void _setupAnimations() {
@@ -78,38 +88,123 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     );
   }
 
-  void _togglePlayPause() {
-    setState(() {
-      _isPlaying = !_isPlaying;
+  void _setupAudioPlayer() {
+    // Listen to player state changes
+    _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+      if (mounted) {
+        setState(() {
+          _isPlaying = state == PlayerState.playing;
+        });
+
+        if (state == PlayerState.playing) {
+          _rotationController.repeat();
+          _waveController.repeat();
+        } else {
+          _rotationController.stop();
+          _waveController.stop();
+        }
+      }
     });
 
-    if (_isPlaying) {
-      _rotationController.repeat();
-      _waveController.repeat();
-    } else {
-      _rotationController.stop();
-      _waveController.stop();
+    // Listen to duration changes
+    _audioPlayer.onDurationChanged.listen((Duration duration) {
+      if (mounted) {
+        setState(() {
+          _duration = duration;
+        });
+      }
+    });
+
+    // Listen to position changes
+    _audioPlayer.onPositionChanged.listen((Duration position) {
+      if (mounted) {
+        setState(() {
+          _position = position;
+        });
+      }
+    });
+
+    // Listen to completion
+    _audioPlayer.onPlayerComplete.listen((_) {
+      if (mounted) {
+        _nextTrack();
+      }
+    });
+
+    // Set initial volume
+    _audioPlayer.setVolume(_volume);
+  }
+
+  Future<void> _togglePlayPause() async {
+    try {
+      if (_isPlaying) {
+        await _audioPlayer.pause();
+      } else {
+        final currentTrack = _tracks[_currentTrackIndex];
+        if (currentTrack.audioPath != null) {
+          await _audioPlayer.play(AssetSource(currentTrack.audioPath!));
+        } else {
+          // Show message if no audio file is available
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Audio file not found. Please add MP3 files to assets/audio/music/'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error playing audio: $e'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 
-  void _previousTrack() {
+  Future<void> _previousTrack() async {
+    await _audioPlayer.stop();
     setState(() {
       _currentTrackIndex = (_currentTrackIndex - 1 + _tracks.length) % _tracks.length;
       _position = Duration.zero;
-      _duration = _tracks[_currentTrackIndex].duration;
     });
+
+    if (_isPlaying) {
+      await _togglePlayPause();
+    }
   }
 
-  void _nextTrack() {
+  Future<void> _nextTrack() async {
+    await _audioPlayer.stop();
     setState(() {
       _currentTrackIndex = (_currentTrackIndex + 1) % _tracks.length;
       _position = Duration.zero;
-      _duration = _tracks[_currentTrackIndex].duration;
+    });
+
+    if (_isPlaying) {
+      await _togglePlayPause();
+    }
+  }
+
+  Future<void> _seekTo(Duration position) async {
+    await _audioPlayer.seek(position);
+  }
+
+  Future<void> _setVolume(double volume) async {
+    await _audioPlayer.setVolume(volume);
+    setState(() {
+      _volume = volume;
     });
   }
 
   @override
   void dispose() {
+    _audioPlayer.dispose();
     _rotationController.dispose();
     _waveController.dispose();
     super.dispose();
@@ -224,11 +319,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             ),
             child: Slider(
               value: _position.inSeconds.toDouble(),
-              max: _duration.inSeconds.toDouble(),
+              max: _duration.inSeconds.toDouble() > 0
+                  ? _duration.inSeconds.toDouble()
+                  : 1.0,
               onChanged: (value) {
-                setState(() {
-                  _position = Duration(seconds: value.toInt());
-                });
+                _seekTo(Duration(seconds: value.toInt()));
               },
               activeColor: theme.colorScheme.primary,
               inactiveColor: theme.colorScheme.outline.withOpacity(0.3),
@@ -319,9 +414,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               child: Slider(
                 value: _volume,
                 onChanged: (value) {
-                  setState(() {
-                    _volume = value;
-                  });
+                  _setVolume(value);
                 },
                 activeColor: theme.colorScheme.primary,
                 inactiveColor: theme.colorScheme.outline.withOpacity(0.3),
@@ -389,15 +482,20 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              onTap: () {
+              onTap: () async {
+                final wasPlaying = _isPlaying;
+                await _audioPlayer.stop();
                 setState(() {
                   _currentTrackIndex = index;
                   _position = Duration.zero;
-                  _duration = track.duration;
                 });
+
+                if (wasPlaying) {
+                  await _togglePlayPause();
+                }
               },
-              tileColor: isCurrentTrack 
-                  ? theme.colorScheme.primary.withOpacity(0.1) 
+              tileColor: isCurrentTrack
+                  ? theme.colorScheme.primary.withValues(alpha: 0.1)
                   : null,
             );
           }),
@@ -409,7 +507,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
-    return '${minutes}:${seconds.toString().padLeft(2, '0')}';
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 }
 
@@ -418,11 +516,13 @@ class MusicTrack {
   final String artist;
   final Duration duration;
   final String albumArt;
+  final String? audioPath; // Path to audio file in assets
 
   MusicTrack({
     required this.title,
     required this.artist,
     required this.duration,
     required this.albumArt,
+    this.audioPath,
   });
 }
