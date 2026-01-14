@@ -35,36 +35,40 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   Duration _position = Duration.zero;
   Duration _duration = const Duration(minutes: 5);
 
-  // TODO: Replace these placeholder tracks with real audio files
-  // Add your downloaded MP3 files to assets/audio/music/ and update audioPath
+  // Download FREE Public Domain music from archive.org:
+  // 1. https://archive.org/download/freepd/Page2/Ambient%20J%20Thoughtful.mp3 -> peaceful_morning.mp3
+  // 2. https://archive.org/download/freepd/Page2/Chill%20Deep.mp3 -> flowing_water.mp3
+  // 3. https://archive.org/download/freepd/Page2/New%20Age%20A%20Weathered.mp3 -> mountain_breeze.mp3
+  // 4. https://archive.org/download/freepd/Page2/Slow%20Ticking%20Clock.mp3 -> inner_peace.mp3
+  // Save all files to: assets/audio/music/
   final List<MusicTrack> _tracks = [
     MusicTrack(
       title: 'Peaceful Morning',
-      artist: 'Tai Chi Masters',
+      artist: 'Ambient Meditation',
       duration: const Duration(minutes: 5, seconds: 32),
       albumArt: '🌅',
-      audioPath: 'assets/audio/music/tai_chi_peaceful_morning.mp3',
+      audioPath: 'audio/music/peaceful_morning.mp3',
     ),
     MusicTrack(
       title: 'Flowing Water',
-      artist: 'Nature Sounds',
+      artist: 'Deep Relaxation',
       duration: const Duration(minutes: 7, seconds: 18),
       albumArt: '🌊',
-      audioPath: 'assets/audio/music/flowing_water_meditation.mp3',
+      audioPath: 'audio/music/flowing_water.mp3',
     ),
     MusicTrack(
       title: 'Mountain Breeze',
-      artist: 'Meditation Music',
+      artist: 'New Age Zen',
       duration: const Duration(minutes: 6, seconds: 45),
       albumArt: '🏔️',
-      audioPath: 'assets/audio/music/mountain_breeze_zen.mp3',
+      audioPath: 'audio/music/mountain_breeze.mp3',
     ),
     MusicTrack(
       title: 'Inner Peace',
-      artist: 'Zen Collection',
+      artist: 'Meditation Sounds',
       duration: const Duration(minutes: 8, seconds: 12),
       albumArt: '🧘',
-      audioPath: 'assets/audio/music/inner_peace_relaxation.mp3',
+      audioPath: 'audio/music/inner_peace.mp3',
     ),
   ];
 
@@ -239,8 +243,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             _buildControlButtons(theme),
             const SizedBox(height: 24),
             _buildVolumeControl(theme),
-            const Spacer(),
-            _buildTrackList(theme),
             const SizedBox(height: 32),
           ],
         ),
@@ -425,80 +427,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             Icons.volume_up,
             color: theme.colorScheme.onSurfaceVariant,
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTrackList(ThemeData theme) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.outline.withOpacity(0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'Playlist',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          ...List.generate(_tracks.length, (index) {
-            final track = _tracks[index];
-            final isCurrentTrack = index == _currentTrackIndex;
-            
-            return ListTile(
-              leading: Text(
-                track.albumArt,
-                style: const TextStyle(fontSize: 24),
-              ),
-              title: Text(
-                track.title,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: isCurrentTrack ? theme.colorScheme.primary : null,
-                  fontWeight: isCurrentTrack ? FontWeight.w600 : null,
-                ),
-              ),
-              subtitle: Text(
-                track.artist,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: isCurrentTrack 
-                      ? theme.colorScheme.primary.withOpacity(0.7)
-                      : theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              trailing: Text(
-                _formatDuration(track.duration),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              onTap: () async {
-                final wasPlaying = _isPlaying;
-                await _audioPlayer.stop();
-                setState(() {
-                  _currentTrackIndex = index;
-                  _position = Duration.zero;
-                });
-
-                if (wasPlaying) {
-                  await _togglePlayPause();
-                }
-              },
-              tileColor: isCurrentTrack
-                  ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                  : null,
-            );
-          }),
         ],
       ),
     );
