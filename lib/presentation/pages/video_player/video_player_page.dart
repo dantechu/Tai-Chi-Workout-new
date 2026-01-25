@@ -319,6 +319,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Widget _buildVideoDescription() {
+    final description = widget.video.description ??
+        AppLocalizations.of(context)?.defaultVideoDescription ??
+        'Master the art of Tai Chi with this comprehensive lesson. Learn proper form, breathing techniques, and fluid movements that will enhance your practice.';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -330,7 +334,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         ),
         const SizedBox(height: 8),
         Text(
-          AppLocalizations.of(context)?.defaultVideoDescription ?? 'Master the art of Tai Chi with this comprehensive lesson. Learn proper form, breathing techniques, and fluid movements that will enhance your practice.',
+          description,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             height: 1.5,
           ),

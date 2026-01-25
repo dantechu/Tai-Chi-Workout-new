@@ -70,6 +70,7 @@ class VideoModel extends Video {
     final row = videoData['row'] as int;
     final videoTitle = videoData['title'] as String;
     final isPremium = videoData['isPremium'] as bool? ?? false;
+    final description = videoData['description'] as String?;
 
     return VideoModel(
       id: '${section}_$row',
@@ -80,6 +81,7 @@ class VideoModel extends Video {
       rowNumber: row,
       duration: const Duration(minutes: 10), // Default duration
       isPremium: isPremium,
+      description: description,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
