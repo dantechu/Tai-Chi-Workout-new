@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/usecases/premium_usecases.dart';
+import '../../../core/constants/app_constants.dart';
 import 'premium_event.dart';
 import 'premium_state.dart';
 
@@ -8,12 +9,14 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
   final RestorePurchases restorePurchases;
   final GetPremiumStatus getPremiumStatus;
   final ValidatePremiumStatus validatePremiumStatus;
+  final GetProductDetails getProductDetails;
 
   PremiumBloc({
     required this.purchasePremium,
     required this.restorePurchases,
     required this.getPremiumStatus,
     required this.validatePremiumStatus,
+    required this.getProductDetails,
   }) : super(const PremiumInitial()) {
     on<CheckPremiumStatus>(_onCheckPremiumStatus);
     on<PurchasePremiumRequested>(_onPurchasePremium);
@@ -29,16 +32,32 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
     emit(const PremiumLoading());
 
     final result = await getPremiumStatus();
-    result.fold(
-      (failure) => emit(PremiumError(failure.message)),
+    final isActive = result.fold(
+      (failure) {
+        emit(PremiumError(failure.message));
+        return false;
+      },
       (status) {
         if (status.isValidPremium) {
           emit(PremiumActive(status));
-        } else {
-          emit(const PremiumInactive());
+          return true;
         }
+        return false;
       },
     );
+
+    // Fetch product details for inactive users
+    if (!isActive) {
+      final productResult = await getProductDetails(AppConstants.premiumProductId);
+      productResult.fold(
+        (failure) => emit(const PremiumInactive()),
+        (productDetails) {
+          final price = productDetails['price'] as String? ?? AppConstants.premiumPrice;
+          final title = productDetails['title'] as String?;
+          emit(PremiumInactive(productPrice: price, productTitle: title));
+        },
+      );
+    }
   }
 
   Future<void> _onPurchasePremium(
@@ -93,8 +112,6 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
     ValidatePremiumRequested event,
     Emitter<PremiumState> emit,
   ) async {
-    final currentState = state;
-    
     final result = await validatePremiumStatus();
     result.fold(
       (failure) => emit(PremiumError(failure.message)),

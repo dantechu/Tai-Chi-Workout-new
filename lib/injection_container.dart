@@ -57,6 +57,7 @@ Future<void> init() async {
       restorePurchases: sl(),
       getPremiumStatus: sl(),
       validatePremiumStatus: sl(),
+      getProductDetails: sl(),
     ),
   );
 
@@ -65,6 +66,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RestorePurchases(sl()));
   sl.registerLazySingleton(() => GetPremiumStatus(sl()));
   sl.registerLazySingleton(() => ValidatePremiumStatus(sl()));
+  sl.registerLazySingleton(() => GetProductDetails(sl()));
 
   //! Features - Theme & Locale
   // Blocs

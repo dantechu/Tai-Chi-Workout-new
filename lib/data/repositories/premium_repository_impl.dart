@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/error/exceptions.dart';
@@ -32,7 +33,7 @@ class PremiumRepositoryImpl implements PremiumRepository {
       if (purchaseDetails.productID == AppConstants.premiumProductId) {
         if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
-          
+
           final premiumStatus = PremiumStatusModel.fromEntity(
             PremiumStatus.premium(
               purchaseDate: DateTime.now(),
@@ -41,18 +42,42 @@ class PremiumRepositoryImpl implements PremiumRepository {
             ),
           );
 
-          await localDataSource.cachePremiumStatus(premiumStatus);
-          if (purchaseDetails.purchaseID != null) {
-            await localDataSource.setSecurePremiumToken(purchaseDetails.purchaseID!);
+          try {
+            await localDataSource.cachePremiumStatus(premiumStatus);
+            if (purchaseDetails.purchaseID != null) {
+              await localDataSource.setSecurePremiumToken(purchaseDetails.purchaseID!);
+            }
+
+            _premiumStatusController.add(premiumStatus.toEntity());
+          } catch (e) {
+            // Log error but still complete the purchase
+            print('Error caching premium status: $e');
           }
 
-          _premiumStatusController.add(premiumStatus.toEntity());
-
           if (purchaseDetails.pendingCompletePurchase) {
-            await inAppPurchase.completePurchase(purchaseDetails);
+            try {
+              await inAppPurchase.completePurchase(purchaseDetails);
+            } catch (e) {
+              print('Error completing purchase: $e');
+            }
           }
         } else if (purchaseDetails.status == PurchaseStatus.error) {
           _premiumStatusController.add(PremiumStatus.free());
+        } else if (purchaseDetails.status == PurchaseStatus.canceled) {
+          // User canceled the purchase, no action needed
+          print('Purchase canceled by user');
+        } else if (purchaseDetails.status == PurchaseStatus.pending) {
+          // Purchase is pending, waiting for user action
+          print('Purchase is pending');
+        }
+      }
+
+      // Always complete pending purchases to avoid issues
+      if (purchaseDetails.pendingCompletePurchase) {
+        try {
+          await inAppPurchase.completePurchase(purchaseDetails);
+        } catch (e) {
+          print('Error completing pending purchase: $e');
         }
       }
     }
@@ -63,7 +88,7 @@ class PremiumRepositoryImpl implements PremiumRepository {
     try {
       final bool isAvailable = await inAppPurchase.isAvailable();
       if (!isAvailable) {
-        return Left(PurchaseFailure('Store not available'));
+        return Left(PurchaseFailure('App Store is not available. Please check your internet connection and try again.'));
       }
 
       const Set<String> productIds = {AppConstants.premiumProductId};
@@ -71,33 +96,54 @@ class PremiumRepositoryImpl implements PremiumRepository {
           await inAppPurchase.queryProductDetails(productIds);
 
       if (productDetailResponse.error != null) {
-        return Left(PurchaseFailure(productDetailResponse.error!.message));
+        return Left(PurchaseFailure('Failed to load products: ${productDetailResponse.error!.message}'));
       }
 
       if (productDetailResponse.productDetails.isEmpty) {
-        return Left(PurchaseFailure('Product not found'));
+        return Left(PurchaseFailure('Premium product not found in the store. Please contact support.'));
       }
 
       final ProductDetails productDetails = productDetailResponse.productDetails.first;
       final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
 
-      await inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+      final bool purchaseInitiated = await inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+
+      if (!purchaseInitiated) {
+        return Left(PurchaseFailure('Failed to initiate purchase. Please try again.'));
+      }
 
       // The actual purchase completion is handled in _handlePurchaseUpdates
-      return Right(true);
+      return const Right(true);
+    } on PlatformException catch (e) {
+      return Left(PurchaseFailure('Purchase error: ${e.message ?? e.code}'));
     } catch (e) {
-      return Left(PurchaseFailure('Purchase failed: $e'));
+      return Left(PurchaseFailure('Unexpected error: $e'));
     }
   }
 
   @override
   Future<Either<Failure, bool>> restorePurchases() async {
     try {
+      // Check if a secure token already exists
+      final existingToken = await localDataSource.getSecurePremiumToken();
+      if (existingToken != null) {
+        // Already have premium, no need to restore
+        return const Right(true);
+      }
+
+      // Trigger restore purchases which will invoke the purchase stream
       await inAppPurchase.restorePurchases();
 
-      // Get past purchases from the stream
-      // Note: In the real implementation, you would listen to purchaseStream
-      // and check for past purchases. For now, we'll return false.
+      // Wait a moment for the purchase stream to process
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Check if the restore was successful by checking the secure token again
+      final restoredToken = await localDataSource.getSecurePremiumToken();
+      if (restoredToken != null) {
+        return const Right(true);
+      }
+
+      // No purchases found to restore
       return const Right(false);
     } catch (e) {
       return Left(PurchaseFailure('Restore failed: $e'));

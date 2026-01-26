@@ -17,7 +17,13 @@ class PremiumLoading extends PremiumState {
 }
 
 class PremiumInactive extends PremiumState {
-  const PremiumInactive();
+  final String? productPrice;
+  final String? productTitle;
+
+  const PremiumInactive({this.productPrice, this.productTitle});
+
+  @override
+  List<Object?> get props => [productPrice, productTitle];
 }
 
 class PremiumActive extends PremiumState {

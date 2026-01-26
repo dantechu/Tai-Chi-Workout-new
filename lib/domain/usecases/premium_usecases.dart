@@ -42,3 +42,13 @@ class ValidatePremiumStatus {
     return await repository.validatePremiumStatus();
   }
 }
+
+class GetProductDetails {
+  final PremiumRepository repository;
+
+  GetProductDetails(this.repository);
+
+  Future<Either<Failure, Map<String, dynamic>>> call(String productId) async {
+    return await repository.getProductDetails(productId);
+  }
+}

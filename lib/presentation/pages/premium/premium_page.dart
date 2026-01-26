@@ -150,7 +150,7 @@ class _PremiumPageState extends State<PremiumPage> {
           const SizedBox(height: 6),
           Text(
             AppLocalizations.of(context)?.premiumSubtitle ??
-                'Get unlimited access to all features',
+                'Enjoy an ad-free experience with premium support',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -166,7 +166,6 @@ class _PremiumPageState extends State<PremiumPage> {
     final features = [
       {'icon': Icons.download_for_offline, 'title': AppLocalizations.of(context)?.premiumFeature1 ?? 'Offline downloads'},
       {'icon': Icons.block, 'title': AppLocalizations.of(context)?.premiumFeature2 ?? 'No advertisements'},
-      {'icon': Icons.lock_open, 'title': AppLocalizations.of(context)?.premiumFeature3 ?? 'Unlock all lessons'},
       {'icon': Icons.support_agent, 'title': AppLocalizations.of(context)?.premiumFeature4 ?? 'Priority support'},
     ];
 
@@ -219,6 +218,13 @@ class _PremiumPageState extends State<PremiumPage> {
 
 
   Widget _buildPricing(ThemeData theme, PremiumState state) {
+    String displayPrice = '\$1.99';
+
+    // Get the price from the state if available
+    if (state is PremiumInactive && state.productPrice != null) {
+      displayPrice = state.productPrice!;
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -241,7 +247,7 @@ class _PremiumPageState extends State<PremiumPage> {
           ),
           const SizedBox(height: 12),
           Text(
-            '\$49.99',
+            displayPrice,
             style: theme.textTheme.displayMedium?.copyWith(
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
