@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 class AdConstants {
-  // Banner Ads
+  // Production Banner Ads
   static const String androidBannerId = 'ca-app-pub-9740790965972178/2276608078';
   static const String iosBannerId = 'ca-app-pub-9740790965972178/2276608078';
 
@@ -13,11 +14,17 @@ class AdConstants {
   static const String androidInterstitialId = 'ca-app-pub-9740790965972178/XXXXXXXX';
   static const String iosInterstitialId = 'ca-app-pub-9740790965972178/XXXXXXXX';
 
+  /// Returns the appropriate banner ad unit ID based on platform and build mode
+  /// - Debug/Profile mode: Uses test ad IDs
+  /// - Release mode: Uses production ad IDs
   static String get bannerAdUnitId {
-    if (Platform.isAndroid) {
-      return androidBannerId;
-    } else if (Platform.isIOS) {
-      return iosBannerId;
+    // Use test IDs in debug and profile mode, production IDs in release mode
+    final bool useTestAds = kDebugMode || kProfileMode;
+
+    if (Platform.isIOS) {
+      return useTestAds ? testIosBannerId : iosBannerId;
+    } else if (Platform.isAndroid) {
+      return useTestAds ? testAndroidBannerId : androidBannerId;
     }
     throw UnsupportedError('Unsupported platform');
   }

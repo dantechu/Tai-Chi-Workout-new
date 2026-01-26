@@ -10,6 +10,7 @@ import '../../../injection_container.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/premium/premium_bloc.dart';
 import '../../bloc/premium/premium_state.dart';
+import '../../widgets/banner_ad_widget.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final Video video;
@@ -206,6 +207,23 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                 ),
               ),
             ),
+          ),
+
+          // Banner Ad at bottom (only show if not premium)
+          BlocBuilder<PremiumBloc, PremiumState>(
+            builder: (context, state) {
+              final isPremium = state is PremiumActive;
+              if (isPremium) {
+                return const SizedBox.shrink();
+              }
+              return Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: SafeArea(
+                  top: false,
+                  child: const BannerAdWidget(),
+                ),
+              );
+            },
           ),
         ],
       ),
