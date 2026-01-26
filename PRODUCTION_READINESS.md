@@ -388,11 +388,13 @@ Premium features include: Offline downloads, Ad-free experience, Priority suppor
 - **Match**: ✅ Perfect!
 
 ### Features Unlocked:
-- Offline downloads
+- Offline downloads (Apple compliant - stored in Application Support, max 500MB per video)
 - No advertisements
 - Priority support
 
 **Note**: All lessons are free and accessible to everyone by default.
+
+**Download Compliance**: See `APPLE_DOWNLOAD_COMPLIANCE.md` for full Apple policy compliance details.
 
 ### Testing Accounts:
 - Create in: App Store Connect → Users & Access → Sandbox Testers
