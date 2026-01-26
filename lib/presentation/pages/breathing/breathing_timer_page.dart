@@ -1,8 +1,12 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../bloc/premium/premium_bloc.dart';
+import '../../bloc/premium/premium_state.dart';
+import '../../widgets/banner_ad_widget.dart';
 
 class BreathingTimerPage extends StatefulWidget {
   const BreathingTimerPage({super.key});
@@ -69,7 +73,7 @@ class BreathingSetupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)?.breathingTimer ?? 'Breathing Timer'),
@@ -507,7 +511,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)?.breathingSession ?? 'Breathing Session'),
@@ -535,35 +539,59 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
             ),
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              _breathingColor.withValues(alpha: 0.05),
-              theme.colorScheme.surface,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 40),
-                _buildBreathingCircle(theme),
-                const SizedBox(height: 40),
-                _buildPhaseIndicator(theme),
-                const SizedBox(height: 32),
-                _buildPhaseDescription(theme),
-                const Spacer(),
-                _buildControlButtons(theme),
-                const SizedBox(height: 40),
-              ],
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    _breathingColor.withValues(alpha: 0.05),
+                    theme.colorScheme.surface,
+                  ],
+                ),
+              ),
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+                      _buildBreathingCircle(theme),
+                      const SizedBox(height: 40),
+                      _buildPhaseIndicator(theme),
+                      const SizedBox(height: 32),
+                      _buildPhaseDescription(theme),
+                      const Spacer(),
+                      _buildControlButtons(theme),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+
+          // Banner Ad at bottom (only show if not premium)
+          BlocBuilder<PremiumBloc, PremiumState>(
+            builder: (context, state) {
+              final isPremium = state is PremiumActive;
+              if (isPremium) {
+                return const SizedBox.shrink();
+              }
+              return Container(
+                color: theme.colorScheme.surface,
+                child: SafeArea(
+                  top: false,
+                  child: const BannerAdWidget(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
