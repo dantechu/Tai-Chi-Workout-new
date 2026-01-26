@@ -301,9 +301,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateToVideoPlayer(video) {
-    Navigator.of(context).pushNamed(
-      '/video-player',
-      arguments: video,
-    );
+    // Check if video is premium and user doesn't have premium access
+    final premiumState = context.read<PremiumBloc>().state;
+    final hasPremiumAccess = premiumState is PremiumActive;
+
+    if (video.isPremium && !hasPremiumAccess) {
+      // Navigate to premium unlock screen
+      Navigator.of(context).pushNamed('/premium');
+    } else {
+      // Navigate to video player
+      Navigator.of(context).pushNamed(
+        '/video-player',
+        arguments: video,
+      );
+    }
   }
 }

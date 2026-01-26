@@ -24,7 +24,7 @@ class VideoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: isLocked ? null : onTap,
+          onTap: onTap,
           child: Container(
             height: 120,
             decoration: BoxDecoration(
