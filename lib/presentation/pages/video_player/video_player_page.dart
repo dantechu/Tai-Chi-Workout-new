@@ -155,7 +155,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                   value: 'download',
                   child: Row(
                     children: [
-                      Icon(Icons.download),
+                      Icon(Icons.download, color: Theme.of(context).colorScheme.primary),
                       SizedBox(width: 8),
                       Text(AppLocalizations.of(context)?.download ?? 'Download'),
                     ],
@@ -165,19 +165,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                   value: 'share',
                   child: Row(
                     children: [
-                      Icon(Icons.share),
+                      Icon(Icons.share, color: Theme.of(context).colorScheme.primary),
                       SizedBox(width: 8),
                       Text(AppLocalizations.of(context)?.share ?? 'Share'),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'report',
-                  child: Row(
-                    children: [
-                      Icon(Icons.report),
-                      SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)?.report ?? 'Report'),
                     ],
                   ),
                 ),
@@ -391,9 +381,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       case 'share':
         _shareVideo();
         break;
-      case 'report':
-        _reportVideo();
-        break;
     }
   }
 
@@ -432,14 +419,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Share functionality coming soon...'),
-      ),
-    );
-  }
-
-  void _reportVideo() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Report functionality coming soon...'),
       ),
     );
   }
