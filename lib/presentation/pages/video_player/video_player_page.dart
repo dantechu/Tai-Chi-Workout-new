@@ -5,6 +5,8 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/video.dart';
+import '../../../domain/usecases/download_usecases.dart';
+import '../../../injection_container.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/premium/premium_bloc.dart';
 import '../../bloc/premium/premium_state.dart';
@@ -385,6 +387,36 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   void _showDownloadDialog() {
+    // Check premium status
+    final premiumState = context.read<PremiumBloc>().state;
+    final hasPremium = premiumState is PremiumActive;
+
+    if (!hasPremium) {
+      // Show premium required dialog
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Premium Required'),
+          content: const Text('Offline downloads are available for premium users only. Upgrade to premium to download videos for offline viewing.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed('/premium');
+              },
+              child: Text(AppLocalizations.of(context)?.getPremium ?? 'Get Premium'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    // Show download confirmation
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -407,12 +439,53 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     );
   }
 
-  void _startDownload() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Download started...'),
-      ),
-    );
+  Future<void> _startDownload() async {
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Download started...'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      final downloadVideo = sl<DownloadVideo>();
+      final result = await downloadVideo(widget.video);
+
+      result.fold(
+        (failure) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Download failed: ${failure.message}'),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        },
+        (downloadItem) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Downloading ${widget.video.title}...'),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Download error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 
   void _shareVideo() {
