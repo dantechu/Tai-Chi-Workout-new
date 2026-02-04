@@ -2,6 +2,10 @@
     <!-- Permissions for AdMob and network access -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Permission for In-App Purchases -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+
     <application
         android:label="Tai Chi Workout"
         android:name="${applicationName}"
