@@ -34,7 +34,9 @@ class VideoRemoteDataSourceImpl implements VideoRemoteDataSource {
           final allVideos = <VideoModel>[];
           for (final section in course.sections) {
             for (final video in section.videos) {
-              allVideos.add(VideoModel.fromEntity(video));
+              // Ensure the video's category field is set to the section title
+              final videoWithCategory = video.copyWith(category: section.title);
+              allVideos.add(VideoModel.fromEntity(videoWithCategory));
             }
           }
           return allVideos;
@@ -59,11 +61,16 @@ class VideoRemoteDataSourceImpl implements VideoRemoteDataSource {
           // Convert course sections to lesson models
           final lessons = <LessonModel>[];
           for (final section in course.sections) {
+            // Ensure videos have the section title as their category
+            final videosWithCategory = section.videos.map((v) =>
+              VideoModel.fromEntity(v.copyWith(category: section.title))
+            ).toList();
+
             final lesson = LessonModel(
               id: section.id,
               title: section.title,
               description: section.description,
-              videos: section.videos.map((v) => VideoModel.fromEntity(v)).toList(),
+              videos: videosWithCategory,
               order: section.order,
               sectionNumber: section.sectionNumber,
             );
