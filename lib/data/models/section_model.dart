@@ -1,5 +1,4 @@
 import '../../domain/entities/section.dart';
-import '../../domain/entities/video.dart';
 import 'video_model.dart';
 
 /// Data model for Section that handles Firestore serialization
@@ -47,6 +46,18 @@ class SectionModel {
       'description': description,
       'order': order,
       'videos': videos.map((v) => v.toMap()).toList(),
+    };
+  }
+
+  /// Convert to Map for Hive (local cache) - uses serializable types only
+  Map<String, dynamic> toHiveMap() {
+    return {
+      'id': id,
+      'sectionNumber': sectionNumber,
+      'title': title,
+      'description': description,
+      'order': order,
+      'videos': videos.map((v) => v.toHiveMap()).toList(),
     };
   }
 

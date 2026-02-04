@@ -39,9 +39,9 @@ class CourseLocalDataSourceImpl implements CourseLocalDataSource {
       // Clear existing courses
       await box.clear();
 
-      // Cache new courses
+      // Cache new courses - use toHiveMap() to avoid Firestore-specific types
       for (var course in courses) {
-        await box.put(course.id, course.toMap());
+        await box.put(course.id, course.toHiveMap());
       }
     } catch (e) {
       throw Exception('Failed to cache courses: $e');
@@ -77,7 +77,7 @@ class CourseLocalDataSourceImpl implements CourseLocalDataSource {
   Future<void> cacheCourse(CourseModel course) async {
     try {
       final box = await Hive.openBox(AppConstants.hiveCoursesBox);
-      await box.put(course.id, course.toMap());
+      await box.put(course.id, course.toHiveMap());
     } catch (e) {
       throw Exception('Failed to cache course: $e');
     }

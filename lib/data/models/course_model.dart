@@ -62,9 +62,28 @@ class CourseModel {
               premiumVideos: 0,
               freeVideos: 0,
             ),
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
-      updatedAt: (map['updatedAt'] as Timestamp?)?.toDate(),
+      createdAt: _parseDateTime(map['createdAt']),
+      updatedAt: _parseDateTime(map['updatedAt']),
     );
+  }
+
+  /// Helper method to parse DateTime from various formats
+  static DateTime? _parseDateTime(dynamic value) {
+    if (value == null) return null;
+
+    if (value is Timestamp) {
+      return value.toDate();
+    }
+
+    if (value is String) {
+      try {
+        return DateTime.parse(value);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    return null;
   }
 
   /// Convert to Map for Firestore
@@ -81,6 +100,23 @@ class CourseModel {
       'metadata': metadata.toMap(),
       'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : FieldValue.serverTimestamp(),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : FieldValue.serverTimestamp(),
+    };
+  }
+
+  /// Convert to Map for Hive (local cache) - uses serializable types only
+  Map<String, dynamic> toHiveMap() {
+    return {
+      'name': name,
+      'description': description,
+      'isActive': isActive,
+      'isDefault': isDefault,
+      'isFree': isFree,
+      'order': order,
+      'thumbnailUrl': thumbnailUrl,
+      'sections': sections.map((s) => s.toHiveMap()).toList(),
+      'metadata': metadata.toMap(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

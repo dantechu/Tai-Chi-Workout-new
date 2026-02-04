@@ -44,9 +44,28 @@ class VideoModel extends Video {
       isPremium: map['isPremium'] as bool? ?? false,
       description: map['description'] as String?,
       tags: (map['tags'] as List<dynamic>?)?.cast<String>() ?? [],
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
-      updatedAt: (map['updatedAt'] as Timestamp?)?.toDate(),
+      createdAt: _parseDateTime(map['createdAt']),
+      updatedAt: _parseDateTime(map['updatedAt']),
     );
+  }
+
+  /// Helper method to parse DateTime from various formats
+  static DateTime? _parseDateTime(dynamic value) {
+    if (value == null) return null;
+
+    if (value is Timestamp) {
+      return value.toDate();
+    }
+
+    if (value is String) {
+      try {
+        return DateTime.parse(value);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    return null;
   }
 
   /// Convert to Map (Firestore compatible)
@@ -70,6 +89,26 @@ class VideoModel extends Video {
       'updatedAt': updatedAt != null
           ? Timestamp.fromDate(updatedAt!)
           : FieldValue.serverTimestamp(),
+    };
+  }
+
+  /// Convert to Map for Hive (local cache) - uses serializable types only
+  Map<String, dynamic> toHiveMap() {
+    return {
+      'id': id,
+      'title': title,
+      'category': category,
+      'videoUrl': videoUrl,
+      'thumbnailUrl': thumbnailUrl,
+      'sectionNumber': sectionNumber,
+      'rowNumber': rowNumber,
+      'row': rowNumber, // Keep both for backwards compatibility
+      'duration': duration.inSeconds,
+      'isPremium': isPremium,
+      'description': description,
+      'tags': tags,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 
