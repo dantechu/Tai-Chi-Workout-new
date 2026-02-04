@@ -21,6 +21,11 @@ dependencies:
   # Dependency Injection
   get_it: ^7.6.4
 
+  # Firebase
+  firebase_core: ^2.24.2
+  cloud_firestore: ^4.14.0
+  firebase_auth: ^4.16.0
+
   # Network
   dio: ^5.3.3
   connectivity_plus: ^5.0.1
@@ -61,6 +66,9 @@ dependencies:
 
   # JSON Serialization
   json_annotation: ^4.9.0
+
+  # HTTP for scripts
+  http: ^1.1.0
 
   # Icons
   cupertino_icons: ^1.0.8

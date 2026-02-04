@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/constants/app_constants.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/video/video_bloc.dart';
 import '../../bloc/video/video_state.dart';
@@ -155,30 +154,43 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategoryFilter() {
-    final categoryTitles = AppConstants.videoCategories
-        .map((cat) => cat['title'] as String)
-        .toList();
-    final categories = [AppLocalizations.of(context)?.all ?? 'All', ...categoryTitles];
-    
-    return Container(
-      height: 44,
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final category = categories[index];
-          return Container(
-            margin: const EdgeInsets.only(right: 8),
-            child: CategoryChip(
-              label: category,
-              isSelected: _selectedCategory == category,
-              onTap: () => _selectCategory(category),
-            ),
-          );
-        },
-      ),
+    return BlocBuilder<VideoBloc, VideoState>(
+      builder: (context, state) {
+        List<String> categoryTitles = [];
+
+        // Extract unique categories from loaded videos
+        if (state is VideoLoaded) {
+          final uniqueCategories = state.videos
+              .map((video) => video.category)
+              .where((category) => category.isNotEmpty)
+              .toSet()
+              .toList();
+          categoryTitles = uniqueCategories;
+        }
+
+        final categories = [AppLocalizations.of(context)?.all ?? 'All', ...categoryTitles];
+
+        return Container(
+          height: 44,
+          margin: const EdgeInsets.symmetric(vertical: 12),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: categories.length,
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              return Container(
+                margin: const EdgeInsets.only(right: 8),
+                child: CategoryChip(
+                  label: category,
+                  isSelected: _selectedCategory == category,
+                  onTap: () => _selectCategory(category),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 

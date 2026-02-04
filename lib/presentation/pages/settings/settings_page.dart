@@ -26,6 +26,8 @@ class SettingsPage extends StatelessWidget {
         children: [
           _buildPremiumTile(context),
           const SizedBox(height: 8),
+          _buildCoursesSection(context),
+          const SizedBox(height: 8),
           _buildAppearanceSection(context),
           const SizedBox(height: 8),
           _buildLanguageSection(context),
@@ -427,7 +429,7 @@ class SettingsPage extends StatelessWidget {
 
   Widget _buildPremiumTile(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       elevation: 8,
       shadowColor: theme.colorScheme.primary.withValues(alpha: 0.2),
@@ -486,6 +488,64 @@ class SettingsPage extends StatelessWidget {
                 Icons.arrow_forward_ios,
                 color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
                 size: 18,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCoursesSection(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Card(
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed('/courses');
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.school,
+                  color: theme.colorScheme.primary,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Courses',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Choose your learning path',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.textTheme.bodySmall?.color,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                size: 20,
               ),
             ],
           ),

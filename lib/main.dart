@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'core/theme/app_theme.dart';
 import 'injection_container.dart' as di;
@@ -18,11 +19,15 @@ import 'presentation/pages/splash/splash_page.dart';
 import 'presentation/pages/navigation/main_navigation_page.dart';
 import 'presentation/pages/video_player/video_player_page.dart';
 import 'presentation/pages/premium/premium_page.dart';
+import 'presentation/courses/pages/courses_page.dart';
 import 'domain/entities/video.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp();
 
   // Initialize Hive
   await Hive.initFlutter();
@@ -97,6 +102,10 @@ class TaiChiWorkoutApp extends StatelessWidget {
                     case '/premium':
                       return MaterialPageRoute(
                         builder: (context) => const PremiumPage(),
+                      );
+                    case '/courses':
+                      return MaterialPageRoute(
+                        builder: (context) => const CoursesPage(),
                       );
                     default:
                       return MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../../domain/entities/video.dart';
 
@@ -24,6 +25,53 @@ class VideoModel extends Video {
   factory VideoModel.fromJson(Map<String, dynamic> json) => _$VideoModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$VideoModelToJson(this);
+
+  /// Create from Map (Firestore compatible)
+  factory VideoModel.fromMap(Map<String, dynamic> map) {
+    // Generate ID from section and row if not provided
+    final id = map['id'] as String? ??
+        'video_${map['sectionNumber']}_${map['rowNumber'] ?? map['row']}';
+
+    return VideoModel(
+      id: id,
+      title: map['title'] as String? ?? '',
+      category: map['category'] as String? ?? '',
+      videoUrl: map['videoUrl'] as String? ?? '',
+      thumbnailUrl: map['thumbnailUrl'] as String?,
+      sectionNumber: map['sectionNumber'] as int? ?? 0,
+      rowNumber: (map['rowNumber'] ?? map['row']) as int? ?? 0,
+      duration: Duration(seconds: map['duration'] as int? ?? 0),
+      isPremium: map['isPremium'] as bool? ?? false,
+      description: map['description'] as String?,
+      tags: (map['tags'] as List<dynamic>?)?.cast<String>() ?? [],
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
+      updatedAt: (map['updatedAt'] as Timestamp?)?.toDate(),
+    );
+  }
+
+  /// Convert to Map (Firestore compatible)
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'category': category,
+      'videoUrl': videoUrl,
+      'thumbnailUrl': thumbnailUrl,
+      'sectionNumber': sectionNumber,
+      'rowNumber': rowNumber,
+      'row': rowNumber, // Keep both for backwards compatibility
+      'duration': duration.inSeconds,
+      'isPremium': isPremium,
+      'description': description,
+      'tags': tags,
+      'createdAt': createdAt != null
+          ? Timestamp.fromDate(createdAt!)
+          : FieldValue.serverTimestamp(),
+      'updatedAt': updatedAt != null
+          ? Timestamp.fromDate(updatedAt!)
+          : FieldValue.serverTimestamp(),
+    };
+  }
 
   factory VideoModel.fromEntity(Video entity) {
     return VideoModel(

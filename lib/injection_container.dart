@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -11,29 +11,37 @@ import 'core/network/dio_client.dart';
 import 'core/network/network_info.dart';
 
 // Data sources
+import 'data/datasources/course_local_datasource.dart';
+import 'data/datasources/course_remote_datasource.dart';
 import 'data/datasources/download_local_datasource.dart';
 import 'data/datasources/premium_local_datasource.dart';
 import 'data/datasources/video_local_datasource.dart';
 import 'data/datasources/video_remote_datasource.dart';
 
 // Repositories
+import 'data/repositories/course_repository_impl.dart';
 import 'data/repositories/download_repository_impl.dart';
 import 'data/repositories/premium_repository_impl.dart';
 import 'data/repositories/video_repository_impl.dart';
+import 'domain/repositories/course_repository.dart';
 import 'domain/repositories/download_repository.dart';
 import 'domain/repositories/premium_repository.dart';
 import 'domain/repositories/video_repository.dart';
 
 // Use cases
 import 'domain/usecases/download_usecases.dart';
+import 'domain/usecases/get_active_courses.dart';
+import 'domain/usecases/get_selected_course.dart';
 import 'domain/usecases/get_videos.dart';
 import 'domain/usecases/premium_usecases.dart';
+import 'domain/usecases/select_course.dart';
 
 // BLoCs
 import 'presentation/bloc/video/video_bloc.dart';
 import 'presentation/bloc/premium/premium_bloc.dart';
 import 'presentation/bloc/theme/theme_bloc.dart';
 import 'presentation/bloc/locale/locale_bloc.dart';
+import 'presentation/courses/bloc/courses_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -42,6 +50,7 @@ Future<void> init() async {
   await Hive.openBox('settings_box');
   await Hive.openBox('premium_box');
   await Hive.openBox('downloads_box');
+  await Hive.openBox('courses_box');
 
 
   //! Features - Video
@@ -59,6 +68,21 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetVideosByCategory(sl()));
   sl.registerLazySingleton(() => SearchVideos(sl()));
   sl.registerLazySingleton(() => GetVideo(sl()));
+
+  //! Features - Courses
+  // Bloc
+  sl.registerFactory(
+    () => CoursesBloc(
+      getActiveCourses: sl(),
+      getSelectedCourse: sl(),
+      selectCourse: sl(),
+    ),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => GetActiveCourses(sl()));
+  sl.registerLazySingleton(() => GetSelectedCourse(sl()));
+  sl.registerLazySingleton(() => SelectCourse(sl()));
 
   //! Features - Premium
   // Bloc
@@ -111,9 +135,16 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<CourseRepository>(
+    () => CourseRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+    ),
+  );
+
   //! Data sources
   sl.registerLazySingleton<VideoRemoteDataSource>(
-    () => VideoRemoteDataSourceImpl(sl()),
+    () => VideoRemoteDataSourceImpl(sl(), sl()),
   );
 
   sl.registerLazySingleton<VideoLocalDataSource>(
@@ -131,12 +162,23 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<CourseRemoteDataSource>(
+    () => CourseRemoteDataSourceImpl(firestore: sl()),
+  );
+
+  sl.registerLazySingleton<CourseLocalDataSource>(
+    () => CourseLocalDataSourceImpl(
+      sharedPreferences: sl(),
+    ),
+  );
+
   //! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
   sl.registerLazySingleton(() => DioClient().dio);
 
   //! External
+  sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => Connectivity());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   sl.registerLazySingleton(() => InAppPurchase.instance);

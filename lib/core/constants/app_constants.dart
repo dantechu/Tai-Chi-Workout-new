@@ -22,6 +22,7 @@ class AppConstants {
   static const String hivePremiumBox = 'premium_box';
   static const String hiveSettingsBox = 'settings_box';
   static const String hiveFavoritesBox = 'favorites_box';
+  static const String hiveCoursesBox = 'courses_box';
   
   // Secure Storage Keys
   static const String premiumTokenKey = 'premium_token';
@@ -31,6 +32,7 @@ class AppConstants {
   static const String themeKey = 'theme_mode';
   static const String localeKey = 'locale';
   static const String onboardingKey = 'onboarding_complete';
+  static const String selectedCourseKey = 'selected_course_id';
   
   // Video Categories
   static const List<Map<String, dynamic>> videoCategories = [

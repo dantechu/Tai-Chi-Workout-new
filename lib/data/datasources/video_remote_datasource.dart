@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../core/constants/app_constants.dart';
 import '../../core/error/exceptions.dart';
+import '../../domain/repositories/course_repository.dart';
 import '../models/video_model.dart';
 import '../models/lesson_model.dart';
 
@@ -14,22 +14,32 @@ abstract class VideoRemoteDataSource {
 
 class VideoRemoteDataSourceImpl implements VideoRemoteDataSource {
   final Dio dio;
+  final CourseRepository courseRepository;
 
-  VideoRemoteDataSourceImpl(this.dio);
+  VideoRemoteDataSourceImpl(this.dio, this.courseRepository);
 
   @override
   Future<List<VideoModel>> getAllVideos() async {
     try {
-      final lessons = await getAllLessons();
-      final allVideos = <VideoModel>[];
-      
-      for (final lesson in lessons) {
-        for (final video in lesson.videos) {
-          allVideos.add(VideoModel.fromEntity(video));
-        }
-      }
-      
-      return allVideos;
+      // Get the selected course
+      final courseResult = await courseRepository.getSelectedCourse();
+
+      return courseResult.fold(
+        (failure) {
+          // If no course is selected or error, return empty list
+          throw ServerException('No course selected: ${failure.message}');
+        },
+        (course) {
+          // Extract all videos from all sections of the selected course
+          final allVideos = <VideoModel>[];
+          for (final section in course.sections) {
+            for (final video in section.videos) {
+              allVideos.add(VideoModel.fromEntity(video));
+            }
+          }
+          return allVideos;
+        },
+      );
     } catch (e) {
       throw ServerException('Failed to load videos: $e');
     }
@@ -38,15 +48,30 @@ class VideoRemoteDataSourceImpl implements VideoRemoteDataSource {
   @override
   Future<List<LessonModel>> getAllLessons() async {
     try {
-      // Using hardcoded data structure from app constants
-      final lessons = <LessonModel>[];
-      
-      for (final categoryData in AppConstants.videoCategories) {
-        final lesson = LessonModel.fromCategoryData(categoryData);
-        lessons.add(lesson);
-      }
-      
-      return lessons;
+      // Get the selected course
+      final courseResult = await courseRepository.getSelectedCourse();
+
+      return courseResult.fold(
+        (failure) {
+          throw ServerException('No course selected: ${failure.message}');
+        },
+        (course) {
+          // Convert course sections to lesson models
+          final lessons = <LessonModel>[];
+          for (final section in course.sections) {
+            final lesson = LessonModel(
+              id: section.id,
+              title: section.title,
+              description: section.description,
+              videos: section.videos.map((v) => VideoModel.fromEntity(v)).toList(),
+              order: section.order,
+              sectionNumber: section.sectionNumber,
+            );
+            lessons.add(lesson);
+          }
+          return lessons;
+        },
+      );
     } catch (e) {
       throw ServerException('Failed to load lessons: $e');
     }

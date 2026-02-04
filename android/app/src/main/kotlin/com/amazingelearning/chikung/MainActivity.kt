@@ -1,4 +1,4 @@
-package com.ChiKung.qigong_workout
+package com.amazingelearning.chikung
 
 import io.flutter.embedding.android.FlutterActivity
 
