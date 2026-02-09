@@ -129,11 +129,11 @@ class VideoCard extends StatelessWidget {
                       video.title,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: isLocked 
+                        color: isLocked
                             ? theme.colorScheme.onSurface.withValues(alpha: 0.6)
                             : theme.colorScheme.onSurface,
                       ),
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
