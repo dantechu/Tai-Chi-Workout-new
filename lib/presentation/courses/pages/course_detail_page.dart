@@ -27,7 +27,6 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     return BlocListener<CoursesBloc, CoursesState>(
       listener: (context, state) {
         if (state is CourseSelected) {
-          // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${state.course.name} selected'),
@@ -35,10 +34,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
               behavior: SnackBarBehavior.floating,
             ),
           );
-          // Navigate back to courses list
           Navigator.of(context).pop();
         } else if (state is CoursesError) {
-          // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -52,28 +49,28 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Course Details'),
+          elevation: 0,
         ),
         body: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
-               
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildHeader(context),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
                     _buildStats(context),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
                     _buildBadges(context),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
                     _buildDescription(context),
                     if (widget.course.sections.isNotEmpty) ...[
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       _buildSections(context),
                     ],
-                    const SizedBox(height: 80), // Space for bottom button
+                    const SizedBox(height: 90),
                   ],
                 ),
               ),
@@ -92,32 +89,37 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       children: [
         Text(
           widget.course.name,
-          style: theme.textTheme.headlineMedium?.copyWith(
+          style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
+            fontSize: 24,
           ),
         ),
         if (widget.isSelected) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary,
-              borderRadius: BorderRadius.circular(20),
+              color: theme.colorScheme.primary.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: theme.colorScheme.primary.withValues(alpha: 0.3),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.check_circle,
-                  size: 16,
-                  color: theme.colorScheme.onPrimary,
+                  size: 14,
+                  color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: 5),
                 Text(
                   'Currently Selected',
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -129,34 +131,37 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   }
 
   Widget _buildStats(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildStatItem(
-              context,
-              icon: Icons.video_library,
-              label: 'Videos',
-              value: '${widget.course.metadata.totalVideos}',
-            ),
-            _buildVerticalDivider(context),
-            _buildStatItem(
-              context,
-              icon: Icons.view_module,
-              label: 'Sections',
-              value: '${widget.course.metadata.totalSections}',
-            ),
-            _buildVerticalDivider(context),
-            _buildStatItem(
-              context,
-              icon: Icons.access_time,
-              label: 'Duration',
-              value: widget.course.metadata.formattedDuration,
-            ),
-          ],
-        ),
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildStatItem(
+            context,
+            icon: Icons.video_library_outlined,
+            label: 'Videos',
+            value: '${widget.course.metadata.totalVideos}',
+          ),
+          _buildVerticalDivider(context),
+          _buildStatItem(
+            context,
+            icon: Icons.view_module_outlined,
+            label: 'Sections',
+            value: '${widget.course.metadata.totalSections}',
+          ),
+          _buildVerticalDivider(context),
+          _buildStatItem(
+            context,
+            icon: Icons.access_time_outlined,
+            label: 'Duration',
+            value: widget.course.metadata.formattedDuration,
+          ),
+        ],
       ),
     );
   }
@@ -170,19 +175,25 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     final theme = Theme.of(context);
     return Column(
       children: [
-        Icon(icon, color: theme.colorScheme.primary, size: 28),
+        Icon(
+          icon,
+          color: theme.colorScheme.primary,
+          size: 24,
+        ),
         const SizedBox(height: 8),
         Text(
           value,
-          style: theme.textTheme.titleLarge?.copyWith(
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha:0.7),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            fontSize: 12,
           ),
         ),
       ],
@@ -191,9 +202,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _buildVerticalDivider(BuildContext context) {
     return Container(
-      height: 60,
+      height: 50,
       width: 1,
-      color: Theme.of(context).colorScheme.outlineVariant,
+      color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5),
     );
   }
 
@@ -204,29 +215,29 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       children: [
         _buildBadge(
           context,
-          label: widget.course.isFree ? 'FREE' : 'PREMIUM',
+          label: widget.course.isFree ? 'Free' : 'Premium',
           color: widget.course.isFree ? Colors.green : Colors.orange,
-          icon: widget.course.isFree ? Icons.lock_open : Icons.star,
+          icon: widget.course.isFree ? Icons.lock_open : Icons.workspace_premium,
         ),
         if (widget.course.isDefault)
           _buildBadge(
             context,
-            label: 'DEFAULT COURSE',
+            label: 'Default',
             color: Colors.blue,
             icon: Icons.bookmark,
           ),
         _buildBadge(
           context,
-          label: '${widget.course.metadata.freeVideos} Free Videos',
+          label: '${widget.course.metadata.freeVideos} Free',
           color: Colors.teal,
           icon: Icons.play_circle_outline,
         ),
         if (widget.course.metadata.premiumVideos > 0)
           _buildBadge(
             context,
-            label: '${widget.course.metadata.premiumVideos} Premium Videos',
+            label: '${widget.course.metadata.premiumVideos} Premium',
             color: Colors.deepOrange,
-            icon: Icons.workspace_premium,
+            icon: Icons.star_outline,
           ),
       ],
     );
@@ -239,22 +250,26 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     required IconData icon,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withValues(alpha:0.1),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha:0.5)),
+        border: Border.all(
+          color: color.withValues(alpha: 0.3),
+          width: 1,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: color),
-          const SizedBox(width: 6),
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: 5),
           Text(
             label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: color,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
                 ),
           ),
         ],
@@ -279,33 +294,37 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       children: [
         Text(
           'About This Course',
-          style: theme.textTheme.titleLarge?.copyWith(
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         Text(
           displayText,
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-            height: 1.5,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.75),
+            height: 1.6,
+            fontSize: 14,
           ),
         ),
         if (shouldTruncate) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           InkWell(
             onTap: () {
               setState(() {
                 _isDescriptionExpanded = !_isDescriptionExpanded;
               });
             },
+            borderRadius: BorderRadius.circular(4),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
               child: Text(
                 _isDescriptionExpanded ? 'View less' : 'View more',
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
+                  fontSize: 13,
                 ),
               ),
             ),
@@ -322,26 +341,35 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       children: [
         Text(
           'Course Content',
-          style: theme.textTheme.titleLarge?.copyWith(
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
         ),
         const SizedBox(height: 12),
-        ...widget.course.sections.map<Widget>((section) => _buildSectionCard(context, section)),
+        ...widget.course.sections.map<Widget>(
+          (section) => _buildSectionCard(context, section),
+        ),
       ],
     );
   }
 
   Widget _buildSectionCard(BuildContext context, section) {
     final theme = Theme.of(context);
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: ExpansionTile(
         shape: const Border(),
         collapsedShape: const Border(),
+        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        childrenPadding: const EdgeInsets.only(bottom: 12),
         leading: Container(
-          width: 40,
-          height: 40,
+          width: 36,
+          height: 36,
           decoration: BoxDecoration(
             color: theme.colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(8),
@@ -349,36 +377,46 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
           child: Center(
             child: Text(
               '${section.sectionNumber}',
-              style: theme.textTheme.titleMedium?.copyWith(
+              style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onPrimaryContainer,
+                fontSize: 14,
               ),
             ),
           ),
         ),
         title: Text(
           section.title,
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.w600,
+            fontSize: 15,
           ),
         ),
-        subtitle: Text(
-          '${section.videos.length} videos • ${_formatDuration(section.totalDuration.inSeconds)}',
-          style: theme.textTheme.bodySmall,
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            '${section.videos.length} videos • ${_formatDuration(section.totalDuration.inSeconds)}',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              fontSize: 12,
+            ),
+          ),
         ),
         children: [
           if (section.description.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
               child: Text(
                 section.description,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha:0.7),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  height: 1.5,
+                  fontSize: 13,
                 ),
               ),
             ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: section.videos
                   .map<Widget>((video) => _buildVideoItem(context, video))
@@ -393,37 +431,43 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   Widget _buildVideoItem(BuildContext context, video) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
           Icon(
             Icons.play_circle_outline,
-            size: 20,
-            color: theme.colorScheme.primary,
+            size: 18,
+            color: theme.colorScheme.primary.withValues(alpha: 0.7),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               video.title,
-              style: theme.textTheme.bodyMedium,
-              maxLines: 1,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: 13,
+                height: 1.3,
+              ),
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ),
           if (video.isPremium)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
               margin: const EdgeInsets.only(left: 8),
               decoration: BoxDecoration(
-                color: theme.colorScheme.secondary,
+                color: theme.colorScheme.secondary.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  color: theme.colorScheme.secondary.withValues(alpha: 0.3),
+                ),
               ),
               child: Text(
                 'PRO',
                 style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSecondary,
+                  color: theme.colorScheme.secondary,
                   fontWeight: FontWeight.bold,
-                  fontSize: 10,
+                  fontSize: 9,
                 ),
               ),
             ),
@@ -431,7 +475,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
           Text(
             _formatDuration(video.duration.inSeconds),
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha:0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              fontSize: 11,
             ),
           ),
         ],
@@ -442,14 +487,14 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   Widget _buildBottomButton(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha:0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, -4),
           ),
         ],
       ),
@@ -460,15 +505,30 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
             return SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 48,
               child: widget.isSelected
                   ? OutlinedButton.icon(
                       onPressed: null,
-                      icon: const Icon(Icons.check_circle),
-                      label: const Text('Selected'),
+                      icon: Icon(
+                        Icons.check_circle,
+                        size: 18,
+                      ),
+                      label: Text(
+                        'Selected',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: theme.colorScheme.primary),
+                        side: BorderSide(
+                          color: theme.colorScheme.primary.withValues(alpha: 0.5),
+                          width: 1.5,
+                        ),
                         foregroundColor: theme.colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     )
                   : FilledButton(
@@ -479,16 +539,28 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                   .read<CoursesBloc>()
                                   .add(SelectCourseEvent(widget.course.id));
                             },
+                      style: FilledButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
                       child: isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
+                          ? SizedBox(
+                              height: 18,
+                              width: 18,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.white,
+                                color: theme.colorScheme.onPrimary,
                               ),
                             )
-                          : const Text('Select This Course'),
+                          : Text(
+                              'Select This Course',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                     ),
             );
           },
