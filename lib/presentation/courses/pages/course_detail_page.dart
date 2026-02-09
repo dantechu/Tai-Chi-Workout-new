@@ -5,7 +5,7 @@ import '../bloc/courses_bloc.dart';
 import '../bloc/courses_event.dart';
 import '../bloc/courses_state.dart';
 
-class CourseDetailPage extends StatelessWidget {
+class CourseDetailPage extends StatefulWidget {
   final Course course;
   final bool isSelected;
 
@@ -14,6 +14,13 @@ class CourseDetailPage extends StatelessWidget {
     required this.course,
     required this.isSelected,
   });
+
+  @override
+  State<CourseDetailPage> createState() => _CourseDetailPageState();
+}
+
+class _CourseDetailPageState extends State<CourseDetailPage> {
+  bool _isDescriptionExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +69,7 @@ class CourseDetailPage extends StatelessWidget {
                     _buildBadges(context),
                     const SizedBox(height: 24),
                     _buildDescription(context),
-                    if (course.sections.isNotEmpty) ...[
+                    if (widget.course.sections.isNotEmpty) ...[
                       const SizedBox(height: 24),
                       _buildSections(context),
                     ],
@@ -84,12 +91,12 @@ class CourseDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          course.name,
+          widget.course.name,
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
-        if (isSelected) ...[
+        if (widget.isSelected) ...[
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -122,7 +129,6 @@ class CourseDetailPage extends StatelessWidget {
   }
 
   Widget _buildStats(BuildContext context) {
-    final theme = Theme.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -133,21 +139,21 @@ class CourseDetailPage extends StatelessWidget {
               context,
               icon: Icons.video_library,
               label: 'Videos',
-              value: '${course.metadata.totalVideos}',
+              value: '${widget.course.metadata.totalVideos}',
             ),
             _buildVerticalDivider(context),
             _buildStatItem(
               context,
               icon: Icons.view_module,
               label: 'Sections',
-              value: '${course.metadata.totalSections}',
+              value: '${widget.course.metadata.totalSections}',
             ),
             _buildVerticalDivider(context),
             _buildStatItem(
               context,
               icon: Icons.access_time,
               label: 'Duration',
-              value: course.metadata.formattedDuration,
+              value: widget.course.metadata.formattedDuration,
             ),
           ],
         ),
@@ -198,11 +204,11 @@ class CourseDetailPage extends StatelessWidget {
       children: [
         _buildBadge(
           context,
-          label: course.isFree ? 'FREE' : 'PREMIUM',
-          color: course.isFree ? Colors.green : Colors.orange,
-          icon: course.isFree ? Icons.lock_open : Icons.star,
+          label: widget.course.isFree ? 'FREE' : 'PREMIUM',
+          color: widget.course.isFree ? Colors.green : Colors.orange,
+          icon: widget.course.isFree ? Icons.lock_open : Icons.star,
         ),
-        if (course.isDefault)
+        if (widget.course.isDefault)
           _buildBadge(
             context,
             label: 'DEFAULT COURSE',
@@ -211,14 +217,14 @@ class CourseDetailPage extends StatelessWidget {
           ),
         _buildBadge(
           context,
-          label: '${course.metadata.freeVideos} Free Videos',
+          label: '${widget.course.metadata.freeVideos} Free Videos',
           color: Colors.teal,
           icon: Icons.play_circle_outline,
         ),
-        if (course.metadata.premiumVideos > 0)
+        if (widget.course.metadata.premiumVideos > 0)
           _buildBadge(
             context,
-            label: '${course.metadata.premiumVideos} Premium Videos',
+            label: '${widget.course.metadata.premiumVideos} Premium Videos',
             color: Colors.deepOrange,
             icon: Icons.workspace_premium,
           ),
@@ -258,9 +264,15 @@ class CourseDetailPage extends StatelessWidget {
 
   Widget _buildDescription(BuildContext context) {
     final theme = Theme.of(context);
-    if (course.description.isEmpty) {
+    if (widget.course.description.isEmpty) {
       return const SizedBox.shrink();
     }
+
+    final description = widget.course.description;
+    final shouldTruncate = description.length > 150;
+    final displayText = shouldTruncate && !_isDescriptionExpanded
+        ? '${description.substring(0, 150)}...'
+        : description;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,12 +285,32 @@ class CourseDetailPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          course.description,
+          displayText,
           style: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha:0.8),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
             height: 1.5,
           ),
         ),
+        if (shouldTruncate) ...[
+          const SizedBox(height: 4),
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isDescriptionExpanded = !_isDescriptionExpanded;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                _isDescriptionExpanded ? 'View less' : 'View more',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -295,7 +327,7 @@ class CourseDetailPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        ...course.sections.map<Widget>((section) => _buildSectionCard(context, section)),
+        ...widget.course.sections.map<Widget>((section) => _buildSectionCard(context, section)),
       ],
     );
   }
@@ -429,7 +461,7 @@ class CourseDetailPage extends StatelessWidget {
             return SizedBox(
               width: double.infinity,
               height: 50,
-              child: isSelected
+              child: widget.isSelected
                   ? OutlinedButton.icon(
                       onPressed: null,
                       icon: const Icon(Icons.check_circle),
@@ -445,7 +477,7 @@ class CourseDetailPage extends StatelessWidget {
                           : () {
                               context
                                   .read<CoursesBloc>()
-                                  .add(SelectCourseEvent(course.id));
+                                  .add(SelectCourseEvent(widget.course.id));
                             },
                       child: isLoading
                           ? const SizedBox(
