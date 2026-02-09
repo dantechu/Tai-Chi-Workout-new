@@ -5,6 +5,7 @@ import '../bloc/courses_bloc.dart';
 import '../bloc/courses_event.dart';
 import '../bloc/courses_state.dart';
 import '../widgets/course_card.dart';
+import 'course_detail_page.dart';
 
 class CoursesPage extends StatelessWidget {
   const CoursesPage({super.key});
@@ -136,11 +137,18 @@ class CoursesPage extends StatelessWidget {
                       course: course,
                       isSelected: isSelected,
                       onTap: () {
-                        if (!isSelected) {
-                          context
-                              .read<CoursesBloc>()
-                              .add(SelectCourseEvent(course.id));
-                        }
+                        final coursesBloc = context.read<CoursesBloc>();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider.value(
+                              value: coursesBloc,
+                              child: CourseDetailPage(
+                                course: course,
+                                isSelected: isSelected,
+                              ),
+                            ),
+                          ),
+                        );
                       },
                     );
                   },
