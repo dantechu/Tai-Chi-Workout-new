@@ -81,15 +81,17 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   _getTimeBasedGreeting(),
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                    fontSize: 14,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   AppLocalizations.of(context)?.readyForTaiChi ?? 'Ready for Tai Chi?',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
+                    fontSize: 24,
                   ),
                 ),
               ],
@@ -211,29 +213,40 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.error_outline,
+                      Icons.error_outline_rounded,
                       size: 64,
-                      color: Theme.of(context).colorScheme.error,
+                      color: Theme.of(context).colorScheme.error.withValues(alpha: 0.7),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     Text(
                       AppLocalizations.of(context)?.videoLoadError ?? 'Error loading videos',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     Text(
                       videoState.message,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                        fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
-                    FilledButton(
+                    const SizedBox(height: 24),
+                    FilledButton.icon(
                       onPressed: () {
                         context.read<VideoBloc>().add(const LoadVideos());
                       },
-                      child: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
+                      icon: const Icon(Icons.refresh_rounded, size: 18),
+                      label: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -249,18 +262,22 @@ class _HomePageState extends State<HomePage> {
                       Icon(
                         Icons.video_library_outlined,
                         size: 64,
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.6),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
                       Text(
                         AppLocalizations.of(context)?.noResults ?? 'No videos found',
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 10),
                       Text(
                         AppLocalizations.of(context)?.tryAdjustingFilter ?? 'Try adjusting your search or category filter',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                          fontSize: 14,
                         ),
                         textAlign: TextAlign.center,
                       ),

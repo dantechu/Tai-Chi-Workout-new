@@ -345,8 +345,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       children: [
         Text(
           track.title,
-          style: theme.textTheme.headlineMedium?.copyWith(
+          style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
+            fontSize: 24,
             letterSpacing: -0.5,
           ),
           textAlign: TextAlign.center,
@@ -360,8 +361,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           ),
           child: Text(
             track.artist,
-            style: theme.textTheme.bodyLarge?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -422,15 +424,17 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             children: [
               Text(
                 _formatDuration(_position),
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
                 _formatDuration(_duration),
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),

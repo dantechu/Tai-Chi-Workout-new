@@ -56,8 +56,9 @@ class SettingsPage extends StatelessWidget {
                 const SizedBox(width: 12),
                 Text(
                   AppLocalizations.of(context)?.appearance ?? 'Appearance',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontSize: 17,
                   ),
                 ),
               ],
@@ -126,8 +127,9 @@ class SettingsPage extends StatelessWidget {
                 const SizedBox(width: 12),
                 Text(
                   AppLocalizations.of(context)?.language ?? 'Language',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontSize: 17,
                   ),
                 ),
               ],
@@ -182,8 +184,9 @@ class SettingsPage extends StatelessWidget {
                 const SizedBox(width: 12),
                 Text(
                   AppLocalizations.of(context)?.about ?? 'About',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontSize: 17,
                   ),
                 ),
               ],
@@ -231,8 +234,9 @@ class SettingsPage extends StatelessWidget {
                 const SizedBox(width: 12),
                 Text(
                   AppLocalizations.of(context)?.support ?? 'Support',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontSize: 17,
                   ),
                 ),
               ],
@@ -469,7 +473,8 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     Text(
                       AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium',
-                      style: theme.textTheme.titleLarge?.copyWith(
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontSize: 17,
                         color: theme.colorScheme.onPrimaryContainer,
                         fontWeight: FontWeight.w600,
                       ),
@@ -477,7 +482,8 @@ class SettingsPage extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       AppLocalizations.of(context)?.premiumSubtitle ?? 'Get unlimited access to all features',
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 13,
                         color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
                       ),
                     ),
@@ -528,14 +534,16 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     Text(
                       'Courses',
-                      style: theme.textTheme.titleLarge?.copyWith(
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
+                        fontSize: 17,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Choose your learning path',
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 13,
                         color: theme.textTheme.bodySmall?.color,
                       ),
                     ),

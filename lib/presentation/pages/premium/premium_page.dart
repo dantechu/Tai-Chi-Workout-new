@@ -77,23 +77,25 @@ class _PremiumPageState extends State<PremiumPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            Icons.star,
-            size: 120,
+            Icons.stars_rounded,
+            size: 80,
             color: Colors.amber,
           ),
           const SizedBox(height: 24),
           Text(
             AppLocalizations.of(context)?.premiumActive ?? 'Premium Active',
-            style: theme.textTheme.headlineMedium?.copyWith(
+            style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
+              fontSize: 24,
               color: Colors.amber,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Text(
-            AppLocalizations.of(context)?.premiumThankYou ?? 
+            AppLocalizations.of(context)?.premiumThankYou ??
                 'Thank you for your support!',
-            style: theme.textTheme.bodyLarge?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: 14,
               color: theme.colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
@@ -109,14 +111,14 @@ class _PremiumPageState extends State<PremiumPage> {
         _buildCompactHeader(theme),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 _buildCompactFeatures(theme),
                 const Spacer(),
                 _buildPricing(theme, state),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 _buildButtons(theme, state),
                 const SizedBox(height: 24),
               ],
@@ -130,28 +132,37 @@ class _PremiumPageState extends State<PremiumPage> {
   Widget _buildCompactHeader(ThemeData theme) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 20),
+      padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
       child: Column(
         children: [
-          Icon(
-            Icons.diamond,
-            size: 60,
-            color: theme.colorScheme.primary,
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.diamond_outlined,
+              size: 48,
+              color: theme.colorScheme.primary,
+            ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
           Text(
             AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium',
-            style: theme.textTheme.headlineSmall?.copyWith(
+            style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
+              fontSize: 24,
               color: theme.colorScheme.primary,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)?.premiumSubtitle ??
                 'Enjoy an ad-free experience with premium support',
             style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: 14,
               color: theme.colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
@@ -164,21 +175,21 @@ class _PremiumPageState extends State<PremiumPage> {
 
   Widget _buildCompactFeatures(ThemeData theme) {
     final features = [
-      {'icon': Icons.download_for_offline, 'title': AppLocalizations.of(context)?.premiumFeature1 ?? 'Offline downloads'},
-      {'icon': Icons.block, 'title': AppLocalizations.of(context)?.premiumFeature2 ?? 'No advertisements'},
-      {'icon': Icons.support_agent, 'title': AppLocalizations.of(context)?.premiumFeature4 ?? 'Priority support'},
+      {'icon': Icons.download_for_offline_outlined, 'title': AppLocalizations.of(context)?.premiumFeature1 ?? 'Offline downloads'},
+      {'icon': Icons.block_outlined, 'title': AppLocalizations.of(context)?.premiumFeature2 ?? 'No advertisements'},
+      {'icon': Icons.support_agent_outlined, 'title': AppLocalizations.of(context)?.premiumFeature4 ?? 'Priority support'},
     ];
 
     return Column(
       children: features.map((feature) {
         return Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
+            color: theme.colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              color: theme.colorScheme.outline.withValues(alpha: 0.15),
             ),
           ),
           child: Row(
@@ -186,7 +197,7 @@ class _PremiumPageState extends State<PremiumPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -195,19 +206,20 @@ class _PremiumPageState extends State<PremiumPage> {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   feature['title'] as String,
                   style: theme.textTheme.bodyMedium?.copyWith(
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
               Icon(
-                Icons.check,
+                Icons.check_circle_outline,
                 color: theme.colorScheme.primary,
-                size: 18,
+                size: 20,
               ),
             ],
           ),
@@ -229,10 +241,10 @@ class _PremiumPageState extends State<PremiumPage> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+        color: theme.colorScheme.primary.withValues(alpha: 0.12),
         border: Border.all(
-          color: theme.colorScheme.primary,
-          width: 2,
+          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+          width: 1.5,
         ),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -240,7 +252,8 @@ class _PremiumPageState extends State<PremiumPage> {
         children: [
           Text(
             'Lifetime Access',
-            style: theme.textTheme.titleLarge?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontSize: 17,
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
             ),
@@ -248,7 +261,8 @@ class _PremiumPageState extends State<PremiumPage> {
           const SizedBox(height: 12),
           Text(
             displayPrice,
-            style: theme.textTheme.displayMedium?.copyWith(
+            style: theme.textTheme.displaySmall?.copyWith(
+              fontSize: 48,
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
             ),
@@ -256,7 +270,8 @@ class _PremiumPageState extends State<PremiumPage> {
           const SizedBox(height: 4),
           Text(
             'One-time payment',
-            style: theme.textTheme.bodyMedium?.copyWith(
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontSize: 13,
               color: theme.colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w500,
             ),
@@ -271,7 +286,7 @@ class _PremiumPageState extends State<PremiumPage> {
       children: [
         SizedBox(
           width: double.infinity,
-          child: FilledButton(
+          child: FilledButton.icon(
             onPressed: state is PremiumLoading
                 ? null
                 : () {
@@ -279,12 +294,15 @@ class _PremiumPageState extends State<PremiumPage> {
                   },
             style: FilledButton.styleFrom(
               backgroundColor: theme.colorScheme.primary,
-              padding: const EdgeInsets.symmetric(vertical: 14),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: state is PremiumLoading
+            icon: state is PremiumLoading
+                ? const SizedBox.shrink()
+                : const Icon(Icons.shopping_cart_outlined, size: 18),
+            label: state is PremiumLoading
                 ? const SizedBox(
                     height: 20,
                     width: 20,
@@ -296,21 +314,27 @@ class _PremiumPageState extends State<PremiumPage> {
                 : Text(
                     AppLocalizations.of(context)?.purchase ?? 'Purchase Premium',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
                   ),
           ),
         ),
-        const SizedBox(height: 4),
-        TextButton(
+        const SizedBox(height: 8),
+        TextButton.icon(
           onPressed: () {
             context.read<PremiumBloc>().add(const RestorePremiumRequested());
           },
-          child: Text(
+          icon: Icon(
+            Icons.restore_outlined,
+            size: 16,
+            color: theme.colorScheme.primary,
+          ),
+          label: Text(
             AppLocalizations.of(context)?.restore ?? 'Restore Purchases',
             style: TextStyle(
+              fontSize: 14,
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.w500,
             ),

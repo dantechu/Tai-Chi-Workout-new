@@ -138,8 +138,9 @@ class BreathingSetupScreen extends StatelessWidget {
         const SizedBox(height: 20),
         Text(
           AppLocalizations.of(context)?.breathingExercise ?? 'Breathing Exercise',
-          style: theme.textTheme.headlineLarge?.copyWith(
+          style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
+            fontSize: 24,
             color: theme.colorScheme.onSurface,
           ),
         ),
@@ -148,8 +149,9 @@ class BreathingSetupScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Text(
             AppLocalizations.of(context)?.findYourCalm ?? 'Find your calm with guided breathing. Select your session duration and let\'s begin.',
-            style: theme.textTheme.bodyLarge?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              fontSize: 14,
               height: 1.5,
             ),
             textAlign: TextAlign.center,
@@ -167,8 +169,9 @@ class BreathingSetupScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8),
           child: Text(
             AppLocalizations.of(context)?.selectDuration ?? 'Select Duration',
-            style: theme.textTheme.titleLarge?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
+              fontSize: 17,
               color: theme.colorScheme.onSurface,
             ),
           ),
@@ -213,9 +216,10 @@ class BreathingSetupScreen extends StatelessWidget {
                   children: [
                     Text(
                       '$minutes',
-                      style: theme.textTheme.headlineLarge?.copyWith(
+                      style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: isSelected 
+                        fontSize: 32,
+                        color: isSelected
                             ? theme.colorScheme.onPrimary
                             : theme.colorScheme.onSurface,
                       ),
@@ -223,8 +227,9 @@ class BreathingSetupScreen extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       minutes == 1 ? 'minute' : (AppLocalizations.of(context)?.minutes ?? 'minutes'),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: isSelected 
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 12,
+                        color: isSelected
                             ? theme.colorScheme.onPrimary.withValues(alpha: 0.9)
                             : theme.colorScheme.onSurface.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w500,
@@ -262,7 +267,8 @@ class BreathingSetupScreen extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               AppLocalizations.of(context)?.startBreathing ?? 'Start Breathing',
-              style: theme.textTheme.titleLarge?.copyWith(
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontSize: 17,
                 color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
               ),
@@ -768,11 +774,11 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
       padding: const EdgeInsets.symmetric(horizontal: 48),
       child: Text(
         _phaseDescriptions[_currentPhase],
-        style: theme.textTheme.bodyLarge?.copyWith(
+        style: theme.textTheme.bodyMedium?.copyWith(
           color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           height: 1.6,
           fontWeight: FontWeight.w300,
-          fontSize: 16,
+          fontSize: 14,
         ),
         textAlign: TextAlign.center,
       ),
