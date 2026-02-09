@@ -14,6 +14,7 @@ import 'core/network/network_info.dart';
 import 'data/datasources/course_local_datasource.dart';
 import 'data/datasources/course_remote_datasource.dart';
 import 'data/datasources/download_local_datasource.dart';
+import 'data/datasources/onboarding_local_datasource.dart';
 import 'data/datasources/premium_local_datasource.dart';
 import 'data/datasources/video_local_datasource.dart';
 import 'data/datasources/video_remote_datasource.dart';
@@ -51,6 +52,7 @@ Future<void> init() async {
   await Hive.openBox('premium_box');
   await Hive.openBox('downloads_box');
   await Hive.openBox('courses_box');
+  await Hive.openBox<bool>('onboarding_prefs');
 
 
   //! Features - Video
@@ -170,6 +172,10 @@ Future<void> init() async {
     () => CourseLocalDataSourceImpl(
       sharedPreferences: sl(),
     ),
+  );
+
+  sl.registerLazySingleton<OnboardingLocalDataSource>(
+    () => OnboardingLocalDataSourceImpl(),
   );
 
   //! Core

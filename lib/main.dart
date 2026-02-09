@@ -16,6 +16,7 @@ import 'presentation/bloc/theme/theme_state.dart';
 import 'presentation/bloc/premium/premium_bloc.dart';
 import 'presentation/bloc/premium/premium_event.dart';
 import 'presentation/pages/splash/splash_page.dart';
+import 'presentation/pages/onboarding/onboarding_page.dart';
 import 'presentation/pages/navigation/main_navigation_page.dart';
 import 'presentation/pages/video_player/video_player_page.dart';
 import 'presentation/pages/premium/premium_page.dart';
@@ -89,6 +90,10 @@ class TaiChiWorkoutApp extends StatelessWidget {
                     case '/':
                       return MaterialPageRoute(
                         builder: (context) => const SplashPage(),
+                      );
+                    case '/onboarding':
+                      return MaterialPageRoute(
+                        builder: (context) => const OnboardingPage(),
                       );
                     case '/main':
                       return MaterialPageRoute(

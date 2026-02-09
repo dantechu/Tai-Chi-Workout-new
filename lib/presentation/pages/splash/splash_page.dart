@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../injection_container.dart' as di;
+import '../../../data/datasources/onboarding_local_datasource.dart';
 import '../../bloc/video/video_bloc.dart';
 import '../../bloc/video/video_event.dart';
 import '../../bloc/premium/premium_bloc.dart';
@@ -64,13 +65,21 @@ class _SplashPageState extends State<SplashPage>
     try {
       // Initialize app data
       await _initializeAppData();
-      
+
+      // Check if first time user
+      final onboardingDataSource = di.sl<OnboardingLocalDataSource>();
+      final isFirstTime = await onboardingDataSource.isFirstTime();
+
       // Wait for minimum splash duration
       await Future.delayed(const Duration(seconds: 3));
-      
-      // Navigate to main app
+
+      // Navigate to appropriate screen
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/main');
+        if (isFirstTime) {
+          Navigator.of(context).pushReplacementNamed('/onboarding');
+        } else {
+          Navigator.of(context).pushReplacementNamed('/main');
+        }
       }
     } catch (e) {
       // Handle initialization error
@@ -150,7 +159,7 @@ class _SplashPageState extends State<SplashPage>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
