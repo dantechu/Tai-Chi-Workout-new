@@ -50,6 +50,7 @@ class CourseDetailPage extends StatelessWidget {
           children: [
             Expanded(
               child: SingleChildScrollView(
+               
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,6 +305,8 @@ class CourseDetailPage extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ExpansionTile(
+        shape: const Border(),
+        collapsedShape: const Border(),
         leading: Container(
           width: 40,
           height: 40,
