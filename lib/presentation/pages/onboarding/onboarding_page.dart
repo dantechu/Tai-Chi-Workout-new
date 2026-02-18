@@ -8,7 +8,7 @@ import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_event.dart';
 import '../../courses/bloc/courses_state.dart';
 import '../../courses/widgets/course_card.dart';
-
+//todo: start by implementing bookmarks system. 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
