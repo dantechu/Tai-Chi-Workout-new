@@ -91,19 +91,38 @@ class BreathingSetupScreen extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                _buildHeader(theme, context),
-                const SizedBox(height: 40),
-                _buildDurationSelector(theme, context),
-                const Spacer(),
-                _buildStartButton(theme, context),
-                const SizedBox(height: 20),
-              ],
-            ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            _buildHeader(theme, context),
+                            const SizedBox(height: 20),
+                            _buildDurationSelector(theme, context),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const SizedBox(height: 16),
+                            _buildStartButton(theme, context),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -114,8 +133,8 @@ class BreathingSetupScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 120,
-          height: 120,
+          width: 80,
+          height: 80,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
@@ -131,28 +150,28 @@ class BreathingSetupScreen extends StatelessWidget {
           ),
           child: Icon(
             Icons.air,
-            size: 48,
+            size: 36,
             color: theme.colorScheme.primary,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 12),
         Text(
           AppLocalizations.of(context)?.breathingExercise ?? 'Breathing Exercise',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 20,
             color: theme.colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Text(
             AppLocalizations.of(context)?.findYourCalm ?? 'Find your calm with guided breathing. Select your session duration and let\'s begin.',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              fontSize: 14,
-              height: 1.5,
+              fontSize: 13,
+              height: 1.4,
             ),
             textAlign: TextAlign.center,
           ),
@@ -176,29 +195,29 @@ class BreathingSetupScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 12),
         GridView.count(
           crossAxisCount: 3,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 1.2,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 1.4,
           children: durations.map((duration) {
             final isSelected = selectedDuration == duration;
             final minutes = duration ~/ 60;
-            
+
             return GestureDetector(
               onTap: () => onDurationChanged(duration),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 decoration: BoxDecoration(
-                  color: isSelected 
+                  color: isSelected
                       ? theme.colorScheme.primary
                       : theme.colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: isSelected 
+                    color: isSelected
                         ? theme.colorScheme.primary
                         : theme.colorScheme.outline.withValues(alpha: 0.2),
                     width: isSelected ? 2 : 1,
@@ -206,8 +225,8 @@ class BreathingSetupScreen extends StatelessWidget {
                   boxShadow: isSelected ? [
                     BoxShadow(
                       color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
                     ),
                   ] : null,
                 ),
@@ -218,17 +237,16 @@ class BreathingSetupScreen extends StatelessWidget {
                       '$minutes',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 32,
+                        fontSize: 24,
                         color: isSelected
                             ? theme.colorScheme.onPrimary
                             : theme.colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 4),
                     Text(
-                      minutes == 1 ? 'minute' : (AppLocalizations.of(context)?.minutes ?? 'minutes'),
+                      minutes == 1 ? 'min' : 'min',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 12,
+                        fontSize: 11,
                         color: isSelected
                             ? theme.colorScheme.onPrimary.withValues(alpha: 0.9)
                             : theme.colorScheme.onSurface.withValues(alpha: 0.7),
@@ -252,9 +270,9 @@ class BreathingSetupScreen extends StatelessWidget {
         onPressed: onStart,
         style: FilledButton.styleFrom(
           backgroundColor: theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
         child: Row(
@@ -262,13 +280,14 @@ class BreathingSetupScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.play_arrow,
+              size: 20,
               color: theme.colorScheme.onPrimary,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             Text(
               AppLocalizations.of(context)?.startBreathing ?? 'Start Breathing',
               style: theme.textTheme.titleMedium?.copyWith(
-                fontSize: 17,
+                fontSize: 15,
                 color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
               ),
@@ -561,21 +580,39 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
               ),
               child: SafeArea(
                 bottom: false,
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 40),
-                      _buildBreathingCircle(theme),
-                      const SizedBox(height: 40),
-                      _buildPhaseIndicator(theme),
-                      const SizedBox(height: 32),
-                      _buildPhaseDescription(theme),
-                      const Spacer(),
-                      _buildControlButtons(theme),
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  _buildBreathingCircle(theme),
+                                  const SizedBox(height: 24),
+                                  _buildPhaseIndicator(theme),
+                                  const SizedBox(height: 16),
+                                  _buildPhaseDescription(theme),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  _buildControlButtons(theme),
+                                  const SizedBox(height: 16),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -611,26 +648,26 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
         final remainingSeconds = ((widget.duration * _progressAnimation.value) % 60).floor();
         
         return SizedBox(
-          width: 300,
-          height: 300,
+          width: 200,
+          height: 200,
           child: Stack(
             alignment: Alignment.center,
             children: [
               // Outer circular progress ring
               CustomPaint(
-                size: const Size(300, 300),
+                size: const Size(200, 200),
                 painter: CircularProgressPainter(
                   progress: 1.0 - _progressAnimation.value,
                   color: _breathingColor,
-                  strokeWidth: 6,
+                  strokeWidth: 4,
                 ),
               ),
               // Main breathing circle
               Transform.scale(
                 scale: scale,
                 child: Container(
-                  width: 220,
-                  height: 220,
+                  width: 150,
+                  height: 150,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _breathingColor.withValues(alpha: 0.15),
@@ -647,17 +684,17 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
                           _getPhaseText(context),
                           style: TextStyle(
                             color: _breathingColor,
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.w300,
                             letterSpacing: 2,
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 8),
                         Text(
                           '${remainingMinutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
                           style: TextStyle(
                             color: _breathingColor.withValues(alpha: 0.7),
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400,
                             letterSpacing: 1,
                           ),
@@ -671,8 +708,8 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
               Transform.scale(
                 scale: scale * 1.1,
                 child: Container(
-                  width: 260,
-                  height: 260,
+                  width: 175,
+                  height: 175,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
