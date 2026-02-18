@@ -654,9 +654,15 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
     final theme = Theme.of(context);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.breathingSession ?? 'Breathing Session'),
+        title: Text(
+          AppLocalizations.of(context)?.breathingSession ?? 'Breathing Session',
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
