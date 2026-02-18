@@ -218,7 +218,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final currentTrack = _tracks[_currentTrackIndex];
-    final size = MediaQuery.of(context).size;
 
     return Container(
       decoration: BoxDecoration(
@@ -239,17 +238,17 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
-                SizedBox(height: size.height * 0.05),
+                const SizedBox(height: 20),
                 _buildAlbumArtSection(theme, currentTrack),
-                const SizedBox(height: 40),
+                const SizedBox(height: 24),
                 _buildTrackInfo(theme, currentTrack),
-                const SizedBox(height: 32),
+                const SizedBox(height: 20),
                 _buildTrackIndicators(theme),
-                const SizedBox(height: 32),
+                const SizedBox(height: 40),
                 _buildProgressSection(theme),
                 const SizedBox(height: 40),
                 _buildControlButtons(theme),
-                const SizedBox(height: 40),
+                const SizedBox(height: 24),
               ],
             ),
           ),
@@ -267,12 +266,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           animation: _waveController,
           builder: (context, child) {
             return Container(
-              width: 280,
-              height: 280,
+              width: 220,
+              height: 220,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: track.color.withValues(alpha:0.2 + (_waveController.value * 0.1)),
+                  color: track.color.withValues(alpha: 0.2 + (_waveController.value * 0.1)),
                   width: 2,
                 ),
               ),
@@ -283,12 +282,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           animation: _waveController,
           builder: (context, child) {
             return Container(
-              width: 240,
-              height: 240,
+              width: 190,
+              height: 190,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: track.color.withValues(alpha:0.3 + (_waveController.value * 0.15)),
+                  color: track.color.withValues(alpha: 0.3 + (_waveController.value * 0.15)),
                   width: 2,
                 ),
               ),
@@ -305,30 +304,30 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               child: Transform.rotate(
                 angle: _rotationController.value * 2 * math.pi,
                 child: Container(
-                  width: 200,
-                  height: 200,
+                  width: 160,
+                  height: 160,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        track.color.withValues(alpha:0.9),
-                        track.color.withValues(alpha:0.6),
-                        track.color.withValues(alpha:0.3),
+                        track.color.withValues(alpha: 0.9),
+                        track.color.withValues(alpha: 0.6),
+                        track.color.withValues(alpha: 0.3),
                       ],
                       stops: const [0.3, 0.7, 1.0],
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: track.color.withValues(alpha:0.4),
-                        blurRadius: 30,
-                        spreadRadius: 10,
+                        color: track.color.withValues(alpha: 0.4),
+                        blurRadius: 24,
+                        spreadRadius: 8,
                       ),
                     ],
                   ),
                   child: Center(
                     child: Text(
                       track.albumArt,
-                      style: const TextStyle(fontSize: 72),
+                      style: const TextStyle(fontSize: 56),
                     ),
                   ),
                 ),
