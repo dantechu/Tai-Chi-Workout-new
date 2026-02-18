@@ -7,7 +7,7 @@
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
-        android:label="Tai Chi Workout"
+        android:label="Tai Chi Vitality Flow"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
