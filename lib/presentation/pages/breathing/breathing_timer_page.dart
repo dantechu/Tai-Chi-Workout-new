@@ -18,7 +18,7 @@ class BreathingTimerPage extends StatefulWidget {
 class _BreathingTimerPageState extends State<BreathingTimerPage> {
   bool _showSetup = true;
   int _selectedDuration = 300; // 5 minutes default
-  
+
   final List<int> _durations = [60, 180, 300, 600, 900]; // 1, 3, 5, 10, 15 minutes
 
   @override
@@ -56,7 +56,7 @@ class _BreathingTimerPageState extends State<BreathingTimerPage> {
   }
 }
 
-class BreathingSetupScreen extends StatelessWidget {
+class BreathingSetupScreen extends StatefulWidget {
   final int selectedDuration;
   final List<int> durations;
   final ValueChanged<int> onDurationChanged;
@@ -71,21 +71,60 @@ class BreathingSetupScreen extends StatelessWidget {
   });
 
   @override
+  State<BreathingSetupScreen> createState() => _BreathingSetupScreenState();
+}
+
+class _BreathingSetupScreenState extends State<BreathingSetupScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late AnimationController _waveController;
+
+  static const Color _accentColor = Color(0xFF6B73FF);
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _waveController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    _waveController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.breathingTimer ?? 'Breathing Timer'),
+        title: Text(
+          AppLocalizations.of(context)?.breathingTimer ?? 'Breathing Timer',
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              theme.colorScheme.primaryContainer.withValues(alpha: 0.1),
+              _accentColor.withValues(alpha: 0.15),
+              theme.colorScheme.surface,
               theme.colorScheme.surface,
             ],
           ),
@@ -94,27 +133,31 @@ class BreathingSetupScreen extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: constraints.maxHeight,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           children: [
+                            SizedBox(height: constraints.maxHeight * 0.02),
+                            _buildAnimatedIcon(theme),
+                            const SizedBox(height: 24),
                             _buildHeader(theme, context),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 32),
                             _buildDurationSelector(theme, context),
                           ],
                         ),
                         Column(
                           children: [
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 24),
                             _buildStartButton(theme, context),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ],
@@ -129,51 +172,110 @@ class BreathingSetupScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildAnimatedIcon(ThemeData theme) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Outer wave
+        AnimatedBuilder(
+          animation: _waveController,
+          builder: (context, child) {
+            return Container(
+              width: 140,
+              height: 140,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: _accentColor.withValues(alpha: 0.2 + (_waveController.value * 0.1)),
+                  width: 2,
+                ),
+              ),
+            );
+          },
+        ),
+        // Inner wave
+        AnimatedBuilder(
+          animation: _waveController,
+          builder: (context, child) {
+            return Container(
+              width: 115,
+              height: 115,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: _accentColor.withValues(alpha: 0.3 + (_waveController.value * 0.15)),
+                  width: 2,
+                ),
+              ),
+            );
+          },
+        ),
+        // Main icon with pulse
+        AnimatedBuilder(
+          animation: _pulseController,
+          builder: (context, child) {
+            final scale = 1.0 + (_pulseController.value * 0.08);
+            return Transform.scale(
+              scale: scale,
+              child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      _accentColor.withValues(alpha: 0.9),
+                      _accentColor.withValues(alpha: 0.6),
+                      _accentColor.withValues(alpha: 0.3),
+                    ],
+                    stops: const [0.3, 0.7, 1.0],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _accentColor.withValues(alpha: 0.4),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.air_rounded,
+                  size: 40,
+                  color: Colors.white,
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildHeader(ThemeData theme, BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: [
-                theme.colorScheme.primary.withValues(alpha: 0.2),
-                theme.colorScheme.primary.withValues(alpha: 0.05),
-              ],
-            ),
-            border: Border.all(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              width: 2,
-            ),
-          ),
-          child: Icon(
-            Icons.air,
-            size: 36,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-        const SizedBox(height: 12),
         Text(
           AppLocalizations.of(context)?.breathingExercise ?? 'Breathing Exercise',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: theme.colorScheme.onSurface,
+            fontSize: 22,
+            letterSpacing: -0.5,
           ),
         ),
         const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          decoration: BoxDecoration(
+            color: _accentColor.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Text(
-            AppLocalizations.of(context)?.findYourCalm ?? 'Find your calm with guided breathing. Select your session duration and let\'s begin.',
+            AppLocalizations.of(context)?.findYourCalm ?? 'Find your calm',
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              color: theme.colorScheme.onSurfaceVariant,
               fontSize: 13,
-              height: 1.4,
+              fontWeight: FontWeight.w500,
             ),
-            textAlign: TextAlign.center,
           ),
         ),
       ],
@@ -185,50 +287,65 @@ class BreathingSetupScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding: const EdgeInsets.only(left: 4),
           child: Text(
             AppLocalizations.of(context)?.selectDuration ?? 'Select Duration',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
-              fontSize: 17,
+              fontSize: 16,
               color: theme.colorScheme.onSurface,
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         GridView.count(
           crossAxisCount: 3,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 1.4,
-          children: durations.map((duration) {
-            final isSelected = selectedDuration == duration;
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 1.3,
+          children: widget.durations.map((duration) {
+            final isSelected = widget.selectedDuration == duration;
             final minutes = duration ~/ 60;
 
             return GestureDetector(
-              onTap: () => onDurationChanged(duration),
+              onTap: () => widget.onDurationChanged(duration),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.surfaceContainer,
+                  gradient: isSelected
+                      ? LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            _accentColor,
+                            _accentColor.withValues(alpha: 0.8),
+                          ],
+                        )
+                      : null,
+                  color: isSelected ? null : theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: isSelected
-                        ? theme.colorScheme.primary
+                        ? Colors.transparent
                         : theme.colorScheme.outline.withValues(alpha: 0.2),
-                    width: isSelected ? 2 : 1,
+                    width: 1,
                   ),
-                  boxShadow: isSelected ? [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ] : null,
+                  boxShadow: [
+                    if (isSelected)
+                      BoxShadow(
+                        color: _accentColor.withValues(alpha: 0.4),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      )
+                    else
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                  ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -237,19 +354,19 @@ class BreathingSetupScreen extends StatelessWidget {
                       '$minutes',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                        fontSize: 26,
                         color: isSelected
-                            ? theme.colorScheme.onPrimary
+                            ? Colors.white
                             : theme.colorScheme.onSurface,
                       ),
                     ),
                     Text(
-                      minutes == 1 ? 'min' : 'min',
+                      'min',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 11,
+                        fontSize: 12,
                         color: isSelected
-                            ? theme.colorScheme.onPrimary.withValues(alpha: 0.9)
-                            : theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                            ? Colors.white.withValues(alpha: 0.9)
+                            : theme.colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -264,35 +381,53 @@ class BreathingSetupScreen extends StatelessWidget {
   }
 
   Widget _buildStartButton(ThemeData theme, BuildContext context) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      child: FilledButton(
-        onPressed: onStart,
-        style: FilledButton.styleFrom(
-          backgroundColor: theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.play_arrow,
-              size: 20,
-              color: theme.colorScheme.onPrimary,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              AppLocalizations.of(context)?.startBreathing ?? 'Start Breathing',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontSize: 15,
-                color: theme.colorScheme.onPrimary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            _accentColor,
+            _accentColor.withValues(alpha: 0.8),
           ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: _accentColor.withValues(alpha: 0.4),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: widget.onStart,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.play_arrow_rounded,
+                  size: 24,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  AppLocalizations.of(context)?.startBreathing ?? 'Start Breathing',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -321,16 +456,15 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
   late AnimationController _progressController;
   late Animation<double> _breathAnimation;
   late Animation<double> _progressAnimation;
-  late Animation<double> _phaseProgressAnimation;
-  
+
   bool _isRunning = false;
   bool _isPaused = false;
   final int _inhaleTime = 4;
   final int _holdTime = 4;
   final int _exhaleTime = 4;
   int _currentPhase = 0; // 0: inhale, 1: hold, 2: exhale
-  
-  final Color _breathingColor = const Color(0xFF6B73FF); // Single calming blue
+
+  final Color _breathingColor = const Color(0xFF6B73FF);
 
   List<String> get _phaseDescriptions => [
     AppLocalizations.of(context)?.breatheInSlowly ?? 'Breathe in slowly and deeply',
@@ -349,7 +483,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
       duration: Duration(seconds: _inhaleTime + _holdTime + _exhaleTime),
       vsync: this,
     );
-    
+
     _progressController = AnimationController(
       duration: Duration(seconds: widget.duration),
       vsync: this,
@@ -371,16 +505,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
       curve: Curves.linear,
     ));
 
-    _phaseProgressAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _breathController,
-      curve: Curves.linear,
-    ));
-
     _breathController.addListener(_onBreathAnimationUpdate);
-    _progressController.addListener(_onProgressUpdate);
     _progressController.addStatusListener(_onProgressComplete);
   }
 
@@ -388,7 +513,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
     final totalTime = _inhaleTime + _holdTime + _exhaleTime;
     final inhaleEnd = _inhaleTime / totalTime;
     final holdEnd = (_inhaleTime + _holdTime) / totalTime;
-    
+
     return CustomBreathCurve(
       inhaleEnd: inhaleEnd,
       holdEnd: holdEnd,
@@ -399,7 +524,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
     final progress = _breathController.value;
     final totalCycleTime = _inhaleTime + _holdTime + _exhaleTime;
     final currentTime = progress * totalCycleTime;
-    
+
     int newPhase;
     if (currentTime <= _inhaleTime) {
       newPhase = 0;
@@ -408,18 +533,13 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
     } else {
       newPhase = 2;
     }
-    
+
     if (_currentPhase != newPhase) {
       setState(() {
         _currentPhase = newPhase;
       });
       _triggerHapticFeedback();
     }
-  }
-
-  void _onProgressUpdate() {
-    // Progress updates are handled by the visual progress circle
-    // No need to track remaining time as we're not displaying it during sessions
   }
 
   void _onProgressComplete(AnimationStatus status) {
@@ -444,13 +564,13 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
 
   void _triggerHapticFeedback() {
     switch (_currentPhase) {
-      case 0: // Inhale
+      case 0:
         HapticFeedback.lightImpact();
         break;
-      case 1: // Hold
+      case 1:
         HapticFeedback.mediumImpact();
         break;
-      case 2: // Exhale
+      case 2:
         HapticFeedback.lightImpact();
         break;
     }
@@ -461,12 +581,8 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
       _isRunning = true;
       _isPaused = false;
     });
-    
-    if (_progressController.value == 0) {
-      _progressController.forward();
-    } else {
-      _progressController.forward();
-    }
+
+    _progressController.forward();
     _startBreathCycle();
   }
 
@@ -511,7 +627,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)?.wellDone ?? '🎉 Well Done!'),
+        title: Text(AppLocalizations.of(context)?.wellDone ?? 'Well Done!'),
         content: Text(AppLocalizations.of(context)?.breathingSessionComplete ?? 'You have completed your breathing session. Take a moment to notice how you feel.'),
         actions: [
           TextButton(
@@ -617,8 +733,6 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
               ),
             ),
           ),
-
-          // Banner Ad at bottom (only show if not premium)
           BlocBuilder<PremiumBloc, PremiumState>(
             builder: (context, state) {
               final isPremium = state is PremiumActive;
@@ -627,9 +741,9 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
               }
               return Container(
                 color: theme.colorScheme.surface,
-                child: SafeArea(
+                child: const SafeArea(
                   top: false,
-                  child: const BannerAdWidget(),
+                  child: BannerAdWidget(),
                 ),
               );
             },
@@ -646,7 +760,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
         final scale = _breathAnimation.value;
         final remainingMinutes = (widget.duration * _progressAnimation.value / 60).floor();
         final remainingSeconds = ((widget.duration * _progressAnimation.value) % 60).floor();
-        
+
         return SizedBox(
           width: 200,
           height: 200,
@@ -726,71 +840,22 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
     );
   }
 
-
   Widget _buildPhaseIndicator(ThemeData theme) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          decoration: BoxDecoration(
-            color: _breathingColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            _getTimingText(),
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: _breathingColor,
-              fontWeight: FontWeight.w400,
-              letterSpacing: 1,
-            ),
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      decoration: BoxDecoration(
+        color: _breathingColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        _getTimingText(),
+        style: theme.textTheme.titleLarge?.copyWith(
+          color: _breathingColor,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 1,
         ),
-        const SizedBox(height: 12),
-        // Phase progress bar
-        AnimatedBuilder(
-          animation: _phaseProgressAnimation,
-          builder: (context, child) {
-            return Container(
-              width: 80,
-              height: 4,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                color: _breathingColor.withValues(alpha: 0.2),
-              ),
-              child: FractionallySizedBox(
-                alignment: Alignment.centerLeft,
-                widthFactor: _getPhaseProgress(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    color: _breathingColor,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ],
+      ),
     );
-  }
-
-  double _getPhaseProgress() {
-    final progress = _breathController.value;
-    final totalCycleTime = _inhaleTime + _holdTime + _exhaleTime;
-    final currentTime = progress * totalCycleTime;
-    
-    if (_currentPhase == 0) {
-      // Inhale phase
-      return (currentTime / _inhaleTime).clamp(0.0, 1.0);
-    } else if (_currentPhase == 1) {
-      // Hold phase
-      final holdProgress = (currentTime - _inhaleTime) / _holdTime;
-      return holdProgress.clamp(0.0, 1.0);
-    } else {
-      // Exhale phase
-      final exhaleProgress = (currentTime - _inhaleTime - _holdTime) / _exhaleTime;
-      return exhaleProgress.clamp(0.0, 1.0);
-    }
   }
 
   String _getTimingText() {
@@ -885,25 +950,23 @@ class ProgressCirclePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - 6;
-    
-    // Background circle
+
     final backgroundPaint = Paint()
       ..color = color.withValues(alpha: 0.15)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6;
-    
+
     canvas.drawCircle(center, radius, backgroundPaint);
-    
-    // Progress arc
+
     final progressPaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6
       ..strokeCap = StrokeCap.round;
-    
+
     final startAngle = -math.pi / 2;
     final sweepAngle = 2 * math.pi * progress;
-    
+
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       startAngle,
@@ -932,25 +995,23 @@ class CircularProgressPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - strokeWidth / 2;
-    
-    // Background circle
+
     final backgroundPaint = Paint()
       ..color = color.withValues(alpha: 0.15)
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
-    
+
     canvas.drawCircle(center, radius, backgroundPaint);
-    
-    // Progress arc
+
     final progressPaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
-    
+
     final startAngle = -math.pi / 2;
     final sweepAngle = 2 * math.pi * progress;
-    
+
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       startAngle,
@@ -976,16 +1037,13 @@ class CustomBreathCurve extends Curve {
   @override
   double transformInternal(double t) {
     if (t <= inhaleEnd) {
-      // Inhale phase: smooth acceleration
       final inhaleProgress = t / inhaleEnd;
-      return 0.9 + (0.3 * Curves.easeInOut.transform(inhaleProgress));
+      return 0.9 + (0.25 * Curves.easeInOut.transform(inhaleProgress));
     } else if (t <= holdEnd) {
-      // Hold phase: maintain size
-      return 1.2;
+      return 1.15;
     } else {
-      // Exhale phase: smooth deceleration
       final exhaleProgress = (t - holdEnd) / (1.0 - holdEnd);
-      return 1.2 - (0.3 * Curves.easeInOut.transform(exhaleProgress));
+      return 1.15 - (0.25 * Curves.easeInOut.transform(exhaleProgress));
     }
   }
 }
