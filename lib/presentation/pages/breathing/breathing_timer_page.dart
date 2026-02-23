@@ -106,31 +106,7 @@ class _BreathingSetupScreenState extends State<BreathingSetupScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)?.breathingTimer ?? 'Breathing Timer',
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              _accentColor.withValues(alpha: 0.15),
-              theme.colorScheme.surface,
-              theme.colorScheme.surface,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: LayoutBuilder(
+    return LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -166,10 +142,7 @@ class _BreathingSetupScreenState extends State<BreathingSetupScreen>
                 ),
               );
             },
-          ),
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildAnimatedIcon(ThemeData theme) {
@@ -653,56 +626,39 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)?.breathingSession ?? 'Breathing Session',
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () {
-            if (_isRunning) {
-              _stopBreathing();
-            }
-            widget.onBack();
-          },
-        ),
-        actions: [
-          if (_isRunning || _isPaused)
-            TextButton(
-              onPressed: () {
-                _stopBreathing();
-                widget.onBack();
-              },
-              child: Text(
-                AppLocalizations.of(context)?.endSession ?? 'End',
-                style: TextStyle(color: theme.colorScheme.primary),
+    return Column(
+      children: [
+        // Header with back and end buttons
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  if (_isRunning) {
+                    _stopBreathing();
+                  }
+                  widget.onBack();
+                },
               ),
-            ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    _breathingColor.withValues(alpha: 0.05),
-                    theme.colorScheme.surface,
-                  ],
+              if (_isRunning || _isPaused)
+                TextButton(
+                  onPressed: () {
+                    _stopBreathing();
+                    widget.onBack();
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)?.endSession ?? 'End',
+                    style: TextStyle(color: theme.colorScheme.primary),
+                  ),
                 ),
-              ),
-              child: SafeArea(
-                bottom: false,
-                child: LayoutBuilder(
+            ],
+          ),
+        ),
+        Expanded(
+          child: LayoutBuilder(
                   builder: (context, constraints) {
                     return SingleChildScrollView(
                       child: ConstrainedBox(
@@ -736,10 +692,8 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
                     );
                   },
                 ),
-              ),
-            ),
           ),
-          BlocBuilder<PremiumBloc, PremiumState>(
+        BlocBuilder<PremiumBloc, PremiumState>(
             builder: (context, state) {
               final isPremium = state is PremiumActive;
               if (isPremium) {
@@ -755,8 +709,7 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
             },
           ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildBreathingCircle(ThemeData theme) {

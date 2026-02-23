@@ -197,39 +197,24 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     final theme = Theme.of(context);
     final currentTrack = _tracks[_currentTrackIndex];
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            currentTrack.color.withValues(alpha: 0.15),
-            theme.colorScheme.surface,
-            theme.colorScheme.surface,
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            _buildAlbumArtSection(theme, currentTrack),
+            const SizedBox(height: 24),
+            _buildTrackInfo(theme, currentTrack),
+            const SizedBox(height: 20),
+            _buildTrackIndicators(theme),
+            const SizedBox(height: 40),
+            _buildProgressSection(theme),
+            const SizedBox(height: 40),
+            _buildControlButtons(theme),
+            const SizedBox(height: 24),
           ],
-        ),
-      ),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                _buildAlbumArtSection(theme, currentTrack),
-                const SizedBox(height: 24),
-                _buildTrackInfo(theme, currentTrack),
-                const SizedBox(height: 20),
-                _buildTrackIndicators(theme),
-                const SizedBox(height: 40),
-                _buildProgressSection(theme),
-                const SizedBox(height: 40),
-                _buildControlButtons(theme),
-                const SizedBox(height: 24),
-              ],
-            ),
-          ),
         ),
       ),
     );
