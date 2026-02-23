@@ -111,6 +111,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get voiceGuidance => '음성 안내';
 
   @override
+  String get breathing => 'Breathing';
+
+  @override
   String get breathingTimer => '호흡 타이머';
 
   @override

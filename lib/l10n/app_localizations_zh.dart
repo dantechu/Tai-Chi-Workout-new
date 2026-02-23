@@ -111,6 +111,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get voiceGuidance => '语音指导';
 
   @override
+  String get breathing => 'Breathing';
+
+  @override
   String get breathingTimer => '呼吸计时器';
 
   @override

@@ -26,8 +26,6 @@ class SettingsPage extends StatelessWidget {
         children: [
           _buildPremiumTile(context),
           const SizedBox(height: 8),
-          _buildCoursesSection(context),
-          const SizedBox(height: 8),
           _buildAppearanceSection(context),
           const SizedBox(height: 8),
           _buildLanguageSection(context),
@@ -502,63 +500,4 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCoursesSection(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Card(
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed('/courses');
-        },
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.school,
-                  color: theme.colorScheme.primary,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Courses',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Choose your learning path',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 13,
-                        color: theme.textTheme.bodySmall?.color,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                size: 20,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

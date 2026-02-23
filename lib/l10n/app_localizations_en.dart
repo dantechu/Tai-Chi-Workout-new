@@ -111,6 +111,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get voiceGuidance => 'Voice Guidance';
 
   @override
+  String get breathing => 'Breathing';
+
+  @override
   String get breathingTimer => 'Breathing Timer';
 
   @override

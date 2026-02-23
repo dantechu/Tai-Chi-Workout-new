@@ -39,5 +39,12 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+
+    # Fix for objective_c.framework dSYM issue when uploading to TestFlight
+    target.build_configurations.each do |config|
+      if config.name == 'Release'
+        config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
+      end
+    end
   end
 end

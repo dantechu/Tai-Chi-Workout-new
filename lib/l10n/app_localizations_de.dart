@@ -112,6 +112,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get voiceGuidance => 'Sprachführung';
 
   @override
+  String get breathing => 'Breathing';
+
+  @override
   String get breathingTimer => 'Atemtimer';
 
   @override

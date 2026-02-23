@@ -111,6 +111,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get voiceGuidance => '音声ガイダンス';
 
   @override
+  String get breathing => 'Breathing';
+
+  @override
   String get breathingTimer => '呼吸タイマー';
 
   @override

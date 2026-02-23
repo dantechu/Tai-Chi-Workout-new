@@ -1,111 +1,121 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../injection_container.dart' as di;
 import '../bloc/courses_bloc.dart';
 import '../bloc/courses_event.dart';
 import '../bloc/courses_state.dart';
 import '../widgets/course_card.dart';
 import 'course_detail_page.dart';
 
-class CoursesPage extends StatelessWidget {
+class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
 
   @override
+  State<CoursesPage> createState() => _CoursesPageState();
+}
+
+class _CoursesPageState extends State<CoursesPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Load courses when page is first created
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CoursesBloc>().add(const LoadCourses());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => di.sl<CoursesBloc>()..add(const LoadCourses()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Courses'),
-          elevation: 0,
-          actions: [
-            BlocBuilder<CoursesBloc, CoursesState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const Icon(Icons.refresh_rounded),
-                  tooltip: 'Refresh courses',
-                  onPressed: () {
-                    context.read<CoursesBloc>().add(const RefreshCourses());
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-        body: BlocConsumer<CoursesBloc, CoursesState>(
-          listener: (context, state) {
-            if (state is CourseSelected) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('${state.course.name} selected'),
-                  duration: const Duration(seconds: 2),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            } else if (state is CoursesError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  duration: const Duration(seconds: 3),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is CoursesLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (state is CoursesError) {
-              return _buildErrorState(context, state);
-            }
-
-            if (state is CoursesLoaded) {
-              if (state.courses.isEmpty) {
-                return _buildEmptyState(context);
-              }
-
-              return RefreshIndicator(
-                onRefresh: () async {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Courses'),
+        elevation: 0,
+        actions: [
+          BlocBuilder<CoursesBloc, CoursesState>(
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.refresh_rounded),
+                tooltip: 'Refresh courses',
+                onPressed: () {
                   context.read<CoursesBloc>().add(const RefreshCourses());
                 },
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(20),
-                  itemCount: state.courses.length,
-                  itemBuilder: (context, index) {
-                    final course = state.courses[index];
-                    final isSelected = state.selectedCourse?.id == course.id;
-
-                    return CourseCard(
-                      course: course,
-                      isSelected: isSelected,
-                      onTap: () {
-                        final coursesBloc = context.read<CoursesBloc>();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider.value(
-                              value: coursesBloc,
-                              child: CourseDetailPage(
-                                course: course,
-                                isSelected: isSelected,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
               );
+            },
+          ),
+        ],
+      ),
+      body: BlocConsumer<CoursesBloc, CoursesState>(
+        listener: (context, state) {
+          if (state is CourseSelected) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('${state.course.name} selected'),
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          } else if (state is CoursesError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Theme.of(context).colorScheme.error,
+                duration: const Duration(seconds: 3),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is CoursesLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (state is CoursesError) {
+            return _buildErrorState(context, state);
+          }
+
+          if (state is CoursesLoaded) {
+            if (state.courses.isEmpty) {
+              return _buildEmptyState(context);
             }
 
-            return const SizedBox.shrink();
-          },
-        ),
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<CoursesBloc>().add(const RefreshCourses());
+              },
+              child: ListView.builder(
+                padding: const EdgeInsets.all(20),
+                itemCount: state.courses.length,
+                itemBuilder: (context, index) {
+                  final course = state.courses[index];
+                  final isSelected = state.selectedCourse?.id == course.id;
+
+                  return CourseCard(
+                    course: course,
+                    isSelected: isSelected,
+                    onTap: () {
+                      final coursesBloc = context.read<CoursesBloc>();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider.value(
+                            value: coursesBloc,
+                            child: CourseDetailPage(
+                              course: course,
+                              isSelected: isSelected,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
       ),
     );
   }

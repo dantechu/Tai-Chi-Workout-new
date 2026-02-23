@@ -5,9 +5,10 @@ import '../../../injection_container.dart' as di;
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/video/video_bloc.dart';
 import '../../bloc/premium/premium_bloc.dart';
+import '../../courses/bloc/courses_bloc.dart';
 import '../home/home_page.dart';
 import '../practice/practice_page.dart';
-import '../breathing/breathing_timer_page.dart';
+import '../../courses/pages/courses_page.dart';
 import '../settings/settings_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
@@ -33,9 +34,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         page: const PracticePage(),
       ),
       NavigationItem(
-        icon: Icons.air,
-        label: AppLocalizations.of(context)?.breathingTimer ?? 'Breathing Timer',
-        page: const BreathingTimerPage(),
+        icon: Icons.school,
+        label: 'Courses',
+        page: const CoursesPage(),
       ),
       NavigationItem(
         icon: Icons.settings,
@@ -63,6 +64,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         ),
         BlocProvider<PremiumBloc>(
           create: (context) => di.sl<PremiumBloc>(),
+        ),
+        BlocProvider<CoursesBloc>(
+          create: (context) => di.sl<CoursesBloc>(),
         ),
       ],
       child: Scaffold(

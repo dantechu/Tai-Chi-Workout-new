@@ -111,6 +111,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get voiceGuidance => 'Guía de Voz';
 
   @override
+  String get breathing => 'Breathing';
+
+  @override
   String get breathingTimer => 'Temporizador de Respiración';
 
   @override

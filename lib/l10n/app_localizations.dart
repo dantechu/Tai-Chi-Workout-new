@@ -312,6 +312,12 @@ abstract class AppLocalizations {
   /// **'Voice Guidance'**
   String get voiceGuidance;
 
+  /// No description provided for @breathing.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathing'**
+  String get breathing;
+
   /// No description provided for @breathingTimer.
   ///
   /// In en, this message translates to:
