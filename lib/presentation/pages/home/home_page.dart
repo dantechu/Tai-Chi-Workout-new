@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
         final theme = Theme.of(context);
 
         return Padding(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -164,11 +164,11 @@ class _HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(24, 12, 24, 0),
-      height: 52,
+      margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      height: 50,
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.08),
           width: 1,
@@ -244,10 +244,10 @@ class _HomePageState extends State<HomePage> {
         final categories = [AppLocalizations.of(context)?.all ?? 'All', ...categoryTitles];
 
         return SizedBox(
-          height: 52,
+          height: 50,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
@@ -354,7 +354,7 @@ class _HomePageState extends State<HomePage> {
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                 itemCount: videoState.filteredVideos.length,
                 itemBuilder: (context, index) {
                   final video = videoState.filteredVideos[index];
