@@ -19,18 +19,31 @@ class VideoCard extends StatelessWidget {
     final isLocked = video.isPremium && !isPremiumUser;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 14),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.08),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.shadow.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
-          child: Container(
-            height: 120,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(16),
-            ),
+          borderRadius: BorderRadius.circular(16),
+          child: SizedBox(
+            height: 100,
             child: Row(
               children: [
                 _buildThumbnail(theme, isLocked),
@@ -47,10 +60,22 @@ class VideoCard extends StatelessWidget {
 
   Widget _buildThumbnail(ThemeData theme, bool isLocked) {
     return Container(
-      width: 120,
-      height: 120,
+      width: 100,
+      height: 100,
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isLocked
+              ? [
+                  theme.colorScheme.surfaceContainerHighest,
+                  theme.colorScheme.surfaceContainerHigh,
+                ]
+              : [
+                  theme.colorScheme.primaryContainer.withValues(alpha: 0.7),
+                  theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+                ],
+        ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           bottomLeft: Radius.circular(16),
@@ -60,50 +85,69 @@ class VideoCard extends StatelessWidget {
         children: [
           // Video thumbnail placeholder
           Center(
-            child: Icon(
-              Icons.play_circle_filled,
-              size: 48,
-              color: isLocked 
-                  ? theme.colorScheme.onSurface.withValues(alpha: 0.3)
-                  : theme.colorScheme.onPrimaryContainer,
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: isLocked
+                    ? theme.colorScheme.onSurface.withValues(alpha: 0.08)
+                    : theme.colorScheme.primary.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.play_arrow_rounded,
+                size: 28,
+                color: isLocked
+                    ? theme.colorScheme.onSurface.withValues(alpha: 0.3)
+                    : theme.colorScheme.primary,
+              ),
             ),
           ),
-          
+
           // Duration badge
           if (video.duration.inSeconds > 0)
             Positioned(
               bottom: 8,
               right: 8,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   _formatDuration(video.duration.inSeconds),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
             ),
-          
+
           // Premium lock overlay
           if (isLocked)
             Container(
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.6),
+                color: Colors.black.withValues(alpha: 0.45),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16),
                   bottomLeft: Radius.circular(16),
                 ),
               ),
               child: Center(
-                child: Icon(
-                  Icons.lock,
-                  size: 32,
-                  color: Colors.white.withValues(alpha: 0.9),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.3),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.lock_rounded,
+                    size: 22,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -114,75 +158,82 @@ class VideoCard extends StatelessWidget {
 
   Widget _buildContent(ThemeData theme, bool isLocked) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
+          // Title row
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      video.title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: isLocked
-                            ? theme.colorScheme.onSurface.withValues(alpha: 0.6)
-                            : theme.colorScheme.onSurface,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+              Expanded(
+                child: Text(
+                  video.title,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    height: 1.3,
+                    color: isLocked
+                        ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
+                        : theme.colorScheme.onSurface,
                   ),
-                  if (video.isPremium)
-                    Container(
-                      margin: const EdgeInsets.only(left: 8),
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.secondary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        'PRO',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSecondary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                video.category,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              if (video.isPremium) ...[
+                const SizedBox(width: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        theme.colorScheme.tertiary.withValues(alpha: 0.2),
+                        theme.colorScheme.tertiary.withValues(alpha: 0.1),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    'PRO',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.tertiary,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 10,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
-          
-          // Action button
+          const SizedBox(height: 6),
+          // Category and action row
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (isLocked)
-                Text(
-                  'Premium Required',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.error,
-                    fontWeight: FontWeight.w500,
+              Icon(
+                Icons.folder_outlined,
+                size: 14,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  video.category,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
+                    fontSize: 13,
                   ),
-                )
-              else
-                Icon(
-                  Icons.play_arrow,
-                  color: theme.colorScheme.primary,
-                  size: 24,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
+              ),
+              Icon(
+                isLocked ? Icons.lock_outline_rounded : Icons.arrow_forward_ios_rounded,
+                color: theme.colorScheme.onSurface.withValues(alpha: isLocked ? 0.3 : 0.35),
+                size: isLocked ? 16 : 14,
+              ),
             ],
           ),
         ],

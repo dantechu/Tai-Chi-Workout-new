@@ -60,12 +60,13 @@ class AppColors {
   static const double spacingLarge = 24.0;
   static const double spacingXLarge = 32.0;
 
-  // Border Radius
-  static const double radiusSmall = 4.0;
-  static const double radiusButton = 8.0;
+  // Border Radius - Modern, subtle values
+  static const double radiusSmall = 6.0;
+  static const double radiusButton = 10.0;
   static const double radiusCard = 12.0;
-  static const double radiusChip = 16.0;
-  static const double radiusLarge = 20.0;
+  static const double radiusChip = 20.0;
+  static const double radiusLarge = 16.0;
+  static const double radiusXLarge = 24.0;
 
   // Elevation
   static const double elevationCard = 2.0;

@@ -100,9 +100,12 @@ class _HomePageState extends State<HomePage> {
           courseName = state.course.name;
         }
 
-        return Container(
-          padding: const EdgeInsets.all(20),
+        final theme = Theme.of(context);
+
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Column(
@@ -110,32 +113,44 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       _getTimeBasedGreeting(),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
                         fontSize: 14,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       courseName.isNotEmpty ? courseName : (AppLocalizations.of(context)?.readyForTaiChi ?? 'Ready for Tai Chi?'),
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22,
+                        letterSpacing: -0.3,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 16),
               Container(
-                padding: const EdgeInsets.all(12),
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      theme.colorScheme.primary.withValues(alpha: 0.15),
+                      theme.colorScheme.primary.withValues(alpha: 0.08),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
-                  Icons.self_improvement,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  size: 28,
+                  Icons.self_improvement_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 26,
                 ),
               ),
             ],
@@ -146,19 +161,44 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSearchBar() {
+    final theme = Theme.of(context);
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+      height: 52,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.08),
+          width: 1,
+        ),
+      ),
       child: TextField(
         controller: _searchController,
+        style: theme.textTheme.bodyLarge?.copyWith(
+          fontSize: 15,
+          color: theme.colorScheme.onSurface,
+        ),
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context)?.searchVideos ?? 'Search videos...',
-          prefixIcon: const Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+          hintStyle: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+            fontSize: 15,
           ),
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 16, right: 12),
+            child: Icon(
+              Icons.search_rounded,
+              size: 22,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+            ),
+          ),
+          prefixIconConstraints: const BoxConstraints(minWidth: 50),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 14),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
         ),
         onChanged: (query) {
           setState(() {
@@ -203,22 +243,18 @@ class _HomePageState extends State<HomePage> {
 
         final categories = [AppLocalizations.of(context)?.all ?? 'All', ...categoryTitles];
 
-        return Container(
-          height: 44,
-          margin: const EdgeInsets.symmetric(vertical: 12),
+        return SizedBox(
+          height: 52,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
-              return Container(
-                margin: const EdgeInsets.only(right: 8),
-                child: CategoryChip(
-                  label: category,
-                  isSelected: _selectedCategory == category,
-                  onTap: () => _selectCategory(category),
-                ),
+              return CategoryChip(
+                label: category,
+                isSelected: _selectedCategory == category,
+                onTap: () => _selectCategory(category),
               );
             },
           ),
@@ -318,12 +354,12 @@ class _HomePageState extends State<HomePage> {
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
                 itemCount: videoState.filteredVideos.length,
                 itemBuilder: (context, index) {
                   final video = videoState.filteredVideos[index];
                   final isPremium = premiumState is PremiumActive;
-                  
+
                   return VideoCard(
                     video: video,
                     isPremiumUser: isPremium,

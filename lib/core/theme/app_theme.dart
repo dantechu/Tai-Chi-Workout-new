@@ -17,7 +17,7 @@ class AppTheme {
       error: AppColors.errorLight,
     ),
 
-    // Typography
+    // Typography - Balanced, readable sizes with proper hierarchy
     textTheme: TextTheme(
       displayLarge: TextStyle(
         fontSize: 32,
@@ -28,55 +28,61 @@ class AppTheme {
       displayMedium: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.w300,
-        letterSpacing: -0.5,
+        letterSpacing: -0.3,
         color: AppColors.textPrimary,
       ),
       headlineLarge: TextStyle(
         fontSize: 26,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.3,
         color: AppColors.textPrimary,
       ),
       headlineMedium: TextStyle(
         fontSize: 24,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.2,
         color: AppColors.textPrimary,
       ),
       headlineSmall: TextStyle(
         fontSize: 22,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.2,
         color: AppColors.textPrimary,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.1,
         color: AppColors.textPrimary,
       ),
       titleMedium: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
+        fontSize: 17,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0,
         color: AppColors.textPrimary,
       ),
       titleSmall: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0,
         color: AppColors.textPrimary,
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        letterSpacing: 0.5,
+        letterSpacing: 0.15,
         color: AppColors.textPrimary,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        letterSpacing: 0.25,
+        letterSpacing: 0.15,
         color: AppColors.textPrimary,
       ),
       bodySmall: TextStyle(
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: FontWeight.w400,
-        letterSpacing: 0.4,
+        letterSpacing: 0.2,
         color: AppColors.textSecondary,
       ),
       labelLarge: TextStyle(
@@ -88,13 +94,13 @@ class AppTheme {
       labelMedium: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        letterSpacing: 0.5,
+        letterSpacing: 0.3,
         color: AppColors.textPrimary,
       ),
       labelSmall: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w500,
-        letterSpacing: 0.5,
+        letterSpacing: 0.3,
         color: AppColors.textSecondary,
       ),
     ),
@@ -112,12 +118,13 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       centerTitle: true,
       elevation: 0,
-      scrolledUnderElevation: 2,
+      scrolledUnderElevation: 1,
       backgroundColor: AppColors.backgroundLight,
       foregroundColor: AppColors.textPrimary,
       titleTextStyle: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.2,
         color: AppColors.textPrimary,
       ),
     ),
@@ -241,6 +248,7 @@ class AppTheme {
       error: AppColors.errorDark,
     ),
 
+    // Typography - Balanced, readable sizes with proper hierarchy (dark theme)
     textTheme: TextTheme(
       displayLarge: TextStyle(
         fontSize: 32,
@@ -251,55 +259,61 @@ class AppTheme {
       displayMedium: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.w300,
-        letterSpacing: -0.5,
+        letterSpacing: -0.3,
         color: AppColors.textPrimaryDark,
       ),
       headlineLarge: TextStyle(
         fontSize: 26,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.3,
         color: AppColors.textPrimaryDark,
       ),
       headlineMedium: TextStyle(
         fontSize: 24,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.2,
         color: AppColors.textPrimaryDark,
       ),
       headlineSmall: TextStyle(
         fontSize: 22,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.2,
         color: AppColors.textPrimaryDark,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.1,
         color: AppColors.textPrimaryDark,
       ),
       titleMedium: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
+        fontSize: 17,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0,
         color: AppColors.textPrimaryDark,
       ),
       titleSmall: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0,
         color: AppColors.textPrimaryDark,
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        letterSpacing: 0.5,
+        letterSpacing: 0.15,
         color: AppColors.textPrimaryDark,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        letterSpacing: 0.25,
+        letterSpacing: 0.15,
         color: AppColors.textPrimaryDark,
       ),
       bodySmall: TextStyle(
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: FontWeight.w400,
-        letterSpacing: 0.4,
+        letterSpacing: 0.2,
         color: AppColors.textSecondaryDark,
       ),
       labelLarge: TextStyle(
@@ -311,13 +325,13 @@ class AppTheme {
       labelMedium: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        letterSpacing: 0.5,
+        letterSpacing: 0.3,
         color: AppColors.textPrimaryDark,
       ),
       labelSmall: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w500,
-        letterSpacing: 0.5,
+        letterSpacing: 0.3,
         color: AppColors.textSecondaryDark,
       ),
     ),
@@ -333,11 +347,13 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       centerTitle: true,
       elevation: 0,
+      scrolledUnderElevation: 1,
       backgroundColor: AppColors.surfaceDark,
       foregroundColor: AppColors.textPrimaryDark,
       titleTextStyle: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.2,
         color: AppColors.textPrimaryDark,
       ),
     ),

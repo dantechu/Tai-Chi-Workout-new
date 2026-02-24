@@ -15,40 +15,48 @@ class CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
-    return Container(
-      margin: const EdgeInsets.only(right: 12),
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
       child: Material(
-        borderRadius: BorderRadius.circular(18),
-        clipBehavior: Clip.antiAlias,
+        color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            curve: Curves.easeOutCubic,
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
             decoration: BoxDecoration(
-              color: isSelected 
+              color: isSelected
                   ? theme.colorScheme.primary
-                  : theme.colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: isSelected 
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.outline.withValues(alpha: 0.3),
-                width: 1,
-              ),
+                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(20),
+              border: isSelected
+                  ? null
+                  : Border.all(
+                      color: theme.colorScheme.outline.withValues(alpha: 0.12),
+                      width: 1,
+                    ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
             ),
-            child: Center(
-              child: Text(
-                label,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: isSelected 
-                      ? theme.colorScheme.onPrimary
-                      : theme.colorScheme.onSurface,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                  height: 1.0, // Reduces line height for better centering
-                ),
-                textAlign: TextAlign.center,
+            child: Text(
+              label,
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.75),
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                fontSize: 14,
+                letterSpacing: 0,
               ),
             ),
           ),
