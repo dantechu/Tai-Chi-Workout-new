@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../injection_container.dart' as di;
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/video/video_bloc.dart';
+import '../../bloc/video/video_event.dart';
 import '../../bloc/premium/premium_bloc.dart';
 import '../../courses/bloc/courses_bloc.dart';
+import '../../courses/bloc/courses_event.dart';
 import '../home/home_page.dart';
 import '../practice/practice_page.dart';
 import '../../courses/pages/courses_page.dart';
@@ -47,7 +49,16 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   }
 
 
-  void _onTabTapped(int index) {
+  void _onTabTapped(BuildContext blocContext, int index) {
+    // Refresh data when switching tabs
+    if (index == 0) {
+      // Home tab: reload selected course and videos
+      blocContext.read<CoursesBloc>().add(const LoadSelectedCourse());
+      blocContext.read<VideoBloc>().add(const LoadVideos());
+    } else if (index == 2) {
+      // Courses tab: ensure courses list is loaded
+      blocContext.read<CoursesBloc>().add(const LoadCourses());
+    }
     setState(() {
       _currentIndex = index;
     });
@@ -69,24 +80,26 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           create: (context) => di.sl<CoursesBloc>(),
         ),
       ],
-      child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: navigationItems.asMap().entries.map((entry) {
-            return KeyedSubtree(
-              key: ValueKey('page_${entry.key}'),
-              child: entry.value.page,
-            );
-          }).toList(),
+      child: Builder(
+        builder: (blocContext) => Scaffold(
+          body: IndexedStack(
+            index: _currentIndex,
+            children: navigationItems.asMap().entries.map((entry) {
+              return KeyedSubtree(
+                key: ValueKey('page_${entry.key}'),
+                child: entry.value.page,
+              );
+            }).toList(),
+          ),
+          bottomNavigationBar: _buildBottomNavigationBar(blocContext, navigationItems),
         ),
-        bottomNavigationBar: _buildBottomNavigationBar(navigationItems),
       ),
     );
   }
 
-  Widget _buildBottomNavigationBar(List<NavigationItem> navigationItems) {
+  Widget _buildBottomNavigationBar(BuildContext blocContext, List<NavigationItem> navigationItems) {
     final theme = Theme.of(context);
-    
+
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -99,7 +112,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       ),
       child: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: _onTabTapped,
+        onTap: (index) => _onTabTapped(blocContext, index),
         type: BottomNavigationBarType.fixed,
         backgroundColor: theme.colorScheme.surface,
         selectedItemColor: theme.colorScheme.primary,

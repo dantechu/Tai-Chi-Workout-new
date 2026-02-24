@@ -8,6 +8,9 @@ import '../../bloc/video/video_state.dart';
 import '../../bloc/video/video_event.dart';
 import '../../bloc/premium/premium_bloc.dart';
 import '../../bloc/premium/premium_state.dart';
+import '../../courses/bloc/courses_bloc.dart';
+import '../../courses/bloc/courses_event.dart';
+import '../../courses/bloc/courses_state.dart';
 import '../../widgets/video_card.dart';
 import '../../widgets/category_chip.dart';
 
@@ -28,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<VideoBloc>().add(const LoadVideos());
+    context.read<CoursesBloc>().add(const LoadSelectedCourse());
   }
 
   @override
@@ -39,17 +43,31 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            _buildSearchBar(),
-            _buildCategoryFilter(),
-            Expanded(
-              child: _buildVideoList(),
-            ),
-          ],
+    return BlocListener<CoursesBloc, CoursesState>(
+      listener: (context, state) {
+        // Reload videos when a new course is selected
+        if (state is CourseSelected || state is SelectedCourseLoaded) {
+          // Reset category filter when course changes
+          setState(() {
+            _selectedCategory = 'All';
+            _searchQuery = '';
+            _searchController.clear();
+          });
+          context.read<VideoBloc>().add(const LoadVideos());
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              _buildHeader(),
+              _buildSearchBar(),
+              _buildCategoryFilter(),
+              Expanded(
+                child: _buildVideoList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -71,46 +89,59 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _getTimeBasedGreeting(),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                    fontSize: 14,
-                  ),
+    return BlocBuilder<CoursesBloc, CoursesState>(
+      builder: (context, state) {
+        String courseName = '';
+        if (state is SelectedCourseLoaded) {
+          courseName = state.course.name;
+        } else if (state is CoursesLoaded && state.selectedCourse != null) {
+          courseName = state.selectedCourse!.name;
+        } else if (state is CourseSelected) {
+          courseName = state.course.name;
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _getTimeBasedGreeting(),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      courseName.isNotEmpty ? courseName : (AppLocalizations.of(context)?.readyForTaiChi ?? 'Ready for Tai Chi?'),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  AppLocalizations.of(context)?.readyForTaiChi ?? 'Ready for Tai Chi?',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
                 ),
-              ],
-            ),
+                child: Icon(
+                  Icons.self_improvement,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  size: 28,
+                ),
+              ),
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.self_improvement,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-              size: 28,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
