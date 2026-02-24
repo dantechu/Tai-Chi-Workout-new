@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../injection_container.dart' as di;
@@ -81,18 +82,35 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         ),
       ],
       child: Builder(
-        builder: (blocContext) => Scaffold(
-          body: IndexedStack(
-            index: _currentIndex,
-            children: navigationItems.asMap().entries.map((entry) {
-              return KeyedSubtree(
-                key: ValueKey('page_${entry.key}'),
-                child: entry.value.page,
-              );
-            }).toList(),
-          ),
-          bottomNavigationBar: _buildBottomNavigationBar(blocContext, navigationItems),
-        ),
+        builder: (blocContext) {
+          // Determine status bar style based on theme brightness
+          final brightness = Theme.of(blocContext).brightness;
+          final systemUiOverlayStyle = brightness == Brightness.dark
+              ? SystemUiOverlayStyle.light.copyWith(
+                  statusBarColor: Colors.transparent,
+                  systemNavigationBarColor: Theme.of(blocContext).colorScheme.surface,
+                )
+              : SystemUiOverlayStyle.dark.copyWith(
+                  statusBarColor: Colors.transparent,
+                  systemNavigationBarColor: Theme.of(blocContext).colorScheme.surface,
+                );
+
+          return AnnotatedRegion<SystemUiOverlayStyle>(
+            value: systemUiOverlayStyle,
+            child: Scaffold(
+              body: IndexedStack(
+                index: _currentIndex,
+                children: navigationItems.asMap().entries.map((entry) {
+                  return KeyedSubtree(
+                    key: ValueKey('page_${entry.key}'),
+                    child: entry.value.page,
+                  );
+                }).toList(),
+              ),
+              bottomNavigationBar: _buildBottomNavigationBar(blocContext, navigationItems),
+            ),
+          );
+        },
       ),
     );
   }
