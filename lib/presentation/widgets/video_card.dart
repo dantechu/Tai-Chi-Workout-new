@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../core/services/thumbnail_cache_service.dart';
 import '../../domain/entities/video.dart';
 
 class VideoCard extends StatefulWidget {
@@ -21,6 +21,7 @@ class VideoCard extends StatefulWidget {
 }
 
 class _VideoCardState extends State<VideoCard> {
+  final ThumbnailCacheService _thumbnailCache = ThumbnailCacheService();
   Uint8List? _thumbnailData;
   bool _thumbnailLoading = true;
   bool _thumbnailError = false;
@@ -42,36 +43,37 @@ class _VideoCardState extends State<VideoCard> {
   Future<void> _loadThumbnail() async {
     // If thumbnailUrl is provided, we'll use CachedNetworkImage instead
     if (widget.video.thumbnailUrl != null && widget.video.thumbnailUrl!.isNotEmpty) {
-      setState(() {
-        _thumbnailLoading = false;
-        _thumbnailError = false;
-      });
+      if (mounted) {
+        setState(() {
+          _thumbnailLoading = false;
+          _thumbnailError = false;
+        });
+      }
       return;
     }
 
-    // Extract thumbnail from video URL
-    try {
-      final thumbnail = await VideoThumbnail.thumbnailData(
-        video: widget.video.videoUrl,
-        imageFormat: ImageFormat.JPEG,
-        maxWidth: 200,
-        quality: 75,
-      );
+    // Check cache first
+    final cached = _thumbnailCache.getCached(widget.video.videoUrl);
+    if (cached != null) {
+      if (mounted) {
+        setState(() {
+          _thumbnailData = cached;
+          _thumbnailLoading = false;
+          _thumbnailError = false;
+        });
+      }
+      return;
+    }
 
-      if (mounted) {
-        setState(() {
-          _thumbnailData = thumbnail;
-          _thumbnailLoading = false;
-          _thumbnailError = thumbnail == null;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _thumbnailLoading = false;
-          _thumbnailError = true;
-        });
-      }
+    // Extract thumbnail using cache service
+    final thumbnail = await _thumbnailCache.getThumbnail(widget.video.videoUrl);
+
+    if (mounted) {
+      setState(() {
+        _thumbnailData = thumbnail;
+        _thumbnailLoading = false;
+        _thumbnailError = thumbnail == null;
+      });
     }
   }
 
