@@ -302,8 +302,8 @@ class _VideoCardState extends State<VideoCard> {
                 child: Text(
                   video.title,
                   style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
                     height: 1.3,
                     color: isLocked
                         ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
@@ -354,7 +354,7 @@ class _VideoCardState extends State<VideoCard> {
                   video.category,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
-                    fontSize: 13,
+                    fontSize: 12,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

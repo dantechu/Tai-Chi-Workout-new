@@ -123,9 +123,9 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       courseName.isNotEmpty ? courseName : (AppLocalizations.of(context)?.readyForTaiChi ?? 'Ready for Tai Chi?'),
                       style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 22,
-                        letterSpacing: -0.3,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 19,
+                        letterSpacing: -0.2,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
