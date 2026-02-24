@@ -115,6 +115,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         _isLoading = false;
       });
     } catch (e) {
+      print('Failed to load video: ${e.toString()}');
       setState(() {
         _error = 'Failed to load video: ${e.toString()}';
         _isLoading = false;
