@@ -128,7 +128,7 @@ class _VideoCardState extends State<VideoCard> {
 
   Widget _buildThumbnail(ThemeData theme, bool isLocked) {
     return Container(
-      width: 100,
+      width: 110,
       height: 100,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -289,10 +289,10 @@ class _VideoCardState extends State<VideoCard> {
 
   Widget _buildContent(ThemeData theme, bool isLocked) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Title row
           Row(
@@ -339,7 +339,6 @@ class _VideoCardState extends State<VideoCard> {
               ],
             ],
           ),
-          const SizedBox(height: 6),
           // Category and action row
           Row(
             children: [
