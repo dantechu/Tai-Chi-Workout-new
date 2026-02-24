@@ -48,15 +48,19 @@ class CategoryChip extends StatelessWidget {
                     ]
                   : null,
             ),
-            child: Text(
-              label,
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: isSelected
-                    ? theme.colorScheme.onPrimary
-                    : theme.colorScheme.onSurface.withValues(alpha: 0.75),
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                fontSize: 14,
-                letterSpacing: 0,
+            child: Center(
+              child: Text(
+                label,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: isSelected
+                      ? theme.colorScheme.onPrimary
+                      : theme.colorScheme.onSurface.withValues(alpha: 0.75),
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  fontSize: 14,
+                  letterSpacing: 0,
+                  height: 1.0,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),

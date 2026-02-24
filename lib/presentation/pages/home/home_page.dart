@@ -244,10 +244,10 @@ class _HomePageState extends State<HomePage> {
         final categories = [AppLocalizations.of(context)?.all ?? 'All', ...categoryTitles];
 
         return SizedBox(
-          height: 50,
+          height: 56,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
