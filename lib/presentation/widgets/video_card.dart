@@ -1,7 +1,10 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../domain/entities/video.dart';
 
-class VideoCard extends StatelessWidget {
+class VideoCard extends StatefulWidget {
   final Video video;
   final bool isPremiumUser;
   final VoidCallback onTap;
@@ -12,6 +15,69 @@ class VideoCard extends StatelessWidget {
     required this.isPremiumUser,
     required this.onTap,
   });
+
+  @override
+  State<VideoCard> createState() => _VideoCardState();
+}
+
+class _VideoCardState extends State<VideoCard> {
+  Uint8List? _thumbnailData;
+  bool _thumbnailLoading = true;
+  bool _thumbnailError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThumbnail();
+  }
+
+  @override
+  void didUpdateWidget(VideoCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.video.videoUrl != widget.video.videoUrl) {
+      _loadThumbnail();
+    }
+  }
+
+  Future<void> _loadThumbnail() async {
+    // If thumbnailUrl is provided, we'll use CachedNetworkImage instead
+    if (widget.video.thumbnailUrl != null && widget.video.thumbnailUrl!.isNotEmpty) {
+      setState(() {
+        _thumbnailLoading = false;
+        _thumbnailError = false;
+      });
+      return;
+    }
+
+    // Extract thumbnail from video URL
+    try {
+      final thumbnail = await VideoThumbnail.thumbnailData(
+        video: widget.video.videoUrl,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 200,
+        quality: 75,
+      );
+
+      if (mounted) {
+        setState(() {
+          _thumbnailData = thumbnail;
+          _thumbnailLoading = false;
+          _thumbnailError = thumbnail == null;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _thumbnailLoading = false;
+          _thumbnailError = true;
+        });
+      }
+    }
+  }
+
+  Video get video => widget.video;
+  bool get isPremiumUser => widget.isPremiumUser;
+  VoidCallback get onTap => widget.onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +128,115 @@ class VideoCard extends StatelessWidget {
     return Container(
       width: 100,
       height: 100,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          bottomLeft: Radius.circular(16),
+        ),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Thumbnail image or placeholder
+          _buildThumbnailImage(theme, isLocked),
+
+          // Play button overlay
+          if (!isLocked && !_thumbnailLoading && !_thumbnailError && (_thumbnailData != null || (video.thumbnailUrl != null && video.thumbnailUrl!.isNotEmpty)))
+            Center(
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.play_arrow_rounded,
+                  size: 26,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
+          // Duration badge
+          if (video.duration.inSeconds > 0)
+            Positioned(
+              bottom: 6,
+              right: 6,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.75),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  _formatDuration(video.duration.inSeconds),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+
+          // Premium lock overlay
+          if (isLocked)
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.55),
+              ),
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.3),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.lock_rounded,
+                    size: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThumbnailImage(ThemeData theme, bool isLocked) {
+    // If thumbnailUrl is provided, use CachedNetworkImage
+    if (video.thumbnailUrl != null && video.thumbnailUrl!.isNotEmpty) {
+      return CachedNetworkImage(
+        imageUrl: video.thumbnailUrl!,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => _buildPlaceholder(theme, isLocked, isLoading: true),
+        errorWidget: (context, url, error) => _buildPlaceholder(theme, isLocked),
+      );
+    }
+
+    // If thumbnail was extracted from video
+    if (_thumbnailData != null) {
+      return Image.memory(
+        _thumbnailData!,
+        fit: BoxFit.cover,
+      );
+    }
+
+    // Loading state
+    if (_thumbnailLoading) {
+      return _buildPlaceholder(theme, isLocked, isLoading: true);
+    }
+
+    // Fallback placeholder
+    return _buildPlaceholder(theme, isLocked);
+  }
+
+  Widget _buildPlaceholder(ThemeData theme, bool isLocked, {bool isLoading = false}) {
+    return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -76,82 +251,36 @@ class VideoCard extends StatelessWidget {
                   theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
                 ],
         ),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          bottomLeft: Radius.circular(16),
-        ),
       ),
-      child: Stack(
-        children: [
-          // Video thumbnail placeholder
-          Center(
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: isLocked
-                    ? theme.colorScheme.onSurface.withValues(alpha: 0.08)
-                    : theme.colorScheme.primary.withValues(alpha: 0.15),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.play_arrow_rounded,
-                size: 28,
-                color: isLocked
-                    ? theme.colorScheme.onSurface.withValues(alpha: 0.3)
-                    : theme.colorScheme.primary,
-              ),
-            ),
-          ),
-
-          // Duration badge
-          if (video.duration.inSeconds > 0)
-            Positioned(
-              bottom: 8,
-              right: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+      child: Center(
+        child: isLoading
+            ? SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: isLocked
+                      ? theme.colorScheme.onSurface.withValues(alpha: 0.3)
+                      : theme.colorScheme.primary.withValues(alpha: 0.6),
+                ),
+              )
+            : Container(
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(6),
+                  color: isLocked
+                      ? theme.colorScheme.onSurface.withValues(alpha: 0.08)
+                      : theme.colorScheme.primary.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
                 ),
-                child: Text(
-                  _formatDuration(video.duration.inSeconds),
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-
-          // Premium lock overlay
-          if (isLocked)
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.45),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  bottomLeft: Radius.circular(16),
+                child: Icon(
+                  Icons.play_arrow_rounded,
+                  size: 28,
+                  color: isLocked
+                      ? theme.colorScheme.onSurface.withValues(alpha: 0.3)
+                      : theme.colorScheme.primary,
                 ),
               ),
-              child: Center(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.lock_rounded,
-                    size: 22,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-        ],
       ),
     );
   }
