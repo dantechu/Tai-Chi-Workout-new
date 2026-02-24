@@ -250,14 +250,6 @@ class SettingsPage extends StatelessWidget {
             ),
             _buildCompactListItem(
               context,
-              icon: Icons.phone,
-              title: AppLocalizations.of(context)?.support ?? 'Phone Support',
-              subtitle: AppConstants.supportPhone,
-              onTap: () => _launchPhone(AppConstants.supportPhone),
-              showTrailing: true,
-            ),
-            _buildCompactListItem(
-              context,
               icon: Icons.web,
               title: AppLocalizations.of(context)?.website ?? 'Website',
               subtitle: AppConstants.website,
