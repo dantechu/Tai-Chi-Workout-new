@@ -13,6 +13,8 @@ import 'presentation/bloc/locale/locale_state.dart';
 import 'presentation/bloc/theme/theme_bloc.dart';
 import 'presentation/bloc/theme/theme_event.dart';
 import 'presentation/bloc/theme/theme_state.dart';
+import 'presentation/bloc/bookmark/bookmark_bloc.dart';
+import 'presentation/bloc/bookmark/bookmark_event.dart';
 import 'presentation/bloc/premium/premium_bloc.dart';
 import 'presentation/bloc/premium/premium_event.dart';
 import 'presentation/pages/splash/splash_page.dart';
@@ -63,6 +65,9 @@ class TaiChiWorkoutApp extends StatelessWidget {
         ),
         BlocProvider<PremiumBloc>(
           create: (context) => di.sl<PremiumBloc>()..add(const CheckPremiumStatus()),
+        ),
+        BlocProvider<BookmarkBloc>(
+          create: (context) => di.sl<BookmarkBloc>()..add(const LoadBookmarks()),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(

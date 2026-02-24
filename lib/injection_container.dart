@@ -11,6 +11,7 @@ import 'core/network/dio_client.dart';
 import 'core/network/network_info.dart';
 
 // Data sources
+import 'data/datasources/bookmark_local_datasource.dart';
 import 'data/datasources/course_local_datasource.dart';
 import 'data/datasources/course_remote_datasource.dart';
 import 'data/datasources/download_local_datasource.dart';
@@ -20,10 +21,12 @@ import 'data/datasources/video_local_datasource.dart';
 import 'data/datasources/video_remote_datasource.dart';
 
 // Repositories
+import 'data/repositories/bookmark_repository_impl.dart';
 import 'data/repositories/course_repository_impl.dart';
 import 'data/repositories/download_repository_impl.dart';
 import 'data/repositories/premium_repository_impl.dart';
 import 'data/repositories/video_repository_impl.dart';
+import 'domain/repositories/bookmark_repository.dart';
 import 'domain/repositories/course_repository.dart';
 import 'domain/repositories/download_repository.dart';
 import 'domain/repositories/premium_repository.dart';
@@ -38,6 +41,7 @@ import 'domain/usecases/premium_usecases.dart';
 import 'domain/usecases/select_course.dart';
 
 // BLoCs
+import 'presentation/bloc/bookmark/bookmark_bloc.dart';
 import 'presentation/bloc/video/video_bloc.dart';
 import 'presentation/bloc/premium/premium_bloc.dart';
 import 'presentation/bloc/theme/theme_bloc.dart';
@@ -53,6 +57,7 @@ Future<void> init() async {
   await Hive.openBox('downloads_box');
   await Hive.openBox('courses_box');
   await Hive.openBox<bool>('onboarding_prefs');
+  await Hive.openBox<Map>('bookmarks_cache');
 
 
   //! Features - Video
@@ -115,6 +120,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DownloadVideo(sl()));
   sl.registerLazySingleton(() => IsVideoDownloaded(sl()));
 
+  //! Features - Bookmark
+  // Bloc
+  sl.registerFactory(
+    () => BookmarkBloc(
+      bookmarkRepository: sl(),
+    ),
+  );
+
   //! Repository
   sl.registerLazySingleton<VideoRepository>(
     () => VideoRepositoryImpl(
@@ -133,6 +146,12 @@ Future<void> init() async {
 
   sl.registerLazySingleton<DownloadRepository>(
     () => DownloadRepositoryImpl(
+      localDataSource: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<BookmarkRepository>(
+    () => BookmarkRepositoryImpl(
       localDataSource: sl(),
     ),
   );
@@ -176,6 +195,10 @@ Future<void> init() async {
 
   sl.registerLazySingleton<OnboardingLocalDataSource>(
     () => OnboardingLocalDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<BookmarkLocalDataSource>(
+    () => BookmarkLocalDataSourceImpl(),
   );
 
   //! Core

@@ -8,6 +8,9 @@ import '../../../domain/entities/video.dart';
 import '../../../domain/usecases/download_usecases.dart';
 import '../../../injection_container.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../bloc/bookmark/bookmark_bloc.dart';
+import '../../bloc/bookmark/bookmark_event.dart';
+import '../../bloc/bookmark/bookmark_state.dart';
 import '../../bloc/premium/premium_bloc.dart';
 import '../../bloc/premium/premium_state.dart';
 import '../../widgets/banner_ad_widget.dart';
@@ -150,6 +153,31 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+          // Bookmark button
+          BlocBuilder<BookmarkBloc, BookmarkState>(
+            builder: (context, state) {
+              final isBookmarked = state is BookmarkLoaded &&
+                  state.isVideoBookmarked(widget.video.id);
+              return IconButton(
+                icon: Icon(
+                  isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                  color: isBookmarked ? Theme.of(context).colorScheme.primary : Colors.white,
+                ),
+                onPressed: () {
+                  context.read<BookmarkBloc>().add(ToggleBookmark(widget.video.id));
+                  final message = isBookmarked
+                      ? 'Removed from bookmarks'
+                      : 'Added to bookmarks';
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
           if (!widget.video.isPremium || context.read<PremiumBloc>().state is PremiumActive)
             PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert, color: Colors.white),

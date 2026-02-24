@@ -1,8 +1,12 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/thumbnail_cache_service.dart';
 import '../../domain/entities/video.dart';
+import '../bloc/bookmark/bookmark_bloc.dart';
+import '../bloc/bookmark/bookmark_event.dart';
+import '../bloc/bookmark/bookmark_state.dart';
 
 class VideoCard extends StatefulWidget {
   final Video video;
@@ -358,6 +362,28 @@ class _VideoCardState extends State<VideoCard> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+              ),
+              // Bookmark button
+              BlocBuilder<BookmarkBloc, BookmarkState>(
+                builder: (context, state) {
+                  final isBookmarked = state is BookmarkLoaded &&
+                      state.isVideoBookmarked(video.id);
+                  return GestureDetector(
+                    onTap: () {
+                      context.read<BookmarkBloc>().add(ToggleBookmark(video.id));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Icon(
+                        isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                        color: isBookmarked
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                        size: 20,
+                      ),
+                    ),
+                  );
+                },
               ),
               Icon(
                 isLocked ? Icons.lock_outline_rounded : Icons.arrow_forward_ios_rounded,

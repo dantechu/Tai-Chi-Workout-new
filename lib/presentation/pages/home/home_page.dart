@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../domain/entities/video.dart';
+import '../../bloc/bookmark/bookmark_bloc.dart';
+import '../../bloc/bookmark/bookmark_state.dart';
 import '../../bloc/video/video_bloc.dart';
 import '../../bloc/video/video_state.dart';
 import '../../bloc/video/video_event.dart';
@@ -353,17 +356,65 @@ class _HomePageState extends State<HomePage> {
                 );
               }
 
-              return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-                itemCount: videoState.filteredVideos.length,
-                itemBuilder: (context, index) {
-                  final video = videoState.filteredVideos[index];
-                  final isPremium = premiumState is PremiumActive;
+              final isPremium = premiumState is PremiumActive;
 
-                  return VideoCard(
-                    video: video,
-                    isPremiumUser: isPremium,
-                    onTap: () => _navigateToVideoPlayer(video),
+              return BlocBuilder<BookmarkBloc, BookmarkState>(
+                builder: (context, bookmarkState) {
+                  // Get bookmarked videos
+                  List<Video> bookmarkedVideos = [];
+                  if (bookmarkState is BookmarkLoaded) {
+                    bookmarkedVideos = videoState.videos
+                        .where((video) => bookmarkState.isVideoBookmarked(video.id))
+                        .toList();
+                  }
+
+                  return CustomScrollView(
+                    slivers: [
+                      // Bookmarked videos section
+                      if (bookmarkedVideos.isNotEmpty) ...[
+                        SliverToBoxAdapter(
+                          child: _buildBookmarksSection(
+                            bookmarkedVideos,
+                            isPremium,
+                          ),
+                        ),
+                      ],
+                      // All videos section header
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            20,
+                            bookmarkedVideos.isNotEmpty ? 8 : 12,
+                            20,
+                            12,
+                          ),
+                          child: Text(
+                            AppLocalizations.of(context)?.allLessons ?? 'All Lessons',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Video list
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final video = videoState.filteredVideos[index];
+                              return VideoCard(
+                                video: video,
+                                isPremiumUser: isPremium,
+                                onTap: () => _navigateToVideoPlayer(video),
+                              );
+                            },
+                            childCount: videoState.filteredVideos.length,
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 },
               );
@@ -394,6 +445,171 @@ class _HomePageState extends State<HomePage> {
       _selectedCategory = category;
     });
     _performSearch();
+  }
+
+  Widget _buildBookmarksSection(List<Video> bookmarkedVideos, bool isPremium) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+          child: Row(
+            children: [
+              Icon(
+                Icons.bookmark_rounded,
+                size: 20,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Continue Watching',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 140,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: bookmarkedVideos.length,
+            itemBuilder: (context, index) {
+              final video = bookmarkedVideos[index];
+              return _buildBookmarkCard(video, isPremium, theme);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBookmarkCard(Video video, bool isPremium, ThemeData theme) {
+    final isLocked = video.isPremium && !isPremium;
+
+    return Container(
+      width: 200,
+      margin: const EdgeInsets.only(right: 12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.1),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          onTap: () => _navigateToVideoPlayer(video),
+          borderRadius: BorderRadius.circular(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Thumbnail
+              Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                ),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Center(
+                      child: Icon(
+                        Icons.play_circle_filled_rounded,
+                        size: 36,
+                        color: theme.colorScheme.primary.withValues(alpha: 0.8),
+                      ),
+                    ),
+                    if (isLocked)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.5),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.lock_rounded,
+                            size: 24,
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                      ),
+                    // Duration badge
+                    if (video.duration.inSeconds > 0)
+                      Positioned(
+                        bottom: 6,
+                        right: 6,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.75),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            _formatDuration(video.duration.inSeconds),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              // Title
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    video.title,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      height: 1.3,
+                      color: isLocked
+                          ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
+                          : theme.colorScheme.onSurface,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _formatDuration(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   void _navigateToVideoPlayer(video) {
