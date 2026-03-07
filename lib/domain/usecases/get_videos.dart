@@ -33,6 +33,16 @@ class SearchVideos {
   }
 }
 
+class SearchVideosAcrossAllCourses {
+  final VideoRepository repository;
+
+  SearchVideosAcrossAllCourses(this.repository);
+
+  Future<Either<Failure, List<Video>>> call(String query) async {
+    return await repository.searchVideosAcrossAllCourses(query);
+  }
+}
+
 class GetVideo {
   final VideoRepository repository;
 

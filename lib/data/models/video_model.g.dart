@@ -26,6 +26,7 @@ VideoModel _$VideoModelFromJson(Map<String, dynamic> json) => VideoModel(
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      courseId: json['courseId'] as String?,
       titleDe: json['titleDe'] as String?,
       descriptionDe: json['descriptionDe'] as String?,
       titleEs: json['titleEs'] as String?,
@@ -55,6 +56,7 @@ Map<String, dynamic> _$VideoModelToJson(VideoModel instance) =>
       'tags': instance.tags,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'courseId': instance.courseId,
       'titleDe': instance.titleDe,
       'descriptionDe': instance.descriptionDe,
       'titleEs': instance.titleEs,

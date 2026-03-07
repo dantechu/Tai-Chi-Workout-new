@@ -20,6 +20,7 @@ class VideoModel extends Video {
     super.tags = const [],
     super.createdAt,
     super.updatedAt,
+    super.courseId,
     // Multi-language support
     super.titleDe,
     super.descriptionDe,
@@ -59,6 +60,7 @@ class VideoModel extends Video {
       tags: (map['tags'] as List<dynamic>?)?.cast<String>() ?? [],
       createdAt: _parseDateTime(map['createdAt']),
       updatedAt: _parseDateTime(map['updatedAt']),
+      courseId: map['courseId'] as String?,
       // Multi-language support
       titleDe: map['title_de'] as String?,
       descriptionDe: map['description_de'] as String?,
@@ -115,6 +117,7 @@ class VideoModel extends Video {
       'updatedAt': updatedAt != null
           ? Timestamp.fromDate(updatedAt!)
           : FieldValue.serverTimestamp(),
+      'courseId': courseId,
       // Multi-language support
       'title_de': titleDe,
       'description_de': descriptionDe,
@@ -148,6 +151,7 @@ class VideoModel extends Video {
       'tags': tags,
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
+      'courseId': courseId,
       // Multi-language support
       'title_de': titleDe,
       'description_de': descriptionDe,
@@ -179,6 +183,7 @@ class VideoModel extends Video {
       tags: entity.tags,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      courseId: entity.courseId,
       // Multi-language support
       titleDe: entity.titleDe,
       descriptionDe: entity.descriptionDe,
@@ -210,6 +215,7 @@ class VideoModel extends Video {
       tags: tags,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      courseId: courseId,
       // Multi-language support
       titleDe: titleDe,
       descriptionDe: descriptionDe,
@@ -267,6 +273,7 @@ class VideoModel extends Video {
     List<String>? tags,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? courseId,
     String? titleDe,
     String? descriptionDe,
     String? titleEs,
@@ -294,6 +301,7 @@ class VideoModel extends Video {
       tags: tags ?? this.tags,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      courseId: courseId ?? this.courseId,
       titleDe: titleDe ?? this.titleDe,
       descriptionDe: descriptionDe ?? this.descriptionDe,
       titleEs: titleEs ?? this.titleEs,

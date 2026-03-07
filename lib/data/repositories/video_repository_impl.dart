@@ -163,6 +163,30 @@ class VideoRepositoryImpl implements VideoRepository {
   }
 
   @override
+  Future<Either<Failure, List<Video>>> getAllVideosFromAllCourses() async {
+    try {
+      if (await networkInfo.isConnected) {
+        final remoteVideos = await remoteDataSource.getAllVideosFromAllCourses();
+        return Right(remoteVideos.cast<Video>());
+      } else {
+        // When offline, still use cached videos but don't filter by course
+        final localVideos = await localDataSource.getCachedVideos();
+        if (localVideos.isNotEmpty) {
+          return Right(localVideos.cast<Video>());
+        } else {
+          return Left(NetworkFailure('No internet connection and no cached data'));
+        }
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure('Unexpected error: $e'));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<Video>>> searchVideos(String query) async {
     try {
       final videosResult = await getAllVideos();
@@ -180,6 +204,27 @@ class VideoRepositoryImpl implements VideoRepository {
       );
     } catch (e) {
       return Left(ServerFailure('Search failed: $e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Video>>> searchVideosAcrossAllCourses(String query) async {
+    try {
+      final videosResult = await getAllVideosFromAllCourses();
+      return videosResult.fold(
+        (failure) => Left(failure),
+        (videos) {
+          final searchResults = videos.where((video) =>
+            video.title.toLowerCase().contains(query.toLowerCase()) ||
+            video.category.toLowerCase().contains(query.toLowerCase()) ||
+            (video.description?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+            video.tags.any((tag) => tag.toLowerCase().contains(query.toLowerCase()))
+          ).toList();
+          return Right(searchResults);
+        },
+      );
+    } catch (e) {
+      return Left(ServerFailure('Search across all courses failed: $e'));
     }
   }
 

@@ -6,6 +6,7 @@ import '../models/lesson_model.dart';
 
 abstract class VideoRemoteDataSource {
   Future<List<VideoModel>> getAllVideos();
+  Future<List<VideoModel>> getAllVideosFromAllCourses();
   Future<List<LessonModel>> getAllLessons();
   Future<VideoModel> getVideo(String id);
   Future<LessonModel> getLesson(String id);
@@ -34,8 +35,11 @@ class VideoRemoteDataSourceImpl implements VideoRemoteDataSource {
           final allVideos = <VideoModel>[];
           for (final section in course.sections) {
             for (final video in section.videos) {
-              // Ensure the video's category field is set to the section title
-              final videoWithCategory = video.copyWith(category: section.title);
+              // Ensure the video's category field is set to the section title and courseId is set
+              final videoWithCategory = video.copyWith(
+                category: section.title,
+                courseId: course.id,
+              );
               allVideos.add(VideoModel.fromEntity(videoWithCategory));
             }
           }
@@ -44,6 +48,39 @@ class VideoRemoteDataSourceImpl implements VideoRemoteDataSource {
       );
     } catch (e) {
       throw ServerException('Failed to load videos: $e');
+    }
+  }
+
+  @override
+  Future<List<VideoModel>> getAllVideosFromAllCourses() async {
+    try {
+      // Get all active courses
+      final coursesResult = await courseRepository.getActiveCourses();
+
+      return coursesResult.fold(
+        (failure) {
+          throw ServerException('Failed to load courses: ${failure.message}');
+        },
+        (courses) {
+          // Extract all videos from all sections of all courses
+          final allVideos = <VideoModel>[];
+          for (final course in courses) {
+            for (final section in course.sections) {
+              for (final video in section.videos) {
+                // Ensure the video's category field is set to the section title and courseId is set
+                final videoWithMetadata = video.copyWith(
+                  category: section.title,
+                  courseId: course.id,
+                );
+                allVideos.add(VideoModel.fromEntity(videoWithMetadata));
+              }
+            }
+          }
+          return allVideos;
+        },
+      );
+    } catch (e) {
+      throw ServerException('Failed to load videos from all courses: $e');
     }
   }
 

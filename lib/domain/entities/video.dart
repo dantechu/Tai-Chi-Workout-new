@@ -14,6 +14,7 @@ class Video extends Equatable {
   final List<String> tags;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? courseId;
 
   // Multi-language support fields
   final String? titleDe;
@@ -43,6 +44,7 @@ class Video extends Equatable {
     this.tags = const [],
     this.createdAt,
     this.updatedAt,
+    this.courseId,
     // Multi-language support
     this.titleDe,
     this.descriptionDe,
@@ -112,6 +114,7 @@ class Video extends Equatable {
     List<String>? tags,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? courseId,
     String? titleDe,
     String? descriptionDe,
     String? titleEs,
@@ -139,6 +142,7 @@ class Video extends Equatable {
       tags: tags ?? this.tags,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      courseId: courseId ?? this.courseId,
       titleDe: titleDe ?? this.titleDe,
       descriptionDe: descriptionDe ?? this.descriptionDe,
       titleEs: titleEs ?? this.titleEs,
@@ -169,6 +173,7 @@ class Video extends Equatable {
         tags,
         createdAt,
         updatedAt,
+        courseId,
         titleDe,
         descriptionDe,
         titleEs,

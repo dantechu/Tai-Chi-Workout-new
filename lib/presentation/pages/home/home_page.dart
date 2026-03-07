@@ -15,6 +15,7 @@ import '../../bloc/premium/premium_state.dart';
 import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_event.dart';
 import '../../courses/bloc/courses_state.dart';
+import '../../courses/pages/course_detail_page.dart';
 import '../../widgets/video_card.dart';
 import '../../widgets/bookmark_card.dart';
 import '../../widgets/category_chip.dart';
@@ -431,16 +432,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _performSearch() {
-    // If videos aren't loaded yet, load them first
-    if (context.read<VideoBloc>().state is! VideoLoaded) {
+    final query = _searchQuery.trim();
+
+    if (query.isEmpty) {
+      // If search is empty, load videos from selected course
       context.read<VideoBloc>().add(const LoadVideos());
       return;
     }
-    
-    context.read<VideoBloc>().add(UpdateFilters(
-      searchQuery: _searchQuery.trim().isEmpty ? null : _searchQuery.trim(),
-      selectedCategory: _selectedCategory,
-    ));
+
+    // Search across all courses when user types a query
+    context.read<VideoBloc>().add(SearchVideosAcrossCourses(query));
   }
 
   void _selectCategory(String category) {
@@ -497,6 +498,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateToVideoPlayer(video) {
+    // Get the currently selected course
+    final coursesState = context.read<CoursesBloc>().state;
+    String? selectedCourseId;
+
+    if (coursesState is CoursesLoaded && coursesState.selectedCourse != null) {
+      selectedCourseId = coursesState.selectedCourse!.id;
+    } else if (coursesState is SelectedCourseLoaded) {
+      selectedCourseId = coursesState.course.id;
+    } else if (coursesState is CourseSelected) {
+      selectedCourseId = coursesState.course.id;
+    }
+
+    // Check if the video belongs to a different course
+    if (video.courseId != null &&
+        selectedCourseId != null &&
+        video.courseId != selectedCourseId) {
+      // Video is from a different course - navigate to course details page
+      _navigateToCourseDetails(video.courseId!);
+      return;
+    }
+
     // Check if video is premium and user doesn't have premium access
     final premiumState = context.read<PremiumBloc>().state;
     final hasPremiumAccess = premiumState is PremiumActive;
@@ -510,6 +532,75 @@ class _HomePageState extends State<HomePage> {
         '/video-player',
         arguments: video,
       );
+    }
+  }
+
+  void _navigateToCourseDetails(String courseId) async {
+    // Load all courses to find the specific course
+    final coursesBloc = context.read<CoursesBloc>();
+    final currentState = coursesBloc.state;
+
+    // Get courses list
+    List<dynamic>? courses;
+    if (currentState is CoursesLoaded) {
+      courses = currentState.courses;
+    } else {
+      // Load courses if not already loaded
+      coursesBloc.add(const LoadCourses());
+      // Wait for courses to load
+      await for (final state in coursesBloc.stream) {
+        if (state is CoursesLoaded) {
+          courses = state.courses;
+          break;
+        } else if (state is CoursesError) {
+          // Show error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to load course details'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+          return;
+        }
+      }
+    }
+
+    // Find the course
+    if (courses != null) {
+      try {
+        final course = courses.firstWhere((c) => c.id == courseId);
+
+        // Get selected course ID
+        String? selectedCourseId;
+        if (currentState is CoursesLoaded && currentState.selectedCourse != null) {
+          selectedCourseId = currentState.selectedCourse!.id;
+        }
+
+        final isSelected = course.id == selectedCourseId;
+
+        // Navigate to course detail page
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => BlocProvider.value(
+              value: coursesBloc,
+              child: CourseDetailPage(
+                course: course,
+                isSelected: isSelected,
+              ),
+            ),
+          ),
+        );
+      } catch (e) {
+        // Course not found - show error message
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Course not found'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      }
     }
   }
 }

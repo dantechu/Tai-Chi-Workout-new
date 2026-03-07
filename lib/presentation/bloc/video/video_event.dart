@@ -72,3 +72,12 @@ class UpdateFilters extends VideoEvent {
   @override
   List<Object?> get props => [searchQuery, selectedCategory];
 }
+
+class SearchVideosAcrossCourses extends VideoEvent {
+  final String query;
+
+  const SearchVideosAcrossCourses(this.query);
+
+  @override
+  List<Object> get props => [query];
+}

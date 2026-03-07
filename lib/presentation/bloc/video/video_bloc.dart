@@ -7,11 +7,13 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
   final usecases.GetVideos getVideos;
   final usecases.GetVideosByCategory getVideosByCategory;
   final usecases.SearchVideos searchVideos;
+  final usecases.SearchVideosAcrossAllCourses searchVideosAcrossAllCourses;
 
   VideoBloc({
     required this.getVideos,
     required this.getVideosByCategory,
     required this.searchVideos,
+    required this.searchVideosAcrossAllCourses,
   }) : super(const VideoInitial()) {
     on<LoadVideos>(_onLoadVideos);
     on<LoadVideosByCategory>(_onLoadVideosByCategory);
@@ -21,6 +23,7 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     on<RefreshVideos>(_onRefreshVideos);
     on<ClearSearch>(_onClearSearch);
     on<UpdateFilters>(_onUpdateFilters);
+    on<SearchVideosAcrossCourses>(_onSearchVideosAcrossCourses);
   }
 
   Future<void> _onLoadVideos(LoadVideos event, Emitter<VideoState> emit) async {
@@ -163,5 +166,24 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
         clearSelectedCategory: event.selectedCategory == null,
       ));
     }
+  }
+
+  Future<void> _onSearchVideosAcrossCourses(
+    SearchVideosAcrossCourses event,
+    Emitter<VideoState> emit,
+  ) async {
+    // Show loading state
+    emit(const VideoLoading());
+
+    // Search across all courses
+    final result = await searchVideosAcrossAllCourses(event.query);
+
+    result.fold(
+      (failure) => emit(VideoError(failure.message)),
+      (videos) => emit(VideoLoaded(
+        videos: videos,
+        searchQuery: event.query,
+      )),
+    );
   }
 }

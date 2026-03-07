@@ -67,6 +67,7 @@ Future<void> init() async {
       getVideos: sl(),
       getVideosByCategory: sl(),
       searchVideos: sl(),
+      searchVideosAcrossAllCourses: sl(),
     ),
   );
 
@@ -74,6 +75,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetVideos(sl()));
   sl.registerLazySingleton(() => GetVideosByCategory(sl()));
   sl.registerLazySingleton(() => SearchVideos(sl()));
+  sl.registerLazySingleton(() => SearchVideosAcrossAllCourses(sl()));
   sl.registerLazySingleton(() => GetVideo(sl()));
 
   //! Features - Courses
