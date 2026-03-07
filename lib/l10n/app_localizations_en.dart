@@ -189,7 +189,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instructor => 'Instructor';
 
   @override
-  String get johnSaxxon => 'John Saxxon';
+  String get johnSaxxon => 'Dr Jerry Johnson';
 
   @override
   String get privacyPolicy => 'Privacy Policy';
@@ -285,11 +285,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsDisabled => 'Notifications disabled';
 
   @override
-  String get aboutJohnSaxxon => 'About John Saxxon';
+  String get aboutJohnSaxxon => 'About Dr Jerry Johnson';
 
   @override
   String get johnSaxxonBio =>
-      'John Saxxon is a certified Tai Chi instructor with over 20 years of experience. He has trained thousands of students worldwide in the art of Tai Chi and meditation.';
+      'Dr Jerry Johnson is a certified Tai Chi instructor with over 20 years of experience. He has trained thousands of students worldwide in the art of Tai Chi and meditation.';
 
   @override
   String get close => 'Close';

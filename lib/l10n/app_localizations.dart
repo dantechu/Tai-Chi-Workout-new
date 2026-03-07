@@ -471,7 +471,7 @@ abstract class AppLocalizations {
   /// No description provided for @johnSaxxon.
   ///
   /// In en, this message translates to:
-  /// **'John Saxxon'**
+  /// **'Dr Jerry Johnson'**
   String get johnSaxxon;
 
   /// No description provided for @privacyPolicy.
@@ -663,13 +663,13 @@ abstract class AppLocalizations {
   /// No description provided for @aboutJohnSaxxon.
   ///
   /// In en, this message translates to:
-  /// **'About John Saxxon'**
+  /// **'About Dr Jerry Johnson'**
   String get aboutJohnSaxxon;
 
   /// No description provided for @johnSaxxonBio.
   ///
   /// In en, this message translates to:
-  /// **'John Saxxon is a certified Tai Chi instructor with over 20 years of experience. He has trained thousands of students worldwide in the art of Tai Chi and meditation.'**
+  /// **'Dr Jerry Johnson is a certified Tai Chi instructor with over 20 years of experience. He has trained thousands of students worldwide in the art of Tai Chi and meditation.'**
   String get johnSaxxonBio;
 
   /// No description provided for @close.

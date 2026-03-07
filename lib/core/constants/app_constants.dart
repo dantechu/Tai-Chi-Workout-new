@@ -4,13 +4,13 @@ class AppConstants {
   static const String bundleId = 'com.amazingelearning.chikung';
   
   // Contact Information
-  static const String supportEmail = 'support@amazingelearning.com';
+  static const String supportEmail = 'support@stepbysteplearn.com';
   static const String supportPhone = '1(650)692-2500';
-  static const String website = 'www.amazingelearning.com';
-  
+  static const String website = 'stepbysteplearn.com';
+
   // URLs
-  static const String privacyPolicyUrl = 'https://www.amazingelearning.com/privacy';
-  static const String termsOfServiceUrl = 'https://www.amazingelearning.com/terms';
+  static const String privacyPolicyUrl = 'https://stepbysteplearn.com/privacy';
+  static const String termsOfServiceUrl = 'https://stepbysteplearn.com/terms';
   
   // Premium
   static const String premiumProductId = 'com.amazingelearning.chikung.Premium';
@@ -50,11 +50,11 @@ class AppConstants {
     },
     {
       'section': 2,
-      'title': 'Intro by John Saxxon',
+      'title': 'Intro by Dr Jerry Johnson',
       'videos': [
         {
           'row': 1,
-          'title': 'Intro by John Saxxon',
+          'title': 'Intro by Dr Jerry Johnson',
           'isPremium': false,
           'description': 'The ancient art of Tai Chiwan is based upon the principle of relaxing the body. This reduces muscular tension and emotional stress, allowing one to move more freely. Taichi can be a powerful healing art and is often referred to as moving meditation. The health and healing effects of Taichi can be quite numerous. Toning the muscles, increasing circulation, lowering high blood pressure, and relief of spinal conditions as well as arthritis have all been reported. Taichiwan is more than a series of movements in a form. It’s not just waving your arms and swaying your body. It is understanding the underlying principles that contribute more fully to the health-giving aspects. To comprehend these principles, you must feel and experience them for yourself.'
         },

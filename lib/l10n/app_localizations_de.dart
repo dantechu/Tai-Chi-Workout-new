@@ -190,7 +190,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get instructor => 'Instruktor';
 
   @override
-  String get johnSaxxon => 'John Saxxon';
+  String get johnSaxxon => 'Dr Jerry Johnson';
 
   @override
   String get privacyPolicy => 'Datenschutzrichtlinie';
@@ -286,11 +286,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notificationsDisabled => 'Benachrichtigungen deaktiviert';
 
   @override
-  String get aboutJohnSaxxon => 'Über John Saxxon';
+  String get aboutJohnSaxxon => 'Über Dr Jerry Johnson';
 
   @override
   String get johnSaxxonBio =>
-      'John Saxxon ist ein zertifizierter Tai Chi-Instruktor mit über 20 Jahren Erfahrung. Er hat Tausende von Schülern weltweit in der Kunst des Tai Chi und der Meditation ausgebildet.';
+      'Dr Jerry Johnson ist ein zertifizierter Tai Chi-Instruktor mit über 20 Jahren Erfahrung. Er hat Tausende von Schülern weltweit in der Kunst des Tai Chi und der Meditation ausgebildet.';
 
   @override
   String get close => 'Schließen';
