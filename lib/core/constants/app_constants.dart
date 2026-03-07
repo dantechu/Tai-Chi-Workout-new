@@ -14,7 +14,7 @@ class AppConstants {
   
   // Premium
   static const String premiumProductId = 'com.amazingelearning.chikung.Premium';
-  static const String premiumPrice = '\$1.99';
+  static const String premiumPrice = '\$4.99';
   
   // Storage Keys
   static const String hiveVideoBox = 'videos_box';

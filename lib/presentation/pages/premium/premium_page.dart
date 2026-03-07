@@ -230,7 +230,7 @@ class _PremiumPageState extends State<PremiumPage> {
 
 
   Widget _buildPricing(ThemeData theme, PremiumState state) {
-    String displayPrice = '\$1.99';
+    String displayPrice = '\$4.99';
 
     // Get the price from the state if available
     if (state is PremiumInactive && state.productPrice != null) {
