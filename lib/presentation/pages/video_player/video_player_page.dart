@@ -195,16 +195,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     ],
                   ),
                 ),
-                PopupMenuItem(
-                  value: 'share',
-                  child: Row(
-                    children: [
-                      Icon(Icons.share, color: Theme.of(context).colorScheme.primary),
-                      SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)?.share ?? 'Share'),
-                    ],
-                  ),
-                ),
               ],
             ),
         ],
@@ -431,9 +421,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       case 'download':
         _showDownloadDialog();
         break;
-      case 'share':
-        _shareVideo();
-        break;
     }
   }
 
@@ -538,14 +525,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         );
       }
     }
-  }
-
-  void _shareVideo() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Share functionality coming soon...'),
-      ),
-    );
   }
 
   String _formatDuration(Duration duration) {
