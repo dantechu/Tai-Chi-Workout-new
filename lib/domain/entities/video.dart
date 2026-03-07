@@ -15,6 +15,20 @@ class Video extends Equatable {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
+  // Multi-language support fields
+  final String? titleDe;
+  final String? descriptionDe;
+  final String? titleEs;
+  final String? descriptionEs;
+  final String? titleFr;
+  final String? descriptionFr;
+  final String? titleJa;
+  final String? descriptionJa;
+  final String? titleKo;
+  final String? descriptionKo;
+  final String? titleZh;
+  final String? descriptionZh;
+
   const Video({
     required this.id,
     required this.title,
@@ -29,7 +43,60 @@ class Video extends Equatable {
     this.tags = const [],
     this.createdAt,
     this.updatedAt,
+    // Multi-language support
+    this.titleDe,
+    this.descriptionDe,
+    this.titleEs,
+    this.descriptionEs,
+    this.titleFr,
+    this.descriptionFr,
+    this.titleJa,
+    this.descriptionJa,
+    this.titleKo,
+    this.descriptionKo,
+    this.titleZh,
+    this.descriptionZh,
   });
+
+  /// Get localized title based on language code
+  String getLocalizedTitle(String languageCode) {
+    switch (languageCode) {
+      case 'de':
+        return titleDe ?? title;
+      case 'es':
+        return titleEs ?? title;
+      case 'fr':
+        return titleFr ?? title;
+      case 'ja':
+        return titleJa ?? title;
+      case 'ko':
+        return titleKo ?? title;
+      case 'zh':
+        return titleZh ?? title;
+      default:
+        return title;
+    }
+  }
+
+  /// Get localized description based on language code
+  String? getLocalizedDescription(String languageCode) {
+    switch (languageCode) {
+      case 'de':
+        return descriptionDe ?? description;
+      case 'es':
+        return descriptionEs ?? description;
+      case 'fr':
+        return descriptionFr ?? description;
+      case 'ja':
+        return descriptionJa ?? description;
+      case 'ko':
+        return descriptionKo ?? description;
+      case 'zh':
+        return descriptionZh ?? description;
+      default:
+        return description;
+    }
+  }
 
   Video copyWith({
     String? id,
@@ -45,6 +112,18 @@ class Video extends Equatable {
     List<String>? tags,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? titleDe,
+    String? descriptionDe,
+    String? titleEs,
+    String? descriptionEs,
+    String? titleFr,
+    String? descriptionFr,
+    String? titleJa,
+    String? descriptionJa,
+    String? titleKo,
+    String? descriptionKo,
+    String? titleZh,
+    String? descriptionZh,
   }) {
     return Video(
       id: id ?? this.id,
@@ -60,6 +139,18 @@ class Video extends Equatable {
       tags: tags ?? this.tags,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      titleDe: titleDe ?? this.titleDe,
+      descriptionDe: descriptionDe ?? this.descriptionDe,
+      titleEs: titleEs ?? this.titleEs,
+      descriptionEs: descriptionEs ?? this.descriptionEs,
+      titleFr: titleFr ?? this.titleFr,
+      descriptionFr: descriptionFr ?? this.descriptionFr,
+      titleJa: titleJa ?? this.titleJa,
+      descriptionJa: descriptionJa ?? this.descriptionJa,
+      titleKo: titleKo ?? this.titleKo,
+      descriptionKo: descriptionKo ?? this.descriptionKo,
+      titleZh: titleZh ?? this.titleZh,
+      descriptionZh: descriptionZh ?? this.descriptionZh,
     );
   }
 
@@ -78,6 +169,18 @@ class Video extends Equatable {
         tags,
         createdAt,
         updatedAt,
+        titleDe,
+        descriptionDe,
+        titleEs,
+        descriptionEs,
+        titleFr,
+        descriptionFr,
+        titleJa,
+        descriptionJa,
+        titleKo,
+        descriptionKo,
+        titleZh,
+        descriptionZh,
       ];
 
   @override

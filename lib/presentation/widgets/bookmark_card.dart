@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/thumbnail_cache_service.dart';
+import '../../core/utils/localization_helper.dart';
 import '../../domain/entities/video.dart';
 
 class BookmarkCard extends StatefulWidget {
@@ -85,6 +86,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isLocked = video.isPremium && !isPremiumUser;
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
 
     return Container(
       width: 200,
@@ -120,7 +122,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    video.title,
+                    video.getLocalizedTitle(langCode),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                       fontSize: 13,

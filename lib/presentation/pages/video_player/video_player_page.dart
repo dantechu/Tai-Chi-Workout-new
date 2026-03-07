@@ -4,6 +4,7 @@ import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/utils/localization_helper.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/usecases/download_usecases.dart';
 import '../../../injection_container.dart';
@@ -139,13 +140,14 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         title: Text(
-          widget.video.title,
+          widget.video.getLocalizedTitle(langCode),
           style: const TextStyle(color: Colors.white),
         ),
         leading: IconButton(
@@ -314,11 +316,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Widget _buildVideoInfo() {
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.video.title,
+          widget.video.getLocalizedTitle(langCode),
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -358,7 +361,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Widget _buildVideoDescription() {
-    final description = widget.video.description ??
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
+    final description = widget.video.getLocalizedDescription(langCode) ??
         AppLocalizations.of(context)?.defaultVideoDescription ??
         'Master the art of Tai Chi with this comprehensive lesson.';
 
@@ -512,9 +516,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         },
         (downloadItem) {
           if (mounted) {
+            final langCode = LocalizationHelper.getCurrentLanguageCode(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Downloading ${widget.video.title}...'),
+                content: Text('Downloading ${widget.video.getLocalizedTitle(langCode)}...'),
                 backgroundColor: Colors.green,
                 duration: const Duration(seconds: 2),
               ),

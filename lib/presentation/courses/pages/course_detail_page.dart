@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/utils/localization_helper.dart';
 import '../../../domain/entities/course.dart';
 import '../bloc/courses_bloc.dart';
 import '../bloc/courses_event.dart';
@@ -27,9 +28,10 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     return BlocListener<CoursesBloc, CoursesState>(
       listener: (context, state) {
         if (state is CourseSelected) {
+          final langCode = LocalizationHelper.getCurrentLanguageCode(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${state.course.name} selected'),
+              content: Text('${state.course.getLocalizedName(langCode)} selected'),
               duration: const Duration(seconds: 2),
               behavior: SnackBarBehavior.floating,
             ),
@@ -84,11 +86,12 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.course.name,
+          widget.course.getLocalizedName(langCode),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -279,11 +282,13 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _buildDescription(BuildContext context) {
     final theme = Theme.of(context);
-    if (widget.course.description.isEmpty) {
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
+    final description = widget.course.getLocalizedDescription(langCode);
+
+    if (description.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final description = widget.course.description;
     final shouldTruncate = description.length > 150;
     final displayText = shouldTruncate && !_isDescriptionExpanded
         ? '${description.substring(0, 150)}...'
@@ -356,6 +361,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _buildSectionCard(BuildContext context, section) {
     final theme = Theme.of(context);
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
@@ -386,7 +392,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
           ),
         ),
         title: Text(
-          section.title,
+          section.getLocalizedTitle(langCode),
           style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.w600,
             fontSize: 15,
@@ -430,6 +436,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _buildVideoItem(BuildContext context, video) {
     final theme = Theme.of(context);
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
@@ -442,7 +449,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              video.title,
+              video.getLocalizedTitle(langCode),
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 13,
                 height: 1.3,

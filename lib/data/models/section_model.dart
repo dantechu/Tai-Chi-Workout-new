@@ -10,6 +10,14 @@ class SectionModel {
   final int order;
   final List<VideoModel> videos;
 
+  // Multi-language support fields
+  final String? titleDe;
+  final String? titleEs;
+  final String? titleFr;
+  final String? titleJa;
+  final String? titleKo;
+  final String? titleZh;
+
   const SectionModel({
     required this.id,
     required this.sectionNumber,
@@ -17,6 +25,13 @@ class SectionModel {
     required this.description,
     required this.order,
     required this.videos,
+    // Multi-language support
+    this.titleDe,
+    this.titleEs,
+    this.titleFr,
+    this.titleJa,
+    this.titleKo,
+    this.titleZh,
   });
 
   /// Create from Map
@@ -34,6 +49,13 @@ class SectionModel {
               ?.map((v) => VideoModel.fromMap(v as Map<String, dynamic>))
               .toList() ??
           [],
+      // Multi-language support
+      titleDe: map['title_de'] as String?,
+      titleEs: map['title_es'] as String?,
+      titleFr: map['title_fr'] as String?,
+      titleJa: map['title_ja'] as String?,
+      titleKo: map['title_ko'] as String?,
+      titleZh: map['title_zh'] as String?,
     );
   }
 
@@ -46,6 +68,13 @@ class SectionModel {
       'description': description,
       'order': order,
       'videos': videos.map((v) => v.toMap()).toList(),
+      // Multi-language support
+      'title_de': titleDe,
+      'title_es': titleEs,
+      'title_fr': titleFr,
+      'title_ja': titleJa,
+      'title_ko': titleKo,
+      'title_zh': titleZh,
     };
   }
 
@@ -58,6 +87,13 @@ class SectionModel {
       'description': description,
       'order': order,
       'videos': videos.map((v) => v.toHiveMap()).toList(),
+      // Multi-language support
+      'title_de': titleDe,
+      'title_es': titleEs,
+      'title_fr': titleFr,
+      'title_ja': titleJa,
+      'title_ko': titleKo,
+      'title_zh': titleZh,
     };
   }
 
@@ -70,6 +106,13 @@ class SectionModel {
       description: description,
       order: order,
       videos: videos.map((v) => v.toEntity()).toList(),
+      // Multi-language support
+      titleDe: titleDe,
+      titleEs: titleEs,
+      titleFr: titleFr,
+      titleJa: titleJa,
+      titleKo: titleKo,
+      titleZh: titleZh,
     );
   }
 
@@ -84,6 +127,13 @@ class SectionModel {
       videos: section.videos
           .map((v) => VideoModel.fromEntity(v))
           .toList(),
+      // Multi-language support
+      titleDe: section.titleDe,
+      titleEs: section.titleEs,
+      titleFr: section.titleFr,
+      titleJa: section.titleJa,
+      titleKo: section.titleKo,
+      titleZh: section.titleZh,
     );
   }
 }

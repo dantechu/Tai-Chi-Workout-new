@@ -10,6 +10,14 @@ class Section extends Equatable {
   final int order;
   final List<Video> videos;
 
+  // Multi-language support fields
+  final String? titleDe;
+  final String? titleEs;
+  final String? titleFr;
+  final String? titleJa;
+  final String? titleKo;
+  final String? titleZh;
+
   const Section({
     required this.id,
     required this.sectionNumber,
@@ -17,7 +25,34 @@ class Section extends Equatable {
     required this.description,
     required this.order,
     required this.videos,
+    // Multi-language support
+    this.titleDe,
+    this.titleEs,
+    this.titleFr,
+    this.titleJa,
+    this.titleKo,
+    this.titleZh,
   });
+
+  /// Get localized title based on language code
+  String getLocalizedTitle(String languageCode) {
+    switch (languageCode) {
+      case 'de':
+        return titleDe ?? title;
+      case 'es':
+        return titleEs ?? title;
+      case 'fr':
+        return titleFr ?? title;
+      case 'ja':
+        return titleJa ?? title;
+      case 'ko':
+        return titleKo ?? title;
+      case 'zh':
+        return titleZh ?? title;
+      default:
+        return title;
+    }
+  }
 
   /// Get total duration of all videos in this section
   Duration get totalDuration {
@@ -58,6 +93,12 @@ class Section extends Equatable {
     String? description,
     int? order,
     List<Video>? videos,
+    String? titleDe,
+    String? titleEs,
+    String? titleFr,
+    String? titleJa,
+    String? titleKo,
+    String? titleZh,
   }) {
     return Section(
       id: id ?? this.id,
@@ -66,6 +107,12 @@ class Section extends Equatable {
       description: description ?? this.description,
       order: order ?? this.order,
       videos: videos ?? this.videos,
+      titleDe: titleDe ?? this.titleDe,
+      titleEs: titleEs ?? this.titleEs,
+      titleFr: titleFr ?? this.titleFr,
+      titleJa: titleJa ?? this.titleJa,
+      titleKo: titleKo ?? this.titleKo,
+      titleZh: titleZh ?? this.titleZh,
     );
   }
 
@@ -77,6 +124,12 @@ class Section extends Equatable {
         description,
         order,
         videos,
+        titleDe,
+        titleEs,
+        titleFr,
+        titleJa,
+        titleKo,
+        titleZh,
       ];
 
   @override

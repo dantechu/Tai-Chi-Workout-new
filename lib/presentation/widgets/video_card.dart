@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/thumbnail_cache_service.dart';
+import '../../core/utils/localization_helper.dart';
 import '../../domain/entities/video.dart';
 import '../bloc/bookmark/bookmark_bloc.dart';
 import '../bloc/bookmark/bookmark_event.dart';
@@ -292,6 +293,7 @@ class _VideoCardState extends State<VideoCard> {
   }
 
   Widget _buildContent(ThemeData theme, bool isLocked) {
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       child: Column(
@@ -304,7 +306,7 @@ class _VideoCardState extends State<VideoCard> {
             children: [
               Expanded(
                 child: Text(
-                  video.title,
+                  video.getLocalizedTitle(langCode),
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,

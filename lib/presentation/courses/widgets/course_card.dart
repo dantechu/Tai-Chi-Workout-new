@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/utils/localization_helper.dart';
 import '../../../domain/entities/course.dart';
 
 class CourseCard extends StatelessWidget {
@@ -17,6 +18,8 @@ class CourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
+    final localizedDescription = course.getLocalizedDescription(langCode);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -43,7 +46,7 @@ class CourseCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(context, theme, colorScheme),
-                if (course.description.isNotEmpty) ...[
+                if (localizedDescription.isNotEmpty) ...[
                   const SizedBox(height: 10),
                   _buildDescription(context, theme),
                 ],
@@ -62,11 +65,12 @@ class CourseCard extends StatelessWidget {
     ThemeData theme,
     ColorScheme colorScheme,
   ) {
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Row(
       children: [
         Expanded(
           child: Text(
-            course.name,
+            course.getLocalizedName(langCode),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 17,
@@ -111,8 +115,9 @@ class CourseCard extends StatelessWidget {
   }
 
   Widget _buildDescription(BuildContext context, ThemeData theme) {
+    final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Text(
-      course.description,
+      course.getLocalizedDescription(langCode),
       style: theme.textTheme.bodyMedium?.copyWith(
         color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
         fontSize: 13,

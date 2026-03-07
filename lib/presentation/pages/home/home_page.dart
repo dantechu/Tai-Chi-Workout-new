@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/utils/localization_helper.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../domain/entities/video.dart';
 import '../../bloc/bookmark/bookmark_bloc.dart';
@@ -95,13 +96,14 @@ class _HomePageState extends State<HomePage> {
   Widget _buildHeader() {
     return BlocBuilder<CoursesBloc, CoursesState>(
       builder: (context, state) {
+        final langCode = LocalizationHelper.getCurrentLanguageCode(context);
         String courseName = '';
         if (state is SelectedCourseLoaded) {
-          courseName = state.course.name;
+          courseName = state.course.getLocalizedName(langCode);
         } else if (state is CoursesLoaded && state.selectedCourse != null) {
-          courseName = state.selectedCourse!.name;
+          courseName = state.selectedCourse!.getLocalizedName(langCode);
         } else if (state is CourseSelected) {
-          courseName = state.course.name;
+          courseName = state.course.getLocalizedName(langCode);
         }
 
         final theme = Theme.of(context);

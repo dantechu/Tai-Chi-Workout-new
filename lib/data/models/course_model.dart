@@ -17,6 +17,20 @@ class CourseModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
+  // Multi-language support fields
+  final String? nameDe;
+  final String? descriptionDe;
+  final String? nameEs;
+  final String? descriptionEs;
+  final String? nameFr;
+  final String? descriptionFr;
+  final String? nameJa;
+  final String? descriptionJa;
+  final String? nameKo;
+  final String? descriptionKo;
+  final String? nameZh;
+  final String? descriptionZh;
+
   const CourseModel({
     required this.id,
     required this.name,
@@ -30,6 +44,19 @@ class CourseModel {
     required this.metadata,
     this.createdAt,
     this.updatedAt,
+    // Multi-language support
+    this.nameDe,
+    this.descriptionDe,
+    this.nameEs,
+    this.descriptionEs,
+    this.nameFr,
+    this.descriptionFr,
+    this.nameJa,
+    this.descriptionJa,
+    this.nameKo,
+    this.descriptionKo,
+    this.nameZh,
+    this.descriptionZh,
   });
 
   /// Create from Firestore DocumentSnapshot
@@ -64,6 +91,19 @@ class CourseModel {
             ),
       createdAt: _parseDateTime(map['createdAt']),
       updatedAt: _parseDateTime(map['updatedAt']),
+      // Multi-language support
+      nameDe: map['name_de'] as String?,
+      descriptionDe: map['description_de'] as String?,
+      nameEs: map['name_es'] as String?,
+      descriptionEs: map['description_es'] as String?,
+      nameFr: map['name_fr'] as String?,
+      descriptionFr: map['description_fr'] as String?,
+      nameJa: map['name_ja'] as String?,
+      descriptionJa: map['description_ja'] as String?,
+      nameKo: map['name_ko'] as String?,
+      descriptionKo: map['description_ko'] as String?,
+      nameZh: map['name_zh'] as String?,
+      descriptionZh: map['description_zh'] as String?,
     );
   }
 
@@ -100,6 +140,19 @@ class CourseModel {
       'metadata': metadata.toMap(),
       'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : FieldValue.serverTimestamp(),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : FieldValue.serverTimestamp(),
+      // Multi-language support
+      'name_de': nameDe,
+      'description_de': descriptionDe,
+      'name_es': nameEs,
+      'description_es': descriptionEs,
+      'name_fr': nameFr,
+      'description_fr': descriptionFr,
+      'name_ja': nameJa,
+      'description_ja': descriptionJa,
+      'name_ko': nameKo,
+      'description_ko': descriptionKo,
+      'name_zh': nameZh,
+      'description_zh': descriptionZh,
     };
   }
 
@@ -117,6 +170,19 @@ class CourseModel {
       'metadata': metadata.toMap(),
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
+      // Multi-language support
+      'name_de': nameDe,
+      'description_de': descriptionDe,
+      'name_es': nameEs,
+      'description_es': descriptionEs,
+      'name_fr': nameFr,
+      'description_fr': descriptionFr,
+      'name_ja': nameJa,
+      'description_ja': descriptionJa,
+      'name_ko': nameKo,
+      'description_ko': descriptionKo,
+      'name_zh': nameZh,
+      'description_zh': descriptionZh,
     };
   }
 
@@ -135,6 +201,19 @@ class CourseModel {
       metadata: metadata.toEntity(),
       createdAt: createdAt,
       updatedAt: updatedAt,
+      // Multi-language support
+      nameDe: nameDe,
+      descriptionDe: descriptionDe,
+      nameEs: nameEs,
+      descriptionEs: descriptionEs,
+      nameFr: nameFr,
+      descriptionFr: descriptionFr,
+      nameJa: nameJa,
+      descriptionJa: descriptionJa,
+      nameKo: nameKo,
+      descriptionKo: descriptionKo,
+      nameZh: nameZh,
+      descriptionZh: descriptionZh,
     );
   }
 
@@ -155,6 +234,19 @@ class CourseModel {
       metadata: CourseMetadataModel.fromEntity(course.metadata),
       createdAt: course.createdAt,
       updatedAt: course.updatedAt,
+      // Multi-language support
+      nameDe: course.nameDe,
+      descriptionDe: course.descriptionDe,
+      nameEs: course.nameEs,
+      descriptionEs: course.descriptionEs,
+      nameFr: course.nameFr,
+      descriptionFr: course.descriptionFr,
+      nameJa: course.nameJa,
+      descriptionJa: course.descriptionJa,
+      nameKo: course.nameKo,
+      descriptionKo: course.descriptionKo,
+      nameZh: course.nameZh,
+      descriptionZh: course.descriptionZh,
     );
   }
 }

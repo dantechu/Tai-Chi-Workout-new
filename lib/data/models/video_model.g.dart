@@ -26,6 +26,18 @@ VideoModel _$VideoModelFromJson(Map<String, dynamic> json) => VideoModel(
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      titleDe: json['titleDe'] as String?,
+      descriptionDe: json['descriptionDe'] as String?,
+      titleEs: json['titleEs'] as String?,
+      descriptionEs: json['descriptionEs'] as String?,
+      titleFr: json['titleFr'] as String?,
+      descriptionFr: json['descriptionFr'] as String?,
+      titleJa: json['titleJa'] as String?,
+      descriptionJa: json['descriptionJa'] as String?,
+      titleKo: json['titleKo'] as String?,
+      descriptionKo: json['descriptionKo'] as String?,
+      titleZh: json['titleZh'] as String?,
+      descriptionZh: json['descriptionZh'] as String?,
     );
 
 Map<String, dynamic> _$VideoModelToJson(VideoModel instance) =>
@@ -43,4 +55,16 @@ Map<String, dynamic> _$VideoModelToJson(VideoModel instance) =>
       'tags': instance.tags,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'titleDe': instance.titleDe,
+      'descriptionDe': instance.descriptionDe,
+      'titleEs': instance.titleEs,
+      'descriptionEs': instance.descriptionEs,
+      'titleFr': instance.titleFr,
+      'descriptionFr': instance.descriptionFr,
+      'titleJa': instance.titleJa,
+      'descriptionJa': instance.descriptionJa,
+      'titleKo': instance.titleKo,
+      'descriptionKo': instance.descriptionKo,
+      'titleZh': instance.titleZh,
+      'descriptionZh': instance.descriptionZh,
     };

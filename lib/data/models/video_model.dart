@@ -20,6 +20,19 @@ class VideoModel extends Video {
     super.tags = const [],
     super.createdAt,
     super.updatedAt,
+    // Multi-language support
+    super.titleDe,
+    super.descriptionDe,
+    super.titleEs,
+    super.descriptionEs,
+    super.titleFr,
+    super.descriptionFr,
+    super.titleJa,
+    super.descriptionJa,
+    super.titleKo,
+    super.descriptionKo,
+    super.titleZh,
+    super.descriptionZh,
   });
 
   factory VideoModel.fromJson(Map<String, dynamic> json) => _$VideoModelFromJson(json);
@@ -46,6 +59,19 @@ class VideoModel extends Video {
       tags: (map['tags'] as List<dynamic>?)?.cast<String>() ?? [],
       createdAt: _parseDateTime(map['createdAt']),
       updatedAt: _parseDateTime(map['updatedAt']),
+      // Multi-language support
+      titleDe: map['title_de'] as String?,
+      descriptionDe: map['description_de'] as String?,
+      titleEs: map['title_es'] as String?,
+      descriptionEs: map['description_es'] as String?,
+      titleFr: map['title_fr'] as String?,
+      descriptionFr: map['description_fr'] as String?,
+      titleJa: map['title_ja'] as String?,
+      descriptionJa: map['description_ja'] as String?,
+      titleKo: map['title_ko'] as String?,
+      descriptionKo: map['description_ko'] as String?,
+      titleZh: map['title_zh'] as String?,
+      descriptionZh: map['description_zh'] as String?,
     );
   }
 
@@ -89,6 +115,19 @@ class VideoModel extends Video {
       'updatedAt': updatedAt != null
           ? Timestamp.fromDate(updatedAt!)
           : FieldValue.serverTimestamp(),
+      // Multi-language support
+      'title_de': titleDe,
+      'description_de': descriptionDe,
+      'title_es': titleEs,
+      'description_es': descriptionEs,
+      'title_fr': titleFr,
+      'description_fr': descriptionFr,
+      'title_ja': titleJa,
+      'description_ja': descriptionJa,
+      'title_ko': titleKo,
+      'description_ko': descriptionKo,
+      'title_zh': titleZh,
+      'description_zh': descriptionZh,
     };
   }
 
@@ -109,6 +148,19 @@ class VideoModel extends Video {
       'tags': tags,
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
+      // Multi-language support
+      'title_de': titleDe,
+      'description_de': descriptionDe,
+      'title_es': titleEs,
+      'description_es': descriptionEs,
+      'title_fr': titleFr,
+      'description_fr': descriptionFr,
+      'title_ja': titleJa,
+      'description_ja': descriptionJa,
+      'title_ko': titleKo,
+      'description_ko': descriptionKo,
+      'title_zh': titleZh,
+      'description_zh': descriptionZh,
     };
   }
 
@@ -127,6 +179,19 @@ class VideoModel extends Video {
       tags: entity.tags,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      // Multi-language support
+      titleDe: entity.titleDe,
+      descriptionDe: entity.descriptionDe,
+      titleEs: entity.titleEs,
+      descriptionEs: entity.descriptionEs,
+      titleFr: entity.titleFr,
+      descriptionFr: entity.descriptionFr,
+      titleJa: entity.titleJa,
+      descriptionJa: entity.descriptionJa,
+      titleKo: entity.titleKo,
+      descriptionKo: entity.descriptionKo,
+      titleZh: entity.titleZh,
+      descriptionZh: entity.descriptionZh,
     );
   }
 
@@ -145,6 +210,19 @@ class VideoModel extends Video {
       tags: tags,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      // Multi-language support
+      titleDe: titleDe,
+      descriptionDe: descriptionDe,
+      titleEs: titleEs,
+      descriptionEs: descriptionEs,
+      titleFr: titleFr,
+      descriptionFr: descriptionFr,
+      titleJa: titleJa,
+      descriptionJa: descriptionJa,
+      titleKo: titleKo,
+      descriptionKo: descriptionKo,
+      titleZh: titleZh,
+      descriptionZh: descriptionZh,
     );
   }
 
@@ -189,6 +267,18 @@ class VideoModel extends Video {
     List<String>? tags,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? titleDe,
+    String? descriptionDe,
+    String? titleEs,
+    String? descriptionEs,
+    String? titleFr,
+    String? descriptionFr,
+    String? titleJa,
+    String? descriptionJa,
+    String? titleKo,
+    String? descriptionKo,
+    String? titleZh,
+    String? descriptionZh,
   }) {
     return VideoModel(
       id: id ?? this.id,
@@ -204,6 +294,18 @@ class VideoModel extends Video {
       tags: tags ?? this.tags,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      titleDe: titleDe ?? this.titleDe,
+      descriptionDe: descriptionDe ?? this.descriptionDe,
+      titleEs: titleEs ?? this.titleEs,
+      descriptionEs: descriptionEs ?? this.descriptionEs,
+      titleFr: titleFr ?? this.titleFr,
+      descriptionFr: descriptionFr ?? this.descriptionFr,
+      titleJa: titleJa ?? this.titleJa,
+      descriptionJa: descriptionJa ?? this.descriptionJa,
+      titleKo: titleKo ?? this.titleKo,
+      descriptionKo: descriptionKo ?? this.descriptionKo,
+      titleZh: titleZh ?? this.titleZh,
+      descriptionZh: descriptionZh ?? this.descriptionZh,
     );
   }
 }
