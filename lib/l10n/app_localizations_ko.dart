@@ -431,6 +431,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get breathe => '호흡';
 
   @override
+  String get min => '분';
+
+  @override
   String get wellDone => '🎉 잘하셨습니다!';
 
   @override

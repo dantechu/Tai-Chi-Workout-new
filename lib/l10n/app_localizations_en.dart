@@ -434,6 +434,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get breathe => 'Breathe';
 
   @override
+  String get min => 'min';
+
+  @override
   String get wellDone => '🎉 Well Done!';
 
   @override

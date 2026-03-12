@@ -428,6 +428,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get breathe => '呼吸';
 
   @override
+  String get min => '分钟';
+
+  @override
   String get wellDone => '🎉 很棒！';
 
   @override

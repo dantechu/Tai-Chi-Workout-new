@@ -38,7 +38,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       ),
       NavigationItem(
         icon: Icons.school,
-        label: 'Courses',
+        label: AppLocalizations.of(context)?.courses ?? 'Courses',
         page: const CoursesPage(),
       ),
       NavigationItem(

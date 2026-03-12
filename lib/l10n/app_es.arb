@@ -182,6 +182,7 @@
   
   "hold": "Mantener",
   "breathe": "Respirar",
+  "min": "min",
   "wellDone": "🎉 ¡Bien Hecho!",
   "breathingSessionComplete": "Has completado tu sesión de respiración. Tómate un momento para notar cómo te sientes.",
   "holdSeconds": "Mantener {seconds}s",

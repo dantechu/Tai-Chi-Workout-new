@@ -187,6 +187,7 @@
   
   "hold": "Hold",
   "breathe": "Breathe",
+  "min": "min",
   "wellDone": "🎉 Well Done!",
   "breathingSessionComplete": "You have completed your breathing session. Take a moment to notice how you feel.",
   "holdSeconds": "Hold {seconds}s",

@@ -182,6 +182,7 @@
   
   "hold": "保持",
   "breathe": "呼吸",
+  "min": "分钟",
   "wellDone": "🎉 很棒！",
   "breathingSessionComplete": "您已完成呼吸练习。花点时间感受一下您现在的感觉。",
   "holdSeconds": "保持{seconds}秒",

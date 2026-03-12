@@ -182,6 +182,7 @@
   
   "hold": "유지",
   "breathe": "호흡",
+  "min": "분",
   "wellDone": "🎉 잘하셨습니다!",
   "breathingSessionComplete": "호흡 세션을 완료했습니다. 잠시 시간을 내어 기분이 어떤지 느껴보세요.",
   "holdSeconds": "유지 {seconds}초",

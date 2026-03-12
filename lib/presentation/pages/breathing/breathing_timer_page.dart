@@ -334,7 +334,7 @@ class _BreathingSetupScreenState extends State<BreathingSetupScreen>
                       ),
                     ),
                     Text(
-                      'min',
+                      AppLocalizations.of(context)?.min ?? 'min',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         color: isSelected

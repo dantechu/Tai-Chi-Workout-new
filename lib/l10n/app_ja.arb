@@ -182,6 +182,7 @@
   
   "hold": "止める",
   "breathe": "呼吸",
+  "min": "分",
   "wellDone": "🎉 よくできました！",
   "breathingSessionComplete": "呼吸セッションが完了しました。どのような感覚か確認してみてください。",
   "holdSeconds": "止める{seconds}秒",

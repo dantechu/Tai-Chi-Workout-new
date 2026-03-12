@@ -182,6 +182,7 @@
   
   "hold": "Halten",
   "breathe": "Atmen",
+  "min": "Min",
   "wellDone": "🎉 Gut gemacht!",
   "breathingSessionComplete": "Sie haben Ihre Atemsitzung abgeschlossen. Nehmen Sie sich einen Moment Zeit, um zu bemerken, wie Sie sich fühlen.",
   "holdSeconds": "Halten {seconds}s",

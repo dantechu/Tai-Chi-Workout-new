@@ -430,6 +430,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get breathe => '呼吸';
 
   @override
+  String get min => '分';
+
+  @override
   String get wellDone => '🎉 よくできました！';
 
   @override
