@@ -91,7 +91,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get premiumFeature4 => 'Support prioritaire';
 
   @override
-  String get premiumPrice => '\$9.99';
+  String get premiumPrice => '\$4.99';
 
   @override
   String get purchase => 'Acheter Premium';

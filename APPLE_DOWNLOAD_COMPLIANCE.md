@@ -13,7 +13,7 @@ This document outlines how the offline download feature complies with Apple's Ap
 **Policy**: Downloaded content that is part of a paid feature must use Apple's In-App Purchase system.
 
 **Our Implementation**:
-- ✅ Downloads are gated behind premium subscription ($1.99)
+- ✅ Downloads are gated behind premium subscription ($4.99)
 - ✅ Uses `in_app_purchase` package (Apple's StoreKit)
 - ✅ Product ID: `com.amazingelearning.chikung.Premium`
 - ✅ Non-consumable purchase (one-time payment)
@@ -190,7 +190,7 @@ OFFLINE DOWNLOADS:
 
 Our app allows premium users to download Tai Chi instructional videos
 for offline viewing. This feature requires a premium subscription
-($1.99 one-time purchase via In-App Purchase).
+($4.99 one-time purchase via In-App Purchase).
 
 Download Implementation:
 - Videos stored in Application Support directory (not backed up to iCloud)
@@ -201,7 +201,7 @@ Download Implementation:
 Premium Subscription:
 - Product ID: com.amazingelearning.chikung.Premium
 - Type: Non-consumable (one-time purchase)
-- Price: $1.99 USD
+- Price: $4.99 USD
 - Features: Offline downloads, No ads, Priority support
 
 All video content is educational Tai Chi/Qigong instruction,

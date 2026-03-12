@@ -10,7 +10,7 @@ This guide covers everything you need to know to get your iOS in-app purchase wo
 
 ### Code Implementation
 - ✅ Product ID: `com.amazingelearning.chikung.Premium` (matches your approved product)
-- ✅ Price: $1.99 USD
+- ✅ Price: $4.99 USD
 - ✅ Purchase flow fully implemented
 - ✅ Restore purchases working
 - ✅ Error handling with user-friendly messages
@@ -91,7 +91,7 @@ cd ..
 2. Find product: `com.amazingelearning.chikung.Premium`
 3. Verify:
    - ✅ Status: **Ready to Submit** or **Approved**
-   - ✅ Price: $1.99 USD (or Tier 1)
+   - ✅ Price: $4.99 USD
    - ✅ Type: Non-Consumable
    - ✅ Display Name & Description filled in
    - ✅ Associated with your app
@@ -165,7 +165,7 @@ flutter build ios --release
 - [ ] App bundle ID matches: `com.amazingelearning.chikung`
 - [ ] Product `com.amazingelearning.chikung.Premium` exists
 - [ ] Product status: Ready to Submit or Approved
-- [ ] Product price: $1.99
+- [ ] Product price: $4.99
 - [ ] Product description and display name filled
 
 ### Testing:
@@ -206,7 +206,7 @@ IN-APP PURCHASE TESTING:
 This app contains a non-consumable in-app purchase for premium features.
 
 Product ID: com.amazingelearning.chikung.Premium
-Price: $1.99 USD
+Price: $4.99 USD
 
 To test:
 1. Navigate to Settings or Premium section
@@ -233,11 +233,11 @@ Premium features include: Offline downloads, Ad-free experience, Priority suppor
 
 ### What Happens:
 1. ✅ User opens app → navigates to Premium page
-2. ✅ Price loads from App Store ($1.99)
+2. ✅ Price loads from App Store ($4.99)
 3. ✅ User taps "Purchase Premium"
 4. ✅ Apple payment dialog appears
 5. ✅ User authenticates with Face ID/Touch ID
-6. ✅ **User is charged $1.99** (real money in production)
+6. ✅ **User is charged $4.99** (real money in production)
 7. ✅ Purchase completes
 8. ✅ Premium features unlock immediately
 9. ✅ Premium persists forever
@@ -379,7 +379,7 @@ Premium features include: Offline downloads, Ad-free experience, Priority suppor
 ### Product Details:
 - **Product ID**: `com.amazingelearning.chikung.Premium`
 - **Type**: Non-Consumable (one-time purchase)
-- **Price**: $1.99 USD
+- **Price**: $4.99 USD
 - **Status**: Approved ✅
 
 ### Bundle IDs:
@@ -437,4 +437,4 @@ Premium features include: Offline downloads, Ad-free experience, Priority suppor
 
 **Status**: ✅ Ready for iOS Production
 **Next Step**: Update bundle ID in Xcode → Test in Sandbox → Submit to App Store
-**Expected Result**: 100% working in-app purchase with $1.99 lifetime premium 🎉
+**Expected Result**: 100% working in-app purchase with $4.99 lifetime premium 🎉

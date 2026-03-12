@@ -273,7 +273,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumPrice.
   ///
   /// In en, this message translates to:
-  /// **'\$9.99'**
+  /// **'\$4.99'**
   String get premiumPrice;
 
   /// No description provided for @purchase.

@@ -90,7 +90,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumFeature4 => '优先支持';
 
   @override
-  String get premiumPrice => '\$9.99';
+  String get premiumPrice => '\$4.99';
 
   @override
   String get purchase => '购买高级版';
