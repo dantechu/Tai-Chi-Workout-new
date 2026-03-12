@@ -413,6 +413,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get artistZenCollection => 'Zen Collection';
 
   @override
+  String get artistAmbientMeditation => 'Ambient Meditation';
+
+  @override
+  String get artistDeepRelaxation => 'Deep Relaxation';
+
+  @override
+  String get artistNewAgeZen => 'New Age Zen';
+
+  @override
+  String get artistMeditationSounds => 'Meditation Sounds';
+
+  @override
   String get playlist => 'Playlist';
 
   @override
@@ -545,4 +557,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exhaleSlowly => 'Exhale slowly and completely';
+
+  @override
+  String get courses => 'Courses';
+
+  @override
+  String get refreshCourses => 'Refresh courses';
+
+  @override
+  String get courseSelected => 'selected';
+
+  @override
+  String get errorLoadingCourses => 'Error Loading Courses';
+
+  @override
+  String get noCoursesAvailable => 'No Courses Available';
+
+  @override
+  String get checkBackLater => 'Check back later for new courses';
 }

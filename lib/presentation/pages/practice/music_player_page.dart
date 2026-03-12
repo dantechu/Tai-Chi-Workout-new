@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:math' as math;
+import '../../../l10n/app_localizations.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   const MusicPlayerPage({super.key});
@@ -19,41 +20,44 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   int _currentTrackIndex = 0;
   Duration _position = Duration.zero;
   Duration _duration = const Duration(minutes: 5);
+  static const int _trackCount = 4;
 
-  final List<MusicTrack> _tracks = [
-    MusicTrack(
-      title: 'Peaceful Morning',
-      artist: 'Ambient Meditation',
-      duration: const Duration(minutes: 5, seconds: 32),
-      albumArt: '🌅',
-      color: const Color(0xFFFF6B6B),
-      audioPath: 'audio/music/peaceful_morning.mp3',
-    ),
-    MusicTrack(
-      title: 'Flowing Water',
-      artist: 'Deep Relaxation',
-      duration: const Duration(minutes: 7, seconds: 18),
-      albumArt: '🌊',
-      color: const Color(0xFF4ECDC4),
-      audioPath: 'audio/music/flowing_water.mp3',
-    ),
-    MusicTrack(
-      title: 'Mountain Breeze',
-      artist: 'New Age Zen',
-      duration: const Duration(minutes: 6, seconds: 45),
-      albumArt: '🏔️',
-      color: const Color(0xFF95E1D3),
-      audioPath: 'audio/music/mountain_breeze.mp3',
-    ),
-    MusicTrack(
-      title: 'Inner Peace',
-      artist: 'Meditation Sounds',
-      duration: const Duration(minutes: 8, seconds: 12),
-      albumArt: '🧘',
-      color: const Color(0xFFFFA07A),
-      audioPath: 'audio/music/inner_peace.mp3',
-    ),
-  ];
+  List<MusicTrack> _getTracks(BuildContext context) {
+    return [
+      MusicTrack(
+        title: AppLocalizations.of(context)?.trackPeacefulMorning ?? 'Peaceful Morning',
+        artist: AppLocalizations.of(context)?.artistAmbientMeditation ?? 'Ambient Meditation',
+        duration: const Duration(minutes: 5, seconds: 32),
+        albumArt: '🌅',
+        color: const Color(0xFFFF6B6B),
+        audioPath: 'audio/music/peaceful_morning.mp3',
+      ),
+      MusicTrack(
+        title: AppLocalizations.of(context)?.trackFlowingWater ?? 'Flowing Water',
+        artist: AppLocalizations.of(context)?.artistDeepRelaxation ?? 'Deep Relaxation',
+        duration: const Duration(minutes: 7, seconds: 18),
+        albumArt: '🌊',
+        color: const Color(0xFF4ECDC4),
+        audioPath: 'audio/music/flowing_water.mp3',
+      ),
+      MusicTrack(
+        title: AppLocalizations.of(context)?.trackMountainBreeze ?? 'Mountain Breeze',
+        artist: AppLocalizations.of(context)?.artistNewAgeZen ?? 'New Age Zen',
+        duration: const Duration(minutes: 6, seconds: 45),
+        albumArt: '🏔️',
+        color: const Color(0xFF95E1D3),
+        audioPath: 'audio/music/mountain_breeze.mp3',
+      ),
+      MusicTrack(
+        title: AppLocalizations.of(context)?.trackInnerPeace ?? 'Inner Peace',
+        artist: AppLocalizations.of(context)?.artistMeditationSounds ?? 'Meditation Sounds',
+        duration: const Duration(minutes: 8, seconds: 12),
+        albumArt: '🧘',
+        color: const Color(0xFFFFA07A),
+        audioPath: 'audio/music/inner_peace.mp3',
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -123,7 +127,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       if (_isPlaying) {
         await _audioPlayer.pause();
       } else {
-        final currentTrack = _tracks[_currentTrackIndex];
+        final currentTrack = _getTracks(context)[_currentTrackIndex];
         if (currentTrack.audioPath != null) {
           await _audioPlayer.play(AssetSource(currentTrack.audioPath!));
         } else {
@@ -158,7 +162,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   Future<void> _previousTrack() async {
     await _audioPlayer.stop();
     setState(() {
-      _currentTrackIndex = (_currentTrackIndex - 1 + _tracks.length) % _tracks.length;
+      _currentTrackIndex = (_currentTrackIndex - 1 + _trackCount) % _trackCount;
       _position = Duration.zero;
     });
 
@@ -170,7 +174,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   Future<void> _nextTrack() async {
     await _audioPlayer.stop();
     setState(() {
-      _currentTrackIndex = (_currentTrackIndex + 1) % _tracks.length;
+      _currentTrackIndex = (_currentTrackIndex + 1) % _trackCount;
       _position = Duration.zero;
     });
 
@@ -195,7 +199,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final currentTrack = _tracks[_currentTrackIndex];
+    final currentTrack = _getTracks(context)[_currentTrackIndex];
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
@@ -338,7 +342,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        _tracks.length,
+        _trackCount,
         (index) => AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -346,7 +350,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           height: 8,
           decoration: BoxDecoration(
             color: index == _currentTrackIndex
-                ? _tracks[_currentTrackIndex].color
+                ? _getTracks(context)[_currentTrackIndex].color
                 : theme.colorScheme.outline.withValues(alpha:0.3),
             borderRadius: BorderRadius.circular(4),
           ),
@@ -356,7 +360,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget _buildProgressSection(ThemeData theme) {
-    final currentTrack = _tracks[_currentTrackIndex];
+    final currentTrack = _getTracks(context)[_currentTrackIndex];
     return Column(
       children: [
         SliderTheme(
@@ -408,7 +412,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget _buildControlButtons(ThemeData theme) {
-    final currentTrack = _tracks[_currentTrackIndex];
+    final currentTrack = _getTracks(context)[_currentTrackIndex];
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

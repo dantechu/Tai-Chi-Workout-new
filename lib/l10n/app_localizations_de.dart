@@ -414,6 +414,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get artistZenCollection => 'Zen Kollektion';
 
   @override
+  String get artistAmbientMeditation => 'Ambient Meditation';
+
+  @override
+  String get artistDeepRelaxation => 'Tiefe Entspannung';
+
+  @override
+  String get artistNewAgeZen => 'New Age Zen';
+
+  @override
+  String get artistMeditationSounds => 'Meditationsklänge';
+
+  @override
   String get playlist => 'Wiedergabeliste';
 
   @override
@@ -546,4 +558,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get exhaleSlowly => 'Atmen Sie langsam und vollständig aus';
+
+  @override
+  String get courses => 'Kurse';
+
+  @override
+  String get refreshCourses => 'Kurse aktualisieren';
+
+  @override
+  String get courseSelected => 'ausgewählt';
+
+  @override
+  String get errorLoadingCourses => 'Fehler beim Laden der Kurse';
+
+  @override
+  String get noCoursesAvailable => 'Keine Kurse Verfügbar';
+
+  @override
+  String get checkBackLater => 'Schauen Sie später nach neuen Kursen';
 }

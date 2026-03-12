@@ -173,6 +173,10 @@
   "artistNatureSounds": "自然の音",
   "artistMeditationMusic": "瞑想音楽",
   "artistZenCollection": "禅コレクション",
+  "artistAmbientMeditation": "アンビエント瞑想",
+  "artistDeepRelaxation": "深いリラクゼーション",
+  "artistNewAgeZen": "ニューエイジ禅",
+  "artistMeditationSounds": "瞑想サウンド",
   "playlist": "プレイリスト",
   
   "hold": "止める",
@@ -226,5 +230,12 @@
   "resume": "再開",
   "breatheInSlowly": "ゆっくりと深く息を吸って",
   "holdYourBreath": "優しく息を止めて",
-  "exhaleSlowly": "ゆっくりと完全に息を吐いて"
+  "exhaleSlowly": "ゆっくりと完全に息を吐いて",
+
+  "courses": "コース",
+  "refreshCourses": "コースを更新",
+  "courseSelected": "選択されました",
+  "errorLoadingCourses": "コースの読み込みエラー",
+  "noCoursesAvailable": "利用可能なコースがありません",
+  "checkBackLater": "後で新しいコースを確認してください"
 }

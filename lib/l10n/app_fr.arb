@@ -173,6 +173,10 @@
   "artistNatureSounds": "Sons de la Nature",
   "artistMeditationMusic": "Musique de Méditation",
   "artistZenCollection": "Collection Zen",
+  "artistAmbientMeditation": "Méditation Ambiante",
+  "artistDeepRelaxation": "Relaxation Profonde",
+  "artistNewAgeZen": "Zen Nouvel Âge",
+  "artistMeditationSounds": "Sons de Méditation",
   "playlist": "Liste de Lecture",
   
   "hold": "Tenir",
@@ -226,5 +230,12 @@
   "resume": "Reprendre",
   "breatheInSlowly": "Inspirez lentement et profondément",
   "holdYourBreath": "Retenez votre souffle doucement",
-  "exhaleSlowly": "Expirez lentement et complètement"
+  "exhaleSlowly": "Expirez lentement et complètement",
+
+  "courses": "Cours",
+  "refreshCourses": "Actualiser les cours",
+  "courseSelected": "sélectionné",
+  "errorLoadingCourses": "Erreur de Chargement des Cours",
+  "noCoursesAvailable": "Aucun Cours Disponible",
+  "checkBackLater": "Revenez plus tard pour de nouveaux cours"
 }

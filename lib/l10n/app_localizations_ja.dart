@@ -409,6 +409,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get artistZenCollection => '禅コレクション';
 
   @override
+  String get artistAmbientMeditation => 'アンビエント瞑想';
+
+  @override
+  String get artistDeepRelaxation => '深いリラクゼーション';
+
+  @override
+  String get artistNewAgeZen => 'ニューエイジ禅';
+
+  @override
+  String get artistMeditationSounds => '瞑想サウンド';
+
+  @override
   String get playlist => 'プレイリスト';
 
   @override
@@ -531,4 +543,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get exhaleSlowly => 'ゆっくりと完全に息を吐いて';
+
+  @override
+  String get courses => 'コース';
+
+  @override
+  String get refreshCourses => 'コースを更新';
+
+  @override
+  String get courseSelected => '選択されました';
+
+  @override
+  String get errorLoadingCourses => 'コースの読み込みエラー';
+
+  @override
+  String get noCoursesAvailable => '利用可能なコースがありません';
+
+  @override
+  String get checkBackLater => '後で新しいコースを確認してください';
 }

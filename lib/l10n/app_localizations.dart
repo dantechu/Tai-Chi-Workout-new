@@ -858,6 +858,30 @@ abstract class AppLocalizations {
   /// **'Zen Collection'**
   String get artistZenCollection;
 
+  /// No description provided for @artistAmbientMeditation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ambient Meditation'**
+  String get artistAmbientMeditation;
+
+  /// No description provided for @artistDeepRelaxation.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep Relaxation'**
+  String get artistDeepRelaxation;
+
+  /// No description provided for @artistNewAgeZen.
+  ///
+  /// In en, this message translates to:
+  /// **'New Age Zen'**
+  String get artistNewAgeZen;
+
+  /// No description provided for @artistMeditationSounds.
+  ///
+  /// In en, this message translates to:
+  /// **'Meditation Sounds'**
+  String get artistMeditationSounds;
+
   /// No description provided for @playlist.
   ///
   /// In en, this message translates to:
@@ -1097,6 +1121,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exhale slowly and completely'**
   String get exhaleSlowly;
+
+  /// No description provided for @courses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get courses;
+
+  /// No description provided for @refreshCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh courses'**
+  String get refreshCourses;
+
+  /// No description provided for @courseSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get courseSelected;
+
+  /// No description provided for @errorLoadingCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Error Loading Courses'**
+  String get errorLoadingCourses;
+
+  /// No description provided for @noCoursesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No Courses Available'**
+  String get noCoursesAvailable;
+
+  /// No description provided for @checkBackLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Check back later for new courses'**
+  String get checkBackLater;
 }
 
 class _AppLocalizationsDelegate

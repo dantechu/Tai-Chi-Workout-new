@@ -407,6 +407,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get artistZenCollection => '禅意合集';
 
   @override
+  String get artistAmbientMeditation => '环境冥想';
+
+  @override
+  String get artistDeepRelaxation => '深度放松';
+
+  @override
+  String get artistNewAgeZen => '新时代禅';
+
+  @override
+  String get artistMeditationSounds => '冥想音响';
+
+  @override
   String get playlist => '播放列表';
 
   @override
@@ -528,4 +540,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get exhaleSlowly => '缓慢完全地呼气';
+
+  @override
+  String get courses => '课程';
+
+  @override
+  String get refreshCourses => '刷新课程';
+
+  @override
+  String get courseSelected => '已选择';
+
+  @override
+  String get errorLoadingCourses => '课程加载错误';
+
+  @override
+  String get noCoursesAvailable => '暂无课程';
+
+  @override
+  String get checkBackLater => '稍后回来查看新课程';
 }

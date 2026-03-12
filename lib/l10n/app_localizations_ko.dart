@@ -410,6 +410,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get artistZenCollection => '선 컬렉션';
 
   @override
+  String get artistAmbientMeditation => '앰비언트 명상';
+
+  @override
+  String get artistDeepRelaxation => '깊은 이완';
+
+  @override
+  String get artistNewAgeZen => '뉴에이지 선';
+
+  @override
+  String get artistMeditationSounds => '명상 사운드';
+
+  @override
   String get playlist => '재생목록';
 
   @override
@@ -533,4 +545,22 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get exhaleSlowly => '천천히 완전히 숨을 내쉬세요';
+
+  @override
+  String get courses => '코스';
+
+  @override
+  String get refreshCourses => '코스 새로고침';
+
+  @override
+  String get courseSelected => '선택됨';
+
+  @override
+  String get errorLoadingCourses => '코스 로딩 오류';
+
+  @override
+  String get noCoursesAvailable => '사용 가능한 코스 없음';
+
+  @override
+  String get checkBackLater => '나중에 새 코스를 확인하세요';
 }

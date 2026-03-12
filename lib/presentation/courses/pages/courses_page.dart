@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../l10n/app_localizations.dart';
 import '../bloc/courses_bloc.dart';
 import '../bloc/courses_event.dart';
 import '../bloc/courses_state.dart';
@@ -27,14 +28,14 @@ class _CoursesPageState extends State<CoursesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Courses'),
+        title: Text(AppLocalizations.of(context)?.courses ?? 'Courses'),
         elevation: 0,
         actions: [
           BlocBuilder<CoursesBloc, CoursesState>(
             builder: (context, state) {
               return IconButton(
                 icon: const Icon(Icons.refresh_rounded),
-                tooltip: 'Refresh courses',
+                tooltip: AppLocalizations.of(context)?.refreshCourses ?? 'Refresh courses',
                 onPressed: () {
                   context.read<CoursesBloc>().add(const RefreshCourses());
                 },
@@ -48,7 +49,7 @@ class _CoursesPageState extends State<CoursesPage> {
           if (state is CourseSelected) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('${state.course.name} selected'),
+                content: Text('${state.course.name} ${AppLocalizations.of(context)?.courseSelected ?? 'selected'}'),
                 duration: const Duration(seconds: 2),
                 behavior: SnackBarBehavior.floating,
               ),
@@ -135,7 +136,7 @@ class _CoursesPageState extends State<CoursesPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Error Loading Courses',
+              AppLocalizations.of(context)?.errorLoadingCourses ?? 'Error Loading Courses',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -157,7 +158,7 @@ class _CoursesPageState extends State<CoursesPage> {
                 context.read<CoursesBloc>().add(const LoadCourses());
               },
               icon: const Icon(Icons.refresh_rounded, size: 18),
-              label: const Text('Retry'),
+              label: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
@@ -186,7 +187,7 @@ class _CoursesPageState extends State<CoursesPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              'No Courses Available',
+              AppLocalizations.of(context)?.noCoursesAvailable ?? 'No Courses Available',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -194,7 +195,7 @@ class _CoursesPageState extends State<CoursesPage> {
             ),
             const SizedBox(height: 10),
             Text(
-              'Check back later for new courses',
+              AppLocalizations.of(context)?.checkBackLater ?? 'Check back later for new courses',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 fontSize: 14,

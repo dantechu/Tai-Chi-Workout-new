@@ -173,6 +173,10 @@
   "artistNatureSounds": "자연의 소리",
   "artistMeditationMusic": "명상 음악",
   "artistZenCollection": "선 컬렉션",
+  "artistAmbientMeditation": "앰비언트 명상",
+  "artistDeepRelaxation": "깊은 이완",
+  "artistNewAgeZen": "뉴에이지 선",
+  "artistMeditationSounds": "명상 사운드",
   "playlist": "재생목록",
   
   "hold": "유지",
@@ -226,5 +230,12 @@
   "resume": "재개",
   "breatheInSlowly": "천천히 깊게 숨을 들이마시세요",
   "holdYourBreath": "부드럽게 숨을 참으세요",
-  "exhaleSlowly": "천천히 완전히 숨을 내쉬세요"
+  "exhaleSlowly": "천천히 완전히 숨을 내쉬세요",
+
+  "courses": "코스",
+  "refreshCourses": "코스 새로고침",
+  "courseSelected": "선택됨",
+  "errorLoadingCourses": "코스 로딩 오류",
+  "noCoursesAvailable": "사용 가능한 코스 없음",
+  "checkBackLater": "나중에 새 코스를 확인하세요"
 }

@@ -173,6 +173,10 @@
   "artistNatureSounds": "自然音响",
   "artistMeditationMusic": "冥想音乐",
   "artistZenCollection": "禅意合集",
+  "artistAmbientMeditation": "环境冥想",
+  "artistDeepRelaxation": "深度放松",
+  "artistNewAgeZen": "新时代禅",
+  "artistMeditationSounds": "冥想音响",
   "playlist": "播放列表",
   
   "hold": "保持",
@@ -226,5 +230,12 @@
   "resume": "继续",
   "breatheInSlowly": "缓慢深呼吸",
   "holdYourBreath": "轻柔地屏住呼吸",
-  "exhaleSlowly": "缓慢完全地呼气"
+  "exhaleSlowly": "缓慢完全地呼气",
+
+  "courses": "课程",
+  "refreshCourses": "刷新课程",
+  "courseSelected": "已选择",
+  "errorLoadingCourses": "课程加载错误",
+  "noCoursesAvailable": "暂无课程",
+  "checkBackLater": "稍后回来查看新课程"
 }
