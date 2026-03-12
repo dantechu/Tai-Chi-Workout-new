@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../domain/entities/course.dart';
 import '../bloc/courses_bloc.dart';
 import '../bloc/courses_event.dart';
@@ -50,7 +51,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Course Details'),
+          title: Text(AppLocalizations.of(context)?.courseDetails ?? 'Course Details'),
           elevation: 0,
         ),
         body: Column(
@@ -118,7 +119,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  'Currently Selected',
+                  AppLocalizations.of(context)?.currentlySelected ?? 'Currently Selected',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.w600,
@@ -147,21 +148,21 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
           _buildStatItem(
             context,
             icon: Icons.video_library_outlined,
-            label: 'Videos',
+            label: AppLocalizations.of(context)?.videos ?? 'Videos',
             value: '${widget.course.metadata.totalVideos}',
           ),
           _buildVerticalDivider(context),
           _buildStatItem(
             context,
             icon: Icons.view_module_outlined,
-            label: 'Sections',
+            label: AppLocalizations.of(context)?.sections ?? 'Sections',
             value: '${widget.course.metadata.totalSections}',
           ),
           _buildVerticalDivider(context),
           _buildStatItem(
             context,
             icon: Icons.access_time_outlined,
-            label: 'Duration',
+            label: AppLocalizations.of(context)?.duration ?? 'Duration',
             value: widget.course.metadata.formattedDuration,
           ),
         ],
@@ -218,27 +219,29 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       children: [
         _buildBadge(
           context,
-          label: widget.course.isFree ? 'Free' : 'Premium',
+          label: widget.course.isFree
+              ? (AppLocalizations.of(context)?.free ?? 'Free')
+              : (AppLocalizations.of(context)?.premium ?? 'Premium'),
           color: widget.course.isFree ? Colors.green : Colors.orange,
           icon: widget.course.isFree ? Icons.lock_open : Icons.workspace_premium,
         ),
         if (widget.course.isDefault)
           _buildBadge(
             context,
-            label: 'Default',
+            label: AppLocalizations.of(context)?.defaultBadge ?? 'Default',
             color: Colors.blue,
             icon: Icons.bookmark,
           ),
         _buildBadge(
           context,
-          label: '${widget.course.metadata.freeVideos} Free',
+          label: '${widget.course.metadata.freeVideos} ${AppLocalizations.of(context)?.free ?? 'Free'}',
           color: Colors.teal,
           icon: Icons.play_circle_outline,
         ),
         if (widget.course.metadata.premiumVideos > 0)
           _buildBadge(
             context,
-            label: '${widget.course.metadata.premiumVideos} Premium',
+            label: '${widget.course.metadata.premiumVideos} ${AppLocalizations.of(context)?.premium ?? 'Premium'}',
             color: Colors.deepOrange,
             icon: Icons.star_outline,
           ),
@@ -298,7 +301,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'About This Course',
+          AppLocalizations.of(context)?.aboutThisCourse ?? 'About This Course',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 16,
@@ -325,7 +328,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
               child: Text(
-                _isDescriptionExpanded ? 'View less' : 'View more',
+                _isDescriptionExpanded
+                    ? (AppLocalizations.of(context)?.viewLess ?? 'View less')
+                    : (AppLocalizations.of(context)?.viewMore ?? 'View more'),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
@@ -345,7 +350,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Course Content',
+          AppLocalizations.of(context)?.courseContent ?? 'Course Content',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 16,
@@ -401,7 +406,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Text(
-            '${section.videos.length} videos • ${_formatDuration(section.totalDuration.inSeconds)}',
+            '${AppLocalizations.of(context)?.videosCount(section.videos.length) ?? '${section.videos.length} videos'} • ${_formatDuration(section.totalDuration.inSeconds)}',
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               fontSize: 12,
@@ -521,7 +526,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         size: 18,
                       ),
                       label: Text(
-                        'Selected',
+                        AppLocalizations.of(context)?.selected ?? 'Selected',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -562,7 +567,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                               ),
                             )
                           : Text(
-                              'Select This Course',
+                              AppLocalizations.of(context)?.selectThisCourse ?? 'Select This Course',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,

@@ -111,7 +111,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get voiceGuidance => '음성 안내';
 
   @override
-  String get breathing => 'Breathing';
+  String get breathing => '호흡';
 
   @override
   String get breathingTimer => '호흡 타이머';
@@ -563,4 +563,42 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get checkBackLater => '나중에 새 코스를 확인하세요';
+
+  @override
+  String get courseDetails => '코스 상세';
+
+  @override
+  String get currentlySelected => '현재 선택됨';
+
+  @override
+  String get sections => '섹션';
+
+  @override
+  String get free => '무료';
+
+  @override
+  String get defaultBadge => '기본';
+
+  @override
+  String get aboutThisCourse => '이 코스에 대하여';
+
+  @override
+  String get viewMore => '더 보기';
+
+  @override
+  String get viewLess => '간단히 보기';
+
+  @override
+  String get courseContent => '코스 내용';
+
+  @override
+  String videosCount(int count) {
+    return '$count개 비디오';
+  }
+
+  @override
+  String get selected => '선택됨';
+
+  @override
+  String get selectThisCourse => '이 코스 선택';
 }

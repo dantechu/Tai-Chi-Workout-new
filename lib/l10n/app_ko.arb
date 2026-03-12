@@ -39,6 +39,7 @@
 
   "music": "음악",
   "voiceGuidance": "음성 안내",
+  "breathing": "호흡",
   "breathingTimer": "호흡 타이머",
   "duration": "시간",
   "inhale": "들이마시기",
@@ -237,5 +238,25 @@
   "courseSelected": "선택됨",
   "errorLoadingCourses": "코스 로딩 오류",
   "noCoursesAvailable": "사용 가능한 코스 없음",
-  "checkBackLater": "나중에 새 코스를 확인하세요"
+  "checkBackLater": "나중에 새 코스를 확인하세요",
+
+  "courseDetails": "코스 상세",
+  "currentlySelected": "현재 선택됨",
+  "sections": "섹션",
+  "free": "무료",
+  "defaultBadge": "기본",
+  "aboutThisCourse": "이 코스에 대하여",
+  "viewMore": "더 보기",
+  "viewLess": "간단히 보기",
+  "courseContent": "코스 내용",
+  "videosCount": "{count}개 비디오",
+  "@videosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selected": "선택됨",
+  "selectThisCourse": "이 코스 선택"
 }

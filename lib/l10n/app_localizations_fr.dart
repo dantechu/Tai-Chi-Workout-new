@@ -112,7 +112,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get voiceGuidance => 'Guide Vocal';
 
   @override
-  String get breathing => 'Breathing';
+  String get breathing => 'Respiration';
 
   @override
   String get breathingTimer => 'Minuteur de Respiration';
@@ -576,4 +576,42 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get checkBackLater => 'Revenez plus tard pour de nouveaux cours';
+
+  @override
+  String get courseDetails => 'Détails du Cours';
+
+  @override
+  String get currentlySelected => 'Actuellement Sélectionné';
+
+  @override
+  String get sections => 'Sections';
+
+  @override
+  String get free => 'Gratuit';
+
+  @override
+  String get defaultBadge => 'Par défaut';
+
+  @override
+  String get aboutThisCourse => 'À Propos de Ce Cours';
+
+  @override
+  String get viewMore => 'Voir plus';
+
+  @override
+  String get viewLess => 'Voir moins';
+
+  @override
+  String get courseContent => 'Contenu du Cours';
+
+  @override
+  String videosCount(int count) {
+    return '$count vidéos';
+  }
+
+  @override
+  String get selected => 'Sélectionné';
+
+  @override
+  String get selectThisCourse => 'Sélectionner Ce Cours';
 }

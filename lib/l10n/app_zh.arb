@@ -39,6 +39,7 @@
 
   "music": "音乐",
   "voiceGuidance": "语音指导",
+  "breathing": "呼吸",
   "breathingTimer": "呼吸计时器",
   "duration": "时长",
   "inhale": "吸气",
@@ -237,5 +238,25 @@
   "courseSelected": "已选择",
   "errorLoadingCourses": "课程加载错误",
   "noCoursesAvailable": "暂无课程",
-  "checkBackLater": "稍后回来查看新课程"
+  "checkBackLater": "稍后回来查看新课程",
+
+  "courseDetails": "课程详情",
+  "currentlySelected": "当前选择",
+  "sections": "部分",
+  "free": "免费",
+  "defaultBadge": "默认",
+  "aboutThisCourse": "关于本课程",
+  "viewMore": "查看更多",
+  "viewLess": "收起",
+  "courseContent": "课程内容",
+  "videosCount": "{count}个视频",
+  "@videosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selected": "已选择",
+  "selectThisCourse": "选择此课程"
 }

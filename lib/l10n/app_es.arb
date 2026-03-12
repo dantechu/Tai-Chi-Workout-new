@@ -39,6 +39,7 @@
 
   "music": "Música",
   "voiceGuidance": "Guía de Voz",
+  "breathing": "Respiración",
   "breathingTimer": "Temporizador de Respiración",
   "duration": "Duración",
   "inhale": "Inhalar",
@@ -237,5 +238,25 @@
   "courseSelected": "seleccionado",
   "errorLoadingCourses": "Error al Cargar Cursos",
   "noCoursesAvailable": "No Hay Cursos Disponibles",
-  "checkBackLater": "Vuelve más tarde para ver nuevos cursos"
+  "checkBackLater": "Vuelve más tarde para ver nuevos cursos",
+
+  "courseDetails": "Detalles del Curso",
+  "currentlySelected": "Actualmente Seleccionado",
+  "sections": "Secciones",
+  "free": "Gratis",
+  "defaultBadge": "Predeterminado",
+  "aboutThisCourse": "Acerca de Este Curso",
+  "viewMore": "Ver más",
+  "viewLess": "Ver menos",
+  "courseContent": "Contenido del Curso",
+  "videosCount": "{count} videos",
+  "@videosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selected": "Seleccionado",
+  "selectThisCourse": "Seleccionar Este Curso"
 }

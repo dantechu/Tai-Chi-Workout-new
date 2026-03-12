@@ -39,6 +39,7 @@
 
   "music": "音楽",
   "voiceGuidance": "音声ガイダンス",
+  "breathing": "呼吸",
   "breathingTimer": "呼吸タイマー",
   "duration": "期間",
   "inhale": "吸う",
@@ -237,5 +238,25 @@
   "courseSelected": "選択されました",
   "errorLoadingCourses": "コースの読み込みエラー",
   "noCoursesAvailable": "利用可能なコースがありません",
-  "checkBackLater": "後で新しいコースを確認してください"
+  "checkBackLater": "後で新しいコースを確認してください",
+
+  "courseDetails": "コース詳細",
+  "currentlySelected": "現在選択中",
+  "sections": "セクション",
+  "free": "無料",
+  "defaultBadge": "デフォルト",
+  "aboutThisCourse": "このコースについて",
+  "viewMore": "もっと見る",
+  "viewLess": "少なく表示",
+  "courseContent": "コース内容",
+  "videosCount": "{count}つのビデオ",
+  "@videosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selected": "選択済み",
+  "selectThisCourse": "このコースを選択"
 }

@@ -575,4 +575,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkBackLater => 'Check back later for new courses';
+
+  @override
+  String get courseDetails => 'Course Details';
+
+  @override
+  String get currentlySelected => 'Currently Selected';
+
+  @override
+  String get sections => 'Sections';
+
+  @override
+  String get free => 'Free';
+
+  @override
+  String get defaultBadge => 'Default';
+
+  @override
+  String get aboutThisCourse => 'About This Course';
+
+  @override
+  String get viewMore => 'View more';
+
+  @override
+  String get viewLess => 'View less';
+
+  @override
+  String get courseContent => 'Course Content';
+
+  @override
+  String videosCount(int count) {
+    return '$count videos';
+  }
+
+  @override
+  String get selected => 'Selected';
+
+  @override
+  String get selectThisCourse => 'Select This Course';
 }

@@ -244,5 +244,25 @@
   "courseSelected": "selected",
   "errorLoadingCourses": "Error Loading Courses",
   "noCoursesAvailable": "No Courses Available",
-  "checkBackLater": "Check back later for new courses"
+  "checkBackLater": "Check back later for new courses",
+
+  "courseDetails": "Course Details",
+  "currentlySelected": "Currently Selected",
+  "sections": "Sections",
+  "free": "Free",
+  "defaultBadge": "Default",
+  "aboutThisCourse": "About This Course",
+  "viewMore": "View more",
+  "viewLess": "View less",
+  "courseContent": "Course Content",
+  "videosCount": "{count} videos",
+  "@videosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selected": "Selected",
+  "selectThisCourse": "Select This Course"
 }

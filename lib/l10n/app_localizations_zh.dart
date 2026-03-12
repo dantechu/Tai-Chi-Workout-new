@@ -111,7 +111,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get voiceGuidance => '语音指导';
 
   @override
-  String get breathing => 'Breathing';
+  String get breathing => '呼吸';
 
   @override
   String get breathingTimer => '呼吸计时器';
@@ -558,4 +558,42 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get checkBackLater => '稍后回来查看新课程';
+
+  @override
+  String get courseDetails => '课程详情';
+
+  @override
+  String get currentlySelected => '当前选择';
+
+  @override
+  String get sections => '部分';
+
+  @override
+  String get free => '免费';
+
+  @override
+  String get defaultBadge => '默认';
+
+  @override
+  String get aboutThisCourse => '关于本课程';
+
+  @override
+  String get viewMore => '查看更多';
+
+  @override
+  String get viewLess => '收起';
+
+  @override
+  String get courseContent => '课程内容';
+
+  @override
+  String videosCount(int count) {
+    return '$count个视频';
+  }
+
+  @override
+  String get selected => '已选择';
+
+  @override
+  String get selectThisCourse => '选择此课程';
 }

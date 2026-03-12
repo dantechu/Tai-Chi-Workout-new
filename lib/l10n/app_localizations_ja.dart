@@ -111,7 +111,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get voiceGuidance => '音声ガイダンス';
 
   @override
-  String get breathing => 'Breathing';
+  String get breathing => '呼吸';
 
   @override
   String get breathingTimer => '呼吸タイマー';
@@ -561,4 +561,42 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get checkBackLater => '後で新しいコースを確認してください';
+
+  @override
+  String get courseDetails => 'コース詳細';
+
+  @override
+  String get currentlySelected => '現在選択中';
+
+  @override
+  String get sections => 'セクション';
+
+  @override
+  String get free => '無料';
+
+  @override
+  String get defaultBadge => 'デフォルト';
+
+  @override
+  String get aboutThisCourse => 'このコースについて';
+
+  @override
+  String get viewMore => 'もっと見る';
+
+  @override
+  String get viewLess => '少なく表示';
+
+  @override
+  String get courseContent => 'コース内容';
+
+  @override
+  String videosCount(int count) {
+    return '$countつのビデオ';
+  }
+
+  @override
+  String get selected => '選択済み';
+
+  @override
+  String get selectThisCourse => 'このコースを選択';
 }

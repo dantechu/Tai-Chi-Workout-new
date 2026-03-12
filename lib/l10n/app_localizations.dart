@@ -1157,6 +1157,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check back later for new courses'**
   String get checkBackLater;
+
+  /// No description provided for @courseDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Details'**
+  String get courseDetails;
+
+  /// No description provided for @currentlySelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently Selected'**
+  String get currentlySelected;
+
+  /// No description provided for @sections.
+  ///
+  /// In en, this message translates to:
+  /// **'Sections'**
+  String get sections;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get free;
+
+  /// No description provided for @defaultBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get defaultBadge;
+
+  /// No description provided for @aboutThisCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'About This Course'**
+  String get aboutThisCourse;
+
+  /// No description provided for @viewMore.
+  ///
+  /// In en, this message translates to:
+  /// **'View more'**
+  String get viewMore;
+
+  /// No description provided for @viewLess.
+  ///
+  /// In en, this message translates to:
+  /// **'View less'**
+  String get viewLess;
+
+  /// No description provided for @courseContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Content'**
+  String get courseContent;
+
+  /// No description provided for @videosCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} videos'**
+  String videosCount(int count);
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get selected;
+
+  /// No description provided for @selectThisCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Select This Course'**
+  String get selectThisCourse;
 }
 
 class _AppLocalizationsDelegate
