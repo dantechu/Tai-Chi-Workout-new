@@ -28,14 +28,37 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     emit(const CoursesLoading());
 
     final coursesResult = await getActiveCourses();
-    final selectedCourseResult = await getSelectedCourse();
 
-    coursesResult.fold(
-      (failure) => emit(CoursesError(failure.message)),
-      (courses) {
-        selectedCourseResult.fold(
-          (failure) => emit(CoursesLoaded(courses: courses)),
-          (selectedCourse) => emit(CoursesLoaded(
+    await coursesResult.fold(
+      (failure) async => emit(CoursesError(failure.message)),
+      (courses) async {
+        final selectedCourseResult = await getSelectedCourse();
+
+        await selectedCourseResult.fold(
+          (failure) async {
+            // No course selected, auto-select the default course
+            if (courses.isEmpty) {
+              emit(CoursesLoaded(courses: courses));
+              return;
+            }
+
+            final defaultCourse = courses.firstWhere(
+              (course) => course.isDefault,
+              orElse: () => courses.first,
+            );
+
+            // Select the default course
+            final selectResult = await selectCourse(defaultCourse.id);
+
+            selectResult.fold(
+              (selectFailure) => emit(CoursesLoaded(courses: courses)),
+              (_) => emit(CoursesLoaded(
+                courses: courses,
+                selectedCourse: defaultCourse,
+              )),
+            );
+          },
+          (selectedCourse) async => emit(CoursesLoaded(
             courses: courses,
             selectedCourse: selectedCourse,
           )),
@@ -50,9 +73,35 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   ) async {
     final result = await getSelectedCourse();
 
-    result.fold(
-      (failure) => emit(CoursesError(failure.message)),
-      (course) => emit(SelectedCourseLoaded(course)),
+    await result.fold(
+      (failure) async {
+        // No course selected, auto-select the default course
+        final coursesResult = await getActiveCourses();
+
+        await coursesResult.fold(
+          (coursesFailure) async => emit(CoursesError(coursesFailure.message)),
+          (courses) async {
+            if (courses.isEmpty) {
+              emit(const CoursesError('No courses available'));
+              return;
+            }
+
+            final defaultCourse = courses.firstWhere(
+              (course) => course.isDefault,
+              orElse: () => courses.first,
+            );
+
+            // Select the default course
+            final selectResult = await selectCourse(defaultCourse.id);
+
+            selectResult.fold(
+              (selectFailure) => emit(CoursesError(selectFailure.message)),
+              (_) => emit(SelectedCourseLoaded(defaultCourse)),
+            );
+          },
+        );
+      },
+      (course) async => emit(SelectedCourseLoaded(course)),
     );
   }
 

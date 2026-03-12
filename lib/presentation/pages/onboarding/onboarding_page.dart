@@ -48,6 +48,7 @@ class _OnboardingPageState extends State<OnboardingPage>
   Future<void> _completeOnboarding() async {
     final datasource = di.sl<OnboardingLocalDataSource>();
     await datasource.setFirstTimeFalse();
+
     if (mounted) {
       Navigator.of(context).pushReplacementNamed('/main');
     }
