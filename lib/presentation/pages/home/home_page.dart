@@ -41,6 +41,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize the selected category with the localized "All" string
+    if (_selectedCategory == 'All') {
+      _selectedCategory = AppLocalizations.of(context)?.all ?? 'All';
+    }
+  }
+
+  @override
   void dispose() {
     _debounceTimer?.cancel();
     _searchController.dispose();
@@ -55,7 +64,7 @@ class _HomePageState extends State<HomePage> {
         if (state is CourseSelected || state is SelectedCourseLoaded) {
           // Reset category filter when course changes
           setState(() {
-            _selectedCategory = 'All';
+            _selectedCategory = AppLocalizations.of(context)?.all ?? 'All';
             _searchQuery = '';
             _searchController.clear();
           });
@@ -433,15 +442,28 @@ class _HomePageState extends State<HomePage> {
 
   void _performSearch() {
     final query = _searchQuery.trim();
+    final allCategory = AppLocalizations.of(context)?.all ?? 'All';
 
-    if (query.isEmpty) {
-      // If search is empty, load videos from selected course
+    if (query.isEmpty && _selectedCategory == allCategory) {
+      // If search is empty and All category selected, load all videos from selected course
       context.read<VideoBloc>().add(const LoadVideos());
       return;
     }
 
-    // Search across all courses when user types a query
-    context.read<VideoBloc>().add(SearchVideosAcrossCourses(query));
+    if (query.isEmpty && _selectedCategory != allCategory) {
+      // If search is empty but category is selected, filter by category
+      context.read<VideoBloc>().add(LoadVideosByCategory(_selectedCategory));
+      return;
+    }
+
+    if (query.isNotEmpty && _selectedCategory == allCategory) {
+      // Search across all courses when user types a query
+      context.read<VideoBloc>().add(SearchVideosAcrossCourses(query));
+      return;
+    }
+
+    // Both search query and category selected
+    context.read<VideoBloc>().add(SearchVideosByCategory(query, _selectedCategory));
   }
 
   void _selectCategory(String category) {
