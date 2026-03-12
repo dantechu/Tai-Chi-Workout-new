@@ -257,7 +257,16 @@ class _HomePageState extends State<HomePage> {
           categoryTitles = uniqueCategories;
         }
 
-        final categories = [AppLocalizations.of(context)?.all ?? 'All', ...categoryTitles];
+        // Create a mapping of localized to English category names
+        final categoryMapping = <String, String>{};
+        for (final category in categoryTitles) {
+          final localized = LocalizationHelper.getLocalizedCategoryName(context, category);
+          categoryMapping[localized] = category;
+        }
+
+        final localizedCategoryTitles = categoryMapping.keys.toList();
+        final allCategory = AppLocalizations.of(context)?.all ?? 'All';
+        final categories = [allCategory, ...localizedCategoryTitles];
 
         return SizedBox(
           height: 56,
@@ -267,10 +276,16 @@ class _HomePageState extends State<HomePage> {
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
+              // Get the English category name for filtering
+              final englishCategory = category == allCategory
+                  ? allCategory
+                  : (categoryMapping[category] ?? category);
+
               return CategoryChip(
                 label: category,
-                isSelected: _selectedCategory == category,
-                onTap: () => _selectCategory(category),
+                isSelected: _selectedCategory == englishCategory ||
+                            (_selectedCategory == allCategory && category == allCategory),
+                onTap: () => _selectCategory(englishCategory),
               );
             },
           ),
