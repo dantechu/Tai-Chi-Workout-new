@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../domain/entities/course.dart';
 
 class CourseCard extends StatelessWidget {
@@ -99,7 +100,7 @@ class CourseCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  'Selected',
+                  AppLocalizations.of(context)?.selected ?? 'Selected',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.primary,
                     fontWeight: FontWeight.bold,
@@ -136,12 +137,12 @@ class CourseCard extends StatelessWidget {
         _buildStatChip(
           context,
           icon: Icons.video_library_outlined,
-          label: '${course.metadata.totalVideos} Videos',
+          label: '${course.metadata.totalVideos} ${AppLocalizations.of(context)?.videos ?? 'Videos'}',
         ),
         _buildStatChip(
           context,
           icon: Icons.view_module_outlined,
-          label: '${course.metadata.totalSections} Sections',
+          label: '${course.metadata.totalSections} ${AppLocalizations.of(context)?.sections ?? 'Sections'}',
         ),
         _buildStatChip(
           context,
