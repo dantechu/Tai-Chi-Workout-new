@@ -356,7 +356,7 @@ class _VideoCardState extends State<VideoCard> {
               const SizedBox(width: 5),
               Expanded(
                 child: Text(
-                  video.category,
+                  LocalizationHelper.getLocalizedCategoryName(context, video.category),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
                     fontSize: 12,
