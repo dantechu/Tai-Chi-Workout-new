@@ -9,8 +9,8 @@ class AppConstants {
   static const String website = 'stepbysteplearn.com';
 
   // URLs
-  static const String privacyPolicyUrl = 'https://stepbysteplearn.com/privacy';
-  static const String termsOfServiceUrl = 'https://stepbysteplearn.com/terms';
+  static const String privacyPolicyUrl = 'https://amazingelearning.com/privacy-policy/';
+  static const String termsOfServiceUrl = 'https://amazingelearning.com/terms';
   
   // Premium
   static const String premiumProductId = 'com.amazingelearning.chikung.Premium';
