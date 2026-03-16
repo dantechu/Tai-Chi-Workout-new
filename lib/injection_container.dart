@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -9,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Core
 import 'core/network/dio_client.dart';
 import 'core/network/network_info.dart';
+import 'core/services/analytics_service.dart';
 
 // Data sources
 import 'data/datasources/bookmark_local_datasource.dart';
@@ -115,7 +117,7 @@ Future<void> init() async {
   //! Features - Theme & Locale
   // Blocs
   sl.registerFactory(() => ThemeBloc(sl()));
-  sl.registerFactory(() => LocaleBloc(sl()));
+  sl.registerFactory(() => LocaleBloc(sl(), sl()));
 
   //! Features - Download
   // Use cases
@@ -208,8 +210,12 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => DioClient().dio);
 
+  // Analytics
+  sl.registerLazySingleton(() => AnalyticsService(sl()));
+
   //! External
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
+  sl.registerLazySingleton(() => FirebaseAnalytics.instance);
   sl.registerLazySingleton(() => Connectivity());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   sl.registerLazySingleton(() => InAppPurchase.instance);

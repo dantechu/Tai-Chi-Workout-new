@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/services/analytics_service.dart';
 import 'locale_event.dart';
 import 'locale_state.dart';
 
 class LocaleBloc extends Bloc<LocaleEvent, LocaleState> {
   final SharedPreferences prefs;
+  final AnalyticsService analyticsService;
   static const String localeKey = 'locale';
 
-  LocaleBloc(this.prefs) : super(LocaleState.initial()) {
+  LocaleBloc(this.prefs, this.analyticsService) : super(LocaleState.initial()) {
     on<LoadLocale>(_onLoadLocale);
     on<ChangeLocale>(_onChangeLocale);
   }
@@ -43,7 +45,7 @@ class LocaleBloc extends Bloc<LocaleEvent, LocaleState> {
       // Verify that the new locale is supported
       final isSupported = AppConstants.supportedLocales
           .any((lang) => lang['code'] == event.locale.languageCode);
-      
+
       if (!isSupported) {
         // Don't change to unsupported locale
         return;
@@ -51,9 +53,19 @@ class LocaleBloc extends Bloc<LocaleEvent, LocaleState> {
 
       await prefs.setString(localeKey, event.locale.languageCode);
       emit(LocaleState(locale: event.locale));
+
+      // Log language selection event to Firebase Analytics
+      await analyticsService.logLanguageSelected(event.locale.languageCode);
     } catch (e) {
       // If saving fails, still emit the new state but log the error
       emit(LocaleState(locale: event.locale));
+
+      // Still try to log the analytics event
+      try {
+        await analyticsService.logLanguageSelected(event.locale.languageCode);
+      } catch (_) {
+        // Silently fail analytics logging
+      }
     }
   }
 
