@@ -13,7 +13,7 @@ class AppConstants {
   static const String termsOfServiceUrl = 'https://www.amazingelearning.com/terms';
   
   // Premium
-  static const String premiumProductId = 'com.amazingelearning.chikung.Premium';
+  static const String premiumProductId = 'com.amazingelearning.taichi.Premium';
   static const String premiumPrice = '\$4.99';
   
   // Storage Keys
