@@ -4,13 +4,13 @@ class AppConstants {
   static const String bundleId = 'com.amazingelearning.chikung';
   
   // Contact Information
-  static const String supportEmail = 'support@stepbysteplearn.com';
+  static const String supportEmail = 'dante@amazingelearning.com';
   static const String supportPhone = '1(650)692-2500';
   static const String website = 'stepbysteplearn.com';
 
   // URLs
   static const String privacyPolicyUrl = 'https://amazingelearning.com/privacy-policy/';
-  static const String termsOfServiceUrl = 'https://amazingelearning.com/terms';
+  static const String termsOfServiceUrl = 'https://www.amazingelearning.com/terms';
   
   // Premium
   static const String premiumProductId = 'com.amazingelearning.chikung.Premium';

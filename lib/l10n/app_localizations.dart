@@ -270,6 +270,12 @@ abstract class AppLocalizations {
   /// **'Priority support'**
   String get premiumFeature4;
 
+  /// No description provided for @premiumFeature5.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited access to all courses'**
+  String get premiumFeature5;
+
   /// No description provided for @premiumPrice.
   ///
   /// In en, this message translates to:

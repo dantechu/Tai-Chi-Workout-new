@@ -234,7 +234,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           BlocBuilder<PremiumBloc, PremiumState>(
             builder: (context, state) {
               final isPremium = state is PremiumActive;
-              if (isPremium) {
+              if (!isPremium) {
                 return const SizedBox.shrink();
               }
               return Container(

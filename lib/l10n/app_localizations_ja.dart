@@ -90,6 +90,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumFeature4 => '優先サポート';
 
   @override
+  String get premiumFeature5 => 'すべてのコースへの無制限アクセス';
+
+  @override
   String get premiumPrice => '\$4.99';
 
   @override

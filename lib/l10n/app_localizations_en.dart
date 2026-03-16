@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumFeature4 => 'Priority support';
 
   @override
+  String get premiumFeature5 => 'Unlimited access to all courses';
+
+  @override
   String get premiumPrice => '\$4.99';
 
   @override

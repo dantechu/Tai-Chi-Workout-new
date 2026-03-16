@@ -90,6 +90,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get premiumFeature4 => '우선 지원';
 
   @override
+  String get premiumFeature5 => '모든 코스에 무제한 액세스';
+
+  @override
   String get premiumPrice => '\$4.99';
 
   @override
