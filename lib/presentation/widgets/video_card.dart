@@ -319,7 +319,7 @@ class _VideoCardState extends State<VideoCard> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              if (video.isPremium) ...[
+              if (isLocked) ...[
                 const SizedBox(width: 10),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

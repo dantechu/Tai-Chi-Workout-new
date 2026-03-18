@@ -108,6 +108,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumThankYou => '谢谢您的支持！';
 
   @override
+  String get premiumStatusTitle => '高级会员';
+
+  @override
+  String get premiumStatusSubtitle => '您可以无限访问所有功能';
+
+  @override
   String get music => '音乐';
 
   @override

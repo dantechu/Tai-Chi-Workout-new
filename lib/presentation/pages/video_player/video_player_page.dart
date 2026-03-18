@@ -220,7 +220,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     _buildVideoInfo(),
                     const SizedBox(height: 24),
                     _buildVideoDescription(),
-                    if (widget.video.isPremium) ...[
+                    if (widget.video.isPremium && !(context.read<PremiumBloc>().state is PremiumActive)) ...[
                       const SizedBox(height: 24),
                       _buildPremiumBadge(),
                     ],

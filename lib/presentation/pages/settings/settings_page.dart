@@ -10,6 +10,8 @@ import '../../bloc/theme/theme_state.dart';
 import '../../bloc/locale/locale_bloc.dart';
 import '../../bloc/locale/locale_event.dart';
 import '../../bloc/locale/locale_state.dart';
+import '../../bloc/premium/premium_bloc.dart';
+import '../../bloc/premium/premium_state.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -417,71 +419,93 @@ class SettingsPage extends StatelessWidget {
   Widget _buildPremiumTile(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      elevation: 8,
-      shadowColor: theme.colorScheme.primary.withValues(alpha: 0.2),
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed('/premium');
-        },
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer,
+    return BlocBuilder<PremiumBloc, PremiumState>(
+      builder: (context, premiumState) {
+        final isPremium = premiumState is PremiumActive;
+
+        return Card(
+          elevation: 8,
+          shadowColor: isPremium
+              ? Colors.green.withValues(alpha: 0.2)
+              : theme.colorScheme.primary.withValues(alpha: 0.2),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).pushNamed('/premium');
+            },
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              width: 1,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: isPremium
+                    ? Colors.green.withValues(alpha: 0.1)
+                    : theme.colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isPremium
+                      ? Colors.green.withValues(alpha: 0.3)
+                      : theme.colorScheme.primary.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isPremium ? Colors.green : theme.colorScheme.primary,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      isPremium ? Icons.workspace_premium : Icons.diamond,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          isPremium
+                              ? (AppLocalizations.of(context)?.premiumStatusTitle ?? 'Premium Member')
+                              : (AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium'),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontSize: 17,
+                            color: isPremium
+                                ? Colors.green.shade900
+                                : theme.colorScheme.onPrimaryContainer,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          isPremium
+                              ? (AppLocalizations.of(context)?.premiumStatusSubtitle ?? 'You have unlimited access to all features')
+                              : (AppLocalizations.of(context)?.premiumSubtitle ?? 'Get unlimited access to all features'),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 13,
+                            color: isPremium
+                                ? Colors.green.shade700.withValues(alpha: 0.8)
+                                : theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    isPremium ? Icons.check_circle : Icons.arrow_forward_ios,
+                    color: isPremium
+                        ? Colors.green
+                        : theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
+                    size: 18,
+                  ),
+                ],
+              ),
             ),
           ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.diamond,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontSize: 17,
-                        color: theme.colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      AppLocalizations.of(context)?.premiumSubtitle ?? 'Get unlimited access to all features',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 13,
-                        color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
-                size: 18,
-              ),
-            ],
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 

@@ -41,6 +41,8 @@
   "restore": "Restore Purchases",
   "premiumActive": "Premium Active",
   "premiumThankYou": "Thank you for your support!",
+  "premiumStatusTitle": "Premium Member",
+  "premiumStatusSubtitle": "You have unlimited access to all features",
 
   "music": "Music",
   "voiceGuidance": "Voice Guidance",

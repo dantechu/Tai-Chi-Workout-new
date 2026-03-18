@@ -37,6 +37,8 @@
   "restore": "Restaurer les Achats",
   "premiumActive": "Premium Actif",
   "premiumThankYou": "Merci pour votre soutien!",
+  "premiumStatusTitle": "Membre Premium",
+  "premiumStatusSubtitle": "Vous avez un accès illimité à toutes les fonctionnalités",
 
   "music": "Musique",
   "voiceGuidance": "Guide Vocal",

@@ -109,6 +109,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get premiumThankYou => 'Merci pour votre soutien!';
 
   @override
+  String get premiumStatusTitle => 'Membre Premium';
+
+  @override
+  String get premiumStatusSubtitle =>
+      'Vous avez un accès illimité à toutes les fonctionnalités';
+
+  @override
   String get music => 'Musique';
 
   @override

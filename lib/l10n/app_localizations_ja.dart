@@ -108,6 +108,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumThankYou => 'ご支援ありがとうございます！';
 
   @override
+  String get premiumStatusTitle => 'プレミアム会員';
+
+  @override
+  String get premiumStatusSubtitle => 'すべての機能への無制限アクセスがあります';
+
+  @override
   String get music => '音楽';
 
   @override

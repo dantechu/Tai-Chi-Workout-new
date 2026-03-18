@@ -306,6 +306,18 @@ abstract class AppLocalizations {
   /// **'Thank you for your support!'**
   String get premiumThankYou;
 
+  /// No description provided for @premiumStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Member'**
+  String get premiumStatusTitle;
+
+  /// No description provided for @premiumStatusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unlimited access to all features'**
+  String get premiumStatusSubtitle;
+
   /// No description provided for @music.
   ///
   /// In en, this message translates to:

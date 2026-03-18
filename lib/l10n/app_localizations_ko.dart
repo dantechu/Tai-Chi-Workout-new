@@ -108,6 +108,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get premiumThankYou => '지원해 주셔서 감사합니다!';
 
   @override
+  String get premiumStatusTitle => '프리미엄 회원';
+
+  @override
+  String get premiumStatusSubtitle => '모든 기능에 무제한 액세스 가능';
+
+  @override
   String get music => '음악';
 
   @override

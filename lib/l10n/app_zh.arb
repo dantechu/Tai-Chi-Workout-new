@@ -37,6 +37,8 @@
   "restore": "恢复购买",
   "premiumActive": "高级版已激活",
   "premiumThankYou": "谢谢您的支持！",
+  "premiumStatusTitle": "高级会员",
+  "premiumStatusSubtitle": "您可以无限访问所有功能",
 
   "music": "音乐",
   "voiceGuidance": "语音指导",

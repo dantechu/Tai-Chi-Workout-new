@@ -108,6 +108,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumThankYou => 'Thank you for your support!';
 
   @override
+  String get premiumStatusTitle => 'Premium Member';
+
+  @override
+  String get premiumStatusSubtitle =>
+      'You have unlimited access to all features';
+
+  @override
   String get music => 'Music';
 
   @override
