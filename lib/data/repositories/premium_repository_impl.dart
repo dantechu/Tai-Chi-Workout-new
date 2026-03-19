@@ -91,7 +91,7 @@ class PremiumRepositoryImpl implements PremiumRepository {
         return Left(PurchaseFailure('App Store is not available. Please check your internet connection and try again.'));
       }
 
-      const Set<String> productIds = {AppConstants.premiumProductId};
+       Set<String> productIds = {AppConstants.premiumProductId};
       final ProductDetailsResponse productDetailResponse =
           await inAppPurchase.queryProductDetails(productIds);
 
@@ -219,7 +219,7 @@ class PremiumRepositoryImpl implements PremiumRepository {
   @override
   Future<Either<Failure, List<String>>> getAvailableProducts() async {
     try {
-      const Set<String> productIds = {AppConstants.premiumProductId};
+       Set<String> productIds = {AppConstants.premiumProductId};
       final ProductDetailsResponse response = await inAppPurchase.queryProductDetails(productIds);
 
       if (response.error != null) {

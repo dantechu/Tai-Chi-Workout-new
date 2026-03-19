@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class AppConstants {
   static const String appName = 'Tai Chi Workout';
   static const String appVersion = '1.0.0';
@@ -12,8 +14,8 @@ class AppConstants {
   static const String privacyPolicyUrl = 'https://amazingelearning.com/privacy-policy/';
   static const String termsOfServiceUrl = 'https://www.amazingelearning.com/terms';
   
-  // Premium
-  static const String premiumProductId = 'com.amazingelearning.taichi.Premium';
+  // Premium ]
+  static  String premiumProductId = Platform.isAndroid ? 'com.amazingelearning.taichi.premium' :  'com.amazingelearning.taichi.Premium';
   static const String premiumPrice = '\$4.99';
   
   // Storage Keys
