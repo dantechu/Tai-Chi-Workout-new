@@ -52,3 +52,8 @@ firebase-admin-key.json
 # Migration script outputs
 course_data_export.json
 admin_user_data.json
+
+# Android signing keys (NEVER commit these!)
+**/android/key.properties
+**/android/**/*.jks
+**/android/**/*.keystore
