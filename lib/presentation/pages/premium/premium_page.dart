@@ -67,36 +67,54 @@ class _PremiumPageState extends State<PremiumPage> {
   }
 
   Widget _buildActiveContent(BuildContext context, ThemeData theme) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.stars_rounded,
-            size: 80,
-            color: Colors.amber,
+    return Stack(
+      children: [
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.stars_rounded,
+                size: 80,
+                color: Colors.amber,
+              ),
+              const SizedBox(height: 24),
+              Text(
+                AppLocalizations.of(context)?.premiumActive ?? 'Premium Active',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.amber,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                AppLocalizations.of(context)?.premiumThankYou ??
+                    'Thank you for your support!',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 14,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          const SizedBox(height: 24),
-          Text(
-            AppLocalizations.of(context)?.premiumActive ?? 'Premium Active',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: Colors.amber,
+        ),
+        Positioned(
+          top: MediaQuery.of(context).padding.top + 8,
+          left: 8,
+          child: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: theme.colorScheme.onSurface,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            AppLocalizations.of(context)?.premiumThankYou ??
-                'Thank you for your support!',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 14,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
