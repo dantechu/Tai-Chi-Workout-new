@@ -23,6 +23,7 @@ import 'presentation/pages/navigation/main_navigation_page.dart';
 import 'presentation/pages/video_player/video_player_page.dart';
 import 'presentation/pages/premium/premium_page.dart';
 import 'presentation/courses/pages/courses_page.dart';
+import 'domain/entities/section.dart';
 import 'domain/entities/video.dart';
 import 'l10n/app_localizations.dart';
 
@@ -105,9 +106,20 @@ class TaiChiWorkoutApp extends StatelessWidget {
                         builder: (context) => const MainNavigationPage(),
                       );
                     case '/video-player':
-                      final video = settings.arguments as Video;
+                      final args = settings.arguments;
+                      Video video;
+                      List<Section>? sections;
+                      if (args is Map<String, dynamic>) {
+                        video = args['video'] as Video;
+                        sections = args['sections'] as List<Section>?;
+                      } else {
+                        video = args as Video;
+                      }
                       return MaterialPageRoute(
-                        builder: (context) => VideoPlayerPage(video: video),
+                        builder: (context) => VideoPlayerPage(
+                          video: video,
+                          sections: sections,
+                        ),
                       );
                     case '/premium':
                       return MaterialPageRoute(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/localization_helper.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../domain/entities/section.dart';
 import '../../../domain/entities/video.dart';
 import '../../bloc/bookmark/bookmark_bloc.dart';
 import '../../bloc/bookmark/bookmark_state.dart';
@@ -243,52 +244,79 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategoryFilter() {
-    return BlocBuilder<VideoBloc, VideoState>(
-      builder: (context, state) {
-        List<String> categoryTitles = [];
-
-        // Extract unique categories from loaded videos
-        if (state is VideoLoaded) {
-          final uniqueCategories = state.videos
-              .map((video) => video.category)
-              .where((category) => category.isNotEmpty)
-              .toSet()
-              .toList();
-          categoryTitles = uniqueCategories;
+    return BlocBuilder<CoursesBloc, CoursesState>(
+      builder: (context, coursesState) {
+        // Get sections from the selected course for localization
+        List<Section>? sections;
+        if (coursesState is SelectedCourseLoaded) {
+          sections = coursesState.course.sections;
+        } else if (coursesState is CoursesLoaded && coursesState.selectedCourse != null) {
+          sections = coursesState.selectedCourse!.sections;
+        } else if (coursesState is CourseSelected) {
+          sections = coursesState.course.sections;
         }
 
-        // Create a mapping of localized to English category names
-        final categoryMapping = <String, String>{};
-        for (final category in categoryTitles) {
-          final localized = LocalizationHelper.getLocalizedCategoryName(context, category);
-          categoryMapping[localized] = category;
-        }
+        final langCode = LocalizationHelper.getCurrentLanguageCode(context);
 
-        final localizedCategoryTitles = categoryMapping.keys.toList();
-        final allCategory = AppLocalizations.of(context)?.all ?? 'All';
-        final categories = [allCategory, ...localizedCategoryTitles];
+        return BlocBuilder<VideoBloc, VideoState>(
+          builder: (context, state) {
+            List<String> categoryTitles = [];
 
-        return SizedBox(
-          height: 56,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              // Get the English category name for filtering
-              final englishCategory = category == allCategory
-                  ? allCategory
-                  : (categoryMapping[category] ?? category);
+            // Extract unique categories from loaded videos
+            if (state is VideoLoaded) {
+              final uniqueCategories = state.videos
+                  .map((video) => video.category)
+                  .where((category) => category.isNotEmpty)
+                  .toSet()
+                  .toList();
+              categoryTitles = uniqueCategories;
+            }
 
-              return CategoryChip(
-                label: category,
-                isSelected: _selectedCategory == englishCategory ||
-                            (_selectedCategory == allCategory && category == allCategory),
-                onTap: () => _selectCategory(englishCategory),
-              );
-            },
-          ),
+            // Create a mapping of localized to English category names
+            final categoryMapping = <String, String>{};
+            for (final category in categoryTitles) {
+              // Try to find section and get localized title
+              String localized = category;
+              if (sections != null) {
+                final section = sections.where((s) => s.title == category).firstOrNull;
+                if (section != null) {
+                  localized = section.getLocalizedTitle(langCode);
+                } else {
+                  localized = LocalizationHelper.getLocalizedCategoryName(context, category);
+                }
+              } else {
+                localized = LocalizationHelper.getLocalizedCategoryName(context, category);
+              }
+              categoryMapping[localized] = category;
+            }
+
+            final localizedCategoryTitles = categoryMapping.keys.toList();
+            final allCategory = AppLocalizations.of(context)?.all ?? 'All';
+            final categories = [allCategory, ...localizedCategoryTitles];
+
+            return SizedBox(
+              height: 56,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  // Get the English category name for filtering
+                  final englishCategory = category == allCategory
+                      ? allCategory
+                      : (categoryMapping[category] ?? category);
+
+                  return CategoryChip(
+                    label: category,
+                    isSelected: _selectedCategory == englishCategory ||
+                                (_selectedCategory == allCategory && category == allCategory),
+                    onTap: () => _selectCategory(englishCategory),
+                  );
+                },
+              ),
+            );
+          },
         );
       },
     );
@@ -386,63 +414,79 @@ class _HomePageState extends State<HomePage> {
 
               final isPremium = premiumState is PremiumActive;
 
-              return BlocBuilder<BookmarkBloc, BookmarkState>(
-                builder: (context, bookmarkState) {
-                  // Get bookmarked videos
-                  List<Video> bookmarkedVideos = [];
-                  if (bookmarkState is BookmarkLoaded) {
-                    bookmarkedVideos = videoState.videos
-                        .where((video) => bookmarkState.isVideoBookmarked(video.id))
-                        .toList();
+              return BlocBuilder<CoursesBloc, CoursesState>(
+                builder: (context, coursesState) {
+                  // Get sections from the selected course for localization
+                  List<Section>? sections;
+                  if (coursesState is SelectedCourseLoaded) {
+                    sections = coursesState.course.sections;
+                  } else if (coursesState is CoursesLoaded && coursesState.selectedCourse != null) {
+                    sections = coursesState.selectedCourse!.sections;
+                  } else if (coursesState is CourseSelected) {
+                    sections = coursesState.course.sections;
                   }
 
-                  return CustomScrollView(
-                    slivers: [
-                      // Bookmarked videos section
-                      if (bookmarkedVideos.isNotEmpty) ...[
-                        SliverToBoxAdapter(
-                          child: _buildBookmarksSection(
-                            bookmarkedVideos,
-                            isPremium,
-                          ),
-                        ),
-                      ],
-                      // All videos section header
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            20,
-                            bookmarkedVideos.isNotEmpty ? 8 : 12,
-                            20,
-                            12,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)?.allLessons ?? 'All Lessons',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
+                  return BlocBuilder<BookmarkBloc, BookmarkState>(
+                    builder: (context, bookmarkState) {
+                      // Get bookmarked videos
+                      List<Video> bookmarkedVideos = [];
+                      if (bookmarkState is BookmarkLoaded) {
+                        bookmarkedVideos = videoState.videos
+                            .where((video) => bookmarkState.isVideoBookmarked(video.id))
+                            .toList();
+                      }
+
+                      return CustomScrollView(
+                        slivers: [
+                          // Bookmarked videos section
+                          if (bookmarkedVideos.isNotEmpty) ...[
+                            SliverToBoxAdapter(
+                              child: _buildBookmarksSection(
+                                bookmarkedVideos,
+                                isPremium,
+                                sections,
+                              ),
+                            ),
+                          ],
+                          // All videos section header
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                20,
+                                bookmarkedVideos.isNotEmpty ? 8 : 12,
+                                20,
+                                12,
+                              ),
+                              child: Text(
+                                AppLocalizations.of(context)?.allLessons ?? 'All Lessons',
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      // Video list
-                      SliverPadding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final video = videoState.filteredVideos[index];
-                              return VideoCard(
-                                video: video,
-                                isPremiumUser: isPremium,
-                                onTap: () => _navigateToVideoPlayer(video),
-                              );
-                            },
-                            childCount: videoState.filteredVideos.length,
+                          // Video list
+                          SliverPadding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  final video = videoState.filteredVideos[index];
+                                  return VideoCard(
+                                    video: video,
+                                    isPremiumUser: isPremium,
+                                    onTap: () => _navigateToVideoPlayer(video, sections: sections),
+                                    sections: sections,
+                                  );
+                                },
+                                childCount: videoState.filteredVideos.length,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   );
                 },
               );
@@ -488,7 +532,7 @@ class _HomePageState extends State<HomePage> {
     _performSearch();
   }
 
-  Widget _buildBookmarksSection(List<Video> bookmarkedVideos, bool isPremium) {
+  Widget _buildBookmarksSection(List<Video> bookmarkedVideos, bool isPremium, List<Section>? sections) {
     final theme = Theme.of(context);
 
     return Column(
@@ -525,7 +569,7 @@ class _HomePageState extends State<HomePage> {
               return BookmarkCard(
                 video: video,
                 isPremiumUser: isPremium,
-                onTap: () => _navigateToVideoPlayer(video),
+                onTap: () => _navigateToVideoPlayer(video, sections: sections),
               );
             },
           ),
@@ -534,17 +578,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _navigateToVideoPlayer(video) {
+  void _navigateToVideoPlayer(Video video, {List<Section>? sections}) {
     // Get the currently selected course
     final coursesState = context.read<CoursesBloc>().state;
     String? selectedCourseId;
+    List<Section>? courseSections = sections;
 
     if (coursesState is CoursesLoaded && coursesState.selectedCourse != null) {
       selectedCourseId = coursesState.selectedCourse!.id;
+      courseSections ??= coursesState.selectedCourse!.sections;
     } else if (coursesState is SelectedCourseLoaded) {
       selectedCourseId = coursesState.course.id;
+      courseSections ??= coursesState.course.sections;
     } else if (coursesState is CourseSelected) {
       selectedCourseId = coursesState.course.id;
+      courseSections ??= coursesState.course.sections;
     }
 
     // Check if the video belongs to a different course
@@ -567,7 +615,10 @@ class _HomePageState extends State<HomePage> {
       // Navigate to video player
       Navigator.of(context).pushNamed(
         '/video-player',
-        arguments: video,
+        arguments: {
+          'video': video,
+          'sections': courseSections,
+        },
       );
     }
   }

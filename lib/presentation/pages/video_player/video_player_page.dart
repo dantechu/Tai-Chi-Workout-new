@@ -5,6 +5,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/localization_helper.dart';
+import '../../../domain/entities/section.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/usecases/download_usecases.dart';
 import '../../../injection_container.dart';
@@ -18,10 +19,12 @@ import '../../widgets/banner_ad_widget.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final Video video;
+  final List<Section>? sections;
 
   const VideoPlayerPage({
     super.key,
     required this.video,
+    this.sections,
   });
 
   @override
@@ -305,6 +308,28 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     );
   }
 
+  /// Get localized section name from sections list or fall back to category
+  String _getLocalizedSectionName(String langCode, List<Section>? sections) {
+    if (sections != null) {
+      // Try to find section by sectionNumber first
+      final section = sections.where(
+        (s) => s.sectionNumber == widget.video.sectionNumber
+      ).firstOrNull;
+      if (section != null) {
+        return section.getLocalizedTitle(langCode);
+      }
+      // Fall back to matching by title
+      final sectionByTitle = sections.where(
+        (s) => s.title == widget.video.category
+      ).firstOrNull;
+      if (sectionByTitle != null) {
+        return sectionByTitle.getLocalizedTitle(langCode);
+      }
+    }
+    // Fall back to helper
+    return LocalizationHelper.getLocalizedCategoryName(context, widget.video.category);
+  }
+
   Widget _buildVideoInfo() {
     final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Column(
@@ -326,7 +351,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
             ),
             const SizedBox(width: 4),
             Text(
-              widget.video.category,
+              _getLocalizedSectionName(langCode, widget.sections),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               ),

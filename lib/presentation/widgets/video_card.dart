@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/thumbnail_cache_service.dart';
 import '../../core/utils/localization_helper.dart';
+import '../../domain/entities/section.dart';
 import '../../domain/entities/video.dart';
 import '../bloc/bookmark/bookmark_bloc.dart';
 import '../bloc/bookmark/bookmark_event.dart';
@@ -13,12 +14,14 @@ class VideoCard extends StatefulWidget {
   final Video video;
   final bool isPremiumUser;
   final VoidCallback onTap;
+  final List<Section>? sections;
 
   const VideoCard({
     super.key,
     required this.video,
     required this.isPremiumUser,
     required this.onTap,
+    this.sections,
   });
 
   @override
@@ -292,6 +295,28 @@ class _VideoCardState extends State<VideoCard> {
     );
   }
 
+  /// Get localized section name from sections list or fall back to category
+  String _getLocalizedSectionName(String langCode) {
+    if (widget.sections != null) {
+      // Try to find section by sectionNumber first
+      final section = widget.sections!.where(
+        (s) => s.sectionNumber == video.sectionNumber
+      ).firstOrNull;
+      if (section != null) {
+        return section.getLocalizedTitle(langCode);
+      }
+      // Fall back to matching by title
+      final sectionByTitle = widget.sections!.where(
+        (s) => s.title == video.category
+      ).firstOrNull;
+      if (sectionByTitle != null) {
+        return sectionByTitle.getLocalizedTitle(langCode);
+      }
+    }
+    // Fall back to helper
+    return LocalizationHelper.getLocalizedCategoryName(context, video.category);
+  }
+
   Widget _buildContent(ThemeData theme, bool isLocked) {
     final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     return Padding(
@@ -356,7 +381,7 @@ class _VideoCardState extends State<VideoCard> {
               const SizedBox(width: 5),
               Expanded(
                 child: Text(
-                  LocalizationHelper.getLocalizedCategoryName(context, video.category),
+                  _getLocalizedSectionName(langCode),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
                     fontSize: 12,
