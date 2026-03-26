@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow cleartext traffic for video streaming domain -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">amazingonlinecourse.com</domain>
+        <domain includeSubdomains="true">www.amazingonlinecourse.com</domain>
+    </domain-config>
+</network-security-config>
