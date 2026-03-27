@@ -34,17 +34,7 @@ class _PremiumPageState extends State<PremiumPage> {
         backgroundColor: theme.colorScheme.surface,
         body: BlocConsumer<PremiumBloc, PremiumState>(
         listener: (context, state) {
-          if (state is PremiumPurchaseSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)?.premiumThankYou ?? 
-                    'Thank you for your support!'),
-                backgroundColor: Colors.green,
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-            Navigator.of(context).pop();
-          } else if (state is PremiumError) {
+          if (state is PremiumError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -58,7 +48,7 @@ class _PremiumPageState extends State<PremiumPage> {
           if (state is PremiumActive) {
             return _buildActiveContent(context, theme);
           }
-          
+
           return _buildPremiumContent(context, theme, state);
         },
         ),

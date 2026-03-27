@@ -75,7 +75,16 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
           final statusResult = await getPremiumStatus();
           statusResult.fold(
             (failure) => emit(PremiumError(failure.message)),
-            (status) => emit(PremiumPurchaseSuccess(status)),
+            (status) {
+              // Emit transient success state for UI feedback
+              emit(PremiumPurchaseSuccess(status));
+              // Immediately transition to proper state based on validity
+              if (status.isValidPremium) {
+                emit(PremiumActive(status));
+              } else {
+                emit(const PremiumInactive());
+              }
+            },
           );
         } else {
           emit(const PremiumError('Purchase failed'));
@@ -99,7 +108,16 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
           final statusResult = await getPremiumStatus();
           statusResult.fold(
             (failure) => emit(PremiumError(failure.message)),
-            (status) => emit(PremiumRestoreSuccess(status)),
+            (status) {
+              // Emit transient success state for UI feedback
+              emit(PremiumRestoreSuccess(status));
+              // Immediately transition to proper state based on validity
+              if (status.isValidPremium) {
+                emit(PremiumActive(status));
+              } else {
+                emit(const PremiumInactive());
+              }
+            },
           );
         } else {
           emit(const PremiumError('No purchases found to restore'));
