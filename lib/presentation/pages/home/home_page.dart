@@ -412,7 +412,10 @@ class _HomePageState extends State<HomePage> {
                 );
               }
 
-              final isPremium = premiumState is PremiumActive;
+              // Check premium status - include all states that grant premium access
+              final isPremium = premiumState is PremiumActive ||
+                  premiumState is PremiumPurchaseSuccess ||
+                  premiumState is PremiumRestoreSuccess;
 
               return BlocBuilder<CoursesBloc, CoursesState>(
                 builder: (context, coursesState) {
@@ -606,7 +609,9 @@ class _HomePageState extends State<HomePage> {
 
     // Check if video is premium and user doesn't have premium access
     final premiumState = context.read<PremiumBloc>().state;
-    final hasPremiumAccess = premiumState is PremiumActive;
+    final hasPremiumAccess = premiumState is PremiumActive ||
+        premiumState is PremiumPurchaseSuccess ||
+        premiumState is PremiumRestoreSuccess;
 
     if (video.isPremium && !hasPremiumAccess) {
       // Navigate to premium unlock screen

@@ -421,6 +421,7 @@ class SettingsPage extends StatelessWidget {
 
     return BlocBuilder<PremiumBloc, PremiumState>(
       builder: (context, premiumState) {
+        // Check premium status - only PremiumActive grants premium access
         final isPremium = premiumState is PremiumActive;
 
         return Card(

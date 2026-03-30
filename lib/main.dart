@@ -51,8 +51,41 @@ void main() async {
   runApp(const TaiChiWorkoutApp());
 }
 
-class TaiChiWorkoutApp extends StatelessWidget {
+class TaiChiWorkoutApp extends StatefulWidget {
   const TaiChiWorkoutApp({super.key});
+
+  @override
+  State<TaiChiWorkoutApp> createState() => _TaiChiWorkoutAppState();
+}
+
+class _TaiChiWorkoutAppState extends State<TaiChiWorkoutApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // Refresh premium status when app resumes
+    if (state == AppLifecycleState.resumed) {
+      // Get the premium bloc and refresh status
+      try {
+        final premiumBloc = di.sl<PremiumBloc>();
+        premiumBloc.add(const CheckPremiumStatus());
+      } catch (e) {
+        print('Error refreshing premium status on resume: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,17 +111,17 @@ class TaiChiWorkoutApp extends StatelessWidget {
               return MaterialApp(
                 onGenerateTitle: (context) => AppLocalizations.of(context)?.appName ?? 'Tai Chi Workout',
                 debugShowCheckedModeBanner: false,
-                
+
                 // Theme configuration
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
                 themeMode: _getThemeMode(themeState.themeMode),
-                
+
                 // Localization configuration
                 locale: localeState.locale,
                 supportedLocales: AppLocalizations.supportedLocales,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
-                
+
                 // Routes
                 initialRoute: '/',
                 onGenerateRoute: (settings) {

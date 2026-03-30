@@ -76,9 +76,7 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
           statusResult.fold(
             (failure) => emit(PremiumError(failure.message)),
             (status) {
-              // Emit transient success state for UI feedback
-              emit(PremiumPurchaseSuccess(status));
-              // Immediately transition to proper state based on validity
+              // Emit final state based on validity
               if (status.isValidPremium) {
                 emit(PremiumActive(status));
               } else {
@@ -109,9 +107,7 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
           statusResult.fold(
             (failure) => emit(PremiumError(failure.message)),
             (status) {
-              // Emit transient success state for UI feedback
-              emit(PremiumRestoreSuccess(status));
-              // Immediately transition to proper state based on validity
+              // Emit final state based on validity
               if (status.isValidPremium) {
                 emit(PremiumActive(status));
               } else {

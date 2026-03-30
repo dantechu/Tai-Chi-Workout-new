@@ -48,7 +48,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       // Check if user has premium access for premium videos
       if (!mounted) return;
       final premiumState = context.read<PremiumBloc>().state;
-      final hasPremiumAccess = premiumState is PremiumActive;
+      final hasPremiumAccess = premiumState is PremiumActive ||
+          premiumState is PremiumPurchaseSuccess ||
+          premiumState is PremiumRestoreSuccess;
 
       if (widget.video.isPremium && !hasPremiumAccess) {
         setState(() {
@@ -183,7 +185,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               );
             },
           ),
-          if (!widget.video.isPremium || context.read<PremiumBloc>().state is PremiumActive)
+          if (!widget.video.isPremium ||
+              context.read<PremiumBloc>().state is PremiumActive ||
+              context.read<PremiumBloc>().state is PremiumPurchaseSuccess ||
+              context.read<PremiumBloc>().state is PremiumRestoreSuccess)
             PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert, color: Colors.white),
               onSelected: (value) => _handleMenuAction(value),
@@ -223,7 +228,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     _buildVideoInfo(),
                     const SizedBox(height: 24),
                     _buildVideoDescription(),
-                    if (widget.video.isPremium && !(context.read<PremiumBloc>().state is PremiumActive)) ...[
+                    if (widget.video.isPremium &&
+                        !(context.read<PremiumBloc>().state is PremiumActive ||
+                            context.read<PremiumBloc>().state is PremiumPurchaseSuccess ||
+                            context.read<PremiumBloc>().state is PremiumRestoreSuccess)) ...[
                       const SizedBox(height: 24),
                       _buildPremiumBadge(),
                     ],
@@ -236,7 +244,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           // Banner Ad at bottom (only show if not premium)
           BlocBuilder<PremiumBloc, PremiumState>(
             builder: (context, state) {
-              final isPremium = state is PremiumActive;
+              final isPremium = state is PremiumActive ||
+                  state is PremiumPurchaseSuccess ||
+                  state is PremiumRestoreSuccess;
               if (isPremium) {
                 return const SizedBox.shrink();
               }
@@ -452,7 +462,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   void _showDownloadDialog() {
     // Check premium status
     final premiumState = context.read<PremiumBloc>().state;
-    final hasPremium = premiumState is PremiumActive;
+    final hasPremium = premiumState is PremiumActive ||
+        premiumState is PremiumPurchaseSuccess ||
+        premiumState is PremiumRestoreSuccess;
 
     if (!hasPremium) {
       // Show premium required dialog

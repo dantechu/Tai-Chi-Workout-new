@@ -156,26 +156,51 @@ class PremiumRepositoryImpl implements PremiumRepository {
       // Check secure storage first
       final secureToken = await localDataSource.getSecurePremiumToken();
       if (secureToken != null) {
-        // We have a secure token, user is premium
+        // Check if we have cached status with this token
+        final cachedStatus = await localDataSource.getCachedPremiumStatus();
+
+        // If cached status exists and matches the token, use it
+        if (cachedStatus != null &&
+            cachedStatus.toEntity().transactionId == secureToken &&
+            cachedStatus.toEntity().isValidPremium) {
+          return Right(cachedStatus.toEntity());
+        }
+
+        // Token exists but cache is missing or mismatched - create and cache new status
         final premiumStatus = PremiumStatus.premium(
-          purchaseDate: DateTime.now(), // We don't store the actual date
+          purchaseDate: cachedStatus?.toEntity().purchaseDate ?? DateTime.now(),
           productId: AppConstants.premiumProductId,
           transactionId: secureToken,
         );
+
+        // Cache the status to keep everything in sync
+        final premiumStatusModel = PremiumStatusModel.fromEntity(premiumStatus);
+        await localDataSource.cachePremiumStatus(premiumStatusModel);
+
         return Right(premiumStatus);
       }
 
-      // Check cached status
+      // No secure token, check cached status
       final cachedStatus = await localDataSource.getCachedPremiumStatus();
       if (cachedStatus != null) {
-        return Right(cachedStatus.toEntity());
+        final status = cachedStatus.toEntity();
+        // If cached status shows premium but no secure token, it's invalid
+        if (status.isPremium) {
+          // Clear invalid premium status
+          await localDataSource.clearPremiumCache();
+          final freeStatus = PremiumStatus.free();
+          final freeStatusModel = PremiumStatusModel.fromEntity(freeStatus);
+          await localDataSource.cachePremiumStatus(freeStatusModel);
+          return Right(freeStatus);
+        }
+        return Right(status);
       }
 
       // Default to free
       final freeStatus = PremiumStatus.free();
       final freeStatusModel = PremiumStatusModel.fromEntity(freeStatus);
       await localDataSource.cachePremiumStatus(freeStatusModel);
-      
+
       return Right(freeStatus);
     } on CacheException catch (e) {
       return Left(CacheFailure(e.message));
