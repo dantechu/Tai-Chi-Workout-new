@@ -695,9 +695,8 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
           ),
         BlocBuilder<PremiumBloc, PremiumState>(
             builder: (context, state) {
-              final isPremium = state is PremiumActive ||
-                  state is PremiumPurchaseSuccess ||
-                  state is PremiumRestoreSuccess;
+              // Single source of truth - use bloc's isPremium getter
+              final isPremium = context.read<PremiumBloc>().isPremium;
               if (isPremium) {
                 return const SizedBox.shrink();
               }

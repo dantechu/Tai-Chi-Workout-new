@@ -152,9 +152,7 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
   }
 
   bool get isPremium {
-    return state is PremiumActive || 
-           state is PremiumPurchaseSuccess || 
-           state is PremiumRestoreSuccess;
+    return state is PremiumActive;
   }
 
   bool get isProcessing {
