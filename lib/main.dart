@@ -22,6 +22,7 @@ import 'presentation/pages/onboarding/onboarding_page.dart';
 import 'presentation/pages/navigation/main_navigation_page.dart';
 import 'presentation/pages/video_player/video_player_page.dart';
 import 'presentation/pages/premium/premium_page.dart';
+import 'presentation/pages/premium/premium_unlocked_page.dart';
 import 'presentation/courses/pages/courses_page.dart';
 import 'domain/entities/section.dart';
 import 'domain/entities/video.dart';
@@ -157,6 +158,10 @@ class _TaiChiWorkoutAppState extends State<TaiChiWorkoutApp> with WidgetsBinding
                     case '/premium':
                       return MaterialPageRoute(
                         builder: (context) => const PremiumPage(),
+                      );
+                    case '/premium-unlocked':
+                      return MaterialPageRoute(
+                        builder: (context) => const PremiumUnlockedPage(),
                       );
                     case '/courses':
                       return MaterialPageRoute(

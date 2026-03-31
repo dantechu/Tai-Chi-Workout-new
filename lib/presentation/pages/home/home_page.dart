@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/services/premium_service.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../domain/entities/section.dart';
@@ -412,8 +413,8 @@ class _HomePageState extends State<HomePage> {
                 );
               }
 
-              // Check premium status from the premiumState parameter
-              final isPremium = premiumState is PremiumActive;
+              // Check premium status from singleton service - SINGLE SOURCE OF TRUTH
+              final isPremium = PremiumService().isPremium;
 
               return BlocBuilder<CoursesBloc, CoursesState>(
                 builder: (context, coursesState) {
@@ -606,8 +607,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     // Check if video is premium and user doesn't have premium access
-    final premiumState = context.read<PremiumBloc>().state;
-    final hasPremiumAccess = premiumState is PremiumActive;
+    // Use singleton service - SINGLE SOURCE OF TRUTH
+    final hasPremiumAccess = PremiumService().isPremium;
 
     if (video.isPremium && !hasPremiumAccess) {
       // Navigate to premium unlock screen

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/usecases/premium_usecases.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/services/premium_service.dart';
 import 'premium_event.dart';
 import 'premium_state.dart';
 
@@ -10,6 +11,7 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
   final GetPremiumStatus getPremiumStatus;
   final ValidatePremiumStatus validatePremiumStatus;
   final GetProductDetails getProductDetails;
+  final PremiumService _premiumService = PremiumService();
 
   PremiumBloc({
     required this.purchasePremium,
@@ -39,9 +41,11 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
       },
       (status) {
         if (status.isValidPremium) {
+          _premiumService.updatePremiumStatus(true);
           emit(PremiumActive(status));
           return true;
         }
+        _premiumService.updatePremiumStatus(false);
         return false;
       },
     );
@@ -78,8 +82,10 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
             (status) {
               // Emit final state based on validity
               if (status.isValidPremium) {
+                _premiumService.updatePremiumStatus(true);
                 emit(PremiumActive(status));
               } else {
+                _premiumService.updatePremiumStatus(false);
                 emit(const PremiumInactive());
               }
             },
@@ -109,8 +115,10 @@ class PremiumBloc extends Bloc<PremiumEvent, PremiumState> {
             (status) {
               // Emit final state based on validity
               if (status.isValidPremium) {
+                _premiumService.updatePremiumStatus(true);
                 emit(PremiumActive(status));
               } else {
+                _premiumService.updatePremiumStatus(false);
                 emit(const PremiumInactive());
               }
             },

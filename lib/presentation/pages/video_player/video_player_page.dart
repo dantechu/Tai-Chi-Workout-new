@@ -1,3 +1,4 @@
+import '../../../core/services/premium_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:chewie/chewie.dart';
@@ -47,8 +48,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     try {
       // Check if user has premium access for premium videos
       if (!mounted) return;
-      final premiumState = context.read<PremiumBloc>().state;
-      final hasPremiumAccess = premiumState is PremiumActive;
+      // Use singleton service - SINGLE SOURCE OF TRUTH
+      final hasPremiumAccess = PremiumService().isPremium;
 
       if (widget.video.isPremium && !hasPremiumAccess) {
         setState(() {
@@ -184,7 +185,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
             },
           ),
           if (!widget.video.isPremium ||
-              context.read<PremiumBloc>().state is PremiumActive)
+              PremiumService().isPremium)
             PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert, color: Colors.white),
               onSelected: (value) => _handleMenuAction(value),
@@ -225,7 +226,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     const SizedBox(height: 24),
                     _buildVideoDescription(),
                     if (widget.video.isPremium &&
-                        context.read<PremiumBloc>().state is! PremiumActive) ...[
+                        !PremiumService().isPremium) ...[
                       const SizedBox(height: 24),
                       _buildPremiumBadge(),
                     ],
@@ -238,8 +239,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           // Banner Ad at bottom (only show if not premium)
           BlocBuilder<PremiumBloc, PremiumState>(
             builder: (context, state) {
-              // Check premium status from state parameter
-              final isPremium = state is PremiumActive;
+              // Use singleton service - SINGLE SOURCE OF TRUTH
+              final isPremium = PremiumService().isPremium;
               if (isPremium) {
                 return const SizedBox.shrink();
               }
@@ -453,9 +454,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   void _showDownloadDialog() {
-    // Check premium status
-    final premiumState = context.read<PremiumBloc>().state;
-    final hasPremium = premiumState is PremiumActive;
+    // Check premium status - use singleton service
+    final hasPremium = PremiumService().isPremium;
 
     if (!hasPremium) {
       // Show premium required dialog

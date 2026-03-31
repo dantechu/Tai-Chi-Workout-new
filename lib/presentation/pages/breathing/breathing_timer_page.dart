@@ -1,3 +1,4 @@
+import '../../../../core/services/premium_service.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -695,8 +696,8 @@ class _BreathingSessionScreenState extends State<BreathingSessionScreen>
           ),
         BlocBuilder<PremiumBloc, PremiumState>(
             builder: (context, state) {
-              // Check premium status from state parameter
-              final isPremium = state is PremiumActive;
+              // Use singleton service - SINGLE SOURCE OF TRUTH
+              final isPremium = PremiumService().isPremium;
               if (isPremium) {
                 return const SizedBox.shrink();
               }

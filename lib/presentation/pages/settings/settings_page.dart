@@ -1,3 +1,4 @@
+import 'package:qigong_workout/core/services/premium_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -421,8 +422,8 @@ class SettingsPage extends StatelessWidget {
 
     return BlocBuilder<PremiumBloc, PremiumState>(
       builder: (context, premiumState) {
-        // Check premium status from premiumState parameter
-        final isPremium = premiumState is PremiumActive;
+        // Check premium status from singleton service - SINGLE SOURCE OF TRUTH
+        final isPremium = PremiumService().isPremium;
 
         return Card(
           elevation: 8,
@@ -431,7 +432,15 @@ class SettingsPage extends StatelessWidget {
               : theme.colorScheme.primary.withValues(alpha: 0.2),
           child: InkWell(
             onTap: () {
-              Navigator.of(context).pushNamed('/premium');
+              // Check premium status and navigate to correct page
+              final isPremiumUser = PremiumService().isPremium;
+              if (isPremiumUser) {
+                // User is premium - show thank you page
+                Navigator.of(context).pushNamed('/premium-unlocked');
+              } else {
+                // User is NOT premium - show purchase page
+                Navigator.of(context).pushNamed('/premium');
+              }
             },
             borderRadius: BorderRadius.circular(12),
             child: Container(
