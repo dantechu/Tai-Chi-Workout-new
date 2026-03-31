@@ -45,8 +45,8 @@ class _PremiumPageState extends State<PremiumPage> {
           }
         },
         builder: (context, state) {
-          // Single source of truth - use bloc's isPremium getter
-          if (context.read<PremiumBloc>().isPremium) {
+          // Check premium status from state parameter
+          if (state is PremiumActive) {
             return _buildActiveContent(context, theme);
           }
 
