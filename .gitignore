@@ -46,8 +46,6 @@ app.*.map.json
 
 # Firebase sensitive files
 firebase-admin-key.json
-**/google-services.json
-**/GoogleService-Info.plist
 
 # Migration script outputs
 course_data_export.json

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "3829058758",
+    "project_id": "qigong-workout",
+    "storage_bucket": "qigong-workout.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3829058758:android:9d3c341f1ecdcefe941bc7",
+        "android_client_info": {
+          "package_name": "com.amazingelearning.chikung"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoZIa4ZOFGlxpDdMRg3aGPoCzmXI5Aiac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
