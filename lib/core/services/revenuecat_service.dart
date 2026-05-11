@@ -59,12 +59,30 @@ class RevenueCatService {
   }
 
   /// Login user with custom app user ID for cross-device syncing
+  ///
+  /// IMPORTANT: Call this method when a user logs into your app to enable:
+  /// - Cross-device purchase syncing
+  /// - Purchase restoration across devices
+  /// - Multiple device access with the same account
+  ///
+  /// Example usage:
+  /// ```dart
+  /// // When user signs in with Firebase Auth, email, etc.
+  /// await revenueCatService.logIn(user.uid);
+  /// ```
+  ///
+  /// Without calling this, purchases are tied to the device and won't sync.
   Future<CustomerInfo> logIn(String appUserId) async {
     final result = await Purchases.logIn(appUserId).timeout(_defaultTimeout);
     return result.customerInfo;
   }
 
   /// Logout current user
+  ///
+  /// Call this when a user logs out of your app to:
+  /// - Clear the current user's purchase data from the device
+  /// - Allow another user to log in on the same device
+  /// - Reset to anonymous user state
   Future<CustomerInfo> logOut() async {
     return await Purchases.logOut().timeout(_defaultTimeout);
   }
@@ -108,8 +126,7 @@ class RevenueCatService {
 
     // Return a function to remove this specific listener
     return () {
-      // Note: RevenueCat doesn't provide a way to remove individual listeners
-      // The listener will be automatically cleaned up when the app is disposed
+      Purchases.removeCustomerInfoUpdateListener(callback);
     };
   }
 

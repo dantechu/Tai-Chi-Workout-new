@@ -73,13 +73,16 @@ class PremiumRepositoryImpl implements PremiumRepository {
     }
 
     // Get the actual transaction identifier from the entitlement
-    // This is more reliable than using originalAppUserId
+    // Use the entitlement identifier as the primary transaction reference
+    // This is verified by RevenueCat and tied to the actual purchase
     String? transactionId;
     String? originalTransactionId;
 
     if (isEntitlementActive && entitlement != null) {
-      // Use the product identifier combined with user ID as a unique transaction reference
-      transactionId = '${entitlement.productIdentifier}_${customerInfo.originalAppUserId}';
+      // Use the entitlement's identifier (e.g., "premium") as verification
+      // Combined with the user's app ID for uniqueness
+      transactionId = '${entitlement.identifier}_${customerInfo.originalAppUserId}';
+      // Store the original purchase date as additional verification
       originalTransactionId = entitlement.originalPurchaseDate;
     }
 
@@ -111,8 +114,16 @@ class PremiumRepositoryImpl implements PremiumRepository {
         return Left(PurchaseFailure('No offerings available. Please contact support.'));
       }
 
-      // Get the first available package from the offering
-      final package = offering.availablePackages.first;
+      // Get the lifetime package (preferred for one-time purchases)
+      // If not available, try annual, then monthly, then fall back to first available
+      Package? package = offering.lifetime ??
+                         offering.annual ??
+                         offering.monthly ??
+                         (offering.availablePackages.isNotEmpty ? offering.availablePackages.first : null);
+
+      if (package == null) {
+        return Left(PurchaseFailure('No purchase packages available. Please contact support.'));
+      }
 
       // Make the purchase
       final customerInfo = await revenueCatService.purchasePackage(package);
@@ -331,8 +342,17 @@ class PremiumRepositoryImpl implements PremiumRepository {
         return Left(PurchaseFailure('No products available'));
       }
 
-      // Get the first package from the offering
-      final package = offering.availablePackages.first;
+      // Get the lifetime package (preferred for one-time purchases)
+      // If not available, try annual, then monthly, then fall back to first available
+      Package? package = offering.lifetime ??
+                         offering.annual ??
+                         offering.monthly ??
+                         (offering.availablePackages.isNotEmpty ? offering.availablePackages.first : null);
+
+      if (package == null) {
+        return Left(PurchaseFailure('No purchase packages available'));
+      }
+
       final product = package.storeProduct;
 
       final productInfo = {
@@ -358,6 +378,12 @@ class PremiumRepositoryImpl implements PremiumRepository {
   @override
   Future<Either<Failure, String>> loginUser(String appUserId) async {
     try {
+      // IMPORTANT: This should be called when a user authenticates in your app
+      // to enable cross-device purchase syncing. For example:
+      // - After Firebase Auth sign-in
+      // - After email/password login
+      // - When user creates an account
+      // Pass your user's unique ID (e.g., Firebase UID, database user ID)
       final customerInfo = await revenueCatService.logIn(appUserId);
 
       // Update local status after login

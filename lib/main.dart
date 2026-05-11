@@ -73,6 +73,8 @@ class _TaiChiWorkoutAppState extends State<TaiChiWorkoutApp> with WidgetsBinding
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    // Clean up dependency injection container and dispose of all services
+    di.dispose();
     super.dispose();
   }
 
