@@ -10,6 +10,11 @@ class PremiumStatus extends Equatable {
   final String? originalTransactionId;
   final bool isActive;
 
+  // RevenueCat entitlement fields
+  final String? entitlementId;
+  final List<String>? activeEntitlements;
+  final bool isFromRevenueCat;
+
   const PremiumStatus({
     required this.isPremium,
     this.purchaseDate,
@@ -19,12 +24,16 @@ class PremiumStatus extends Equatable {
     this.expirationDate,
     this.originalTransactionId,
     this.isActive = true,
+    this.entitlementId,
+    this.activeEntitlements,
+    this.isFromRevenueCat = true,
   });
 
   factory PremiumStatus.free() {
     return const PremiumStatus(
       isPremium: false,
       isActive: false,
+      isFromRevenueCat: true,
     );
   }
 
@@ -35,6 +44,8 @@ class PremiumStatus extends Equatable {
     String? receipt,
     DateTime? expirationDate,
     String? originalTransactionId,
+    String? entitlementId,
+    List<String>? activeEntitlements,
   }) {
     return PremiumStatus(
       isPremium: true,
@@ -45,6 +56,9 @@ class PremiumStatus extends Equatable {
       expirationDate: expirationDate,
       originalTransactionId: originalTransactionId,
       isActive: true,
+      entitlementId: entitlementId,
+      activeEntitlements: activeEntitlements,
+      isFromRevenueCat: true,
     );
   }
 
@@ -78,6 +92,9 @@ class PremiumStatus extends Equatable {
     DateTime? expirationDate,
     String? originalTransactionId,
     bool? isActive,
+    String? entitlementId,
+    List<String>? activeEntitlements,
+    bool? isFromRevenueCat,
   }) {
     return PremiumStatus(
       isPremium: isPremium ?? this.isPremium,
@@ -88,6 +105,9 @@ class PremiumStatus extends Equatable {
       expirationDate: expirationDate ?? this.expirationDate,
       originalTransactionId: originalTransactionId ?? this.originalTransactionId,
       isActive: isActive ?? this.isActive,
+      entitlementId: entitlementId ?? this.entitlementId,
+      activeEntitlements: activeEntitlements ?? this.activeEntitlements,
+      isFromRevenueCat: isFromRevenueCat ?? this.isFromRevenueCat,
     );
   }
 
@@ -101,6 +121,9 @@ class PremiumStatus extends Equatable {
         expirationDate,
         originalTransactionId,
         isActive,
+        entitlementId,
+        activeEntitlements,
+        isFromRevenueCat,
       ];
 
   @override

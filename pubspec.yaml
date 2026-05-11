@@ -2,7 +2,7 @@ name: qigong_workout
 description: "A Tai Chi workout and meditation app with video lessons, music player, and breathing exercises."
 publish_to: 'none'
 
-version: 2.0.1+5
+version: 2.0.2+6
 
 environment:
   sdk: ^3.8.0
@@ -44,8 +44,11 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   path_provider: ^2.1.1
 
-  # In-App Purchase
-  in_app_purchase: ^3.1.11
+  # RevenueCat SDK for in-app purchases and subscriptions
+  purchases_flutter: ^10.0.2
+
+  # Environment variables management
+  flutter_dotenv: ^5.2.1
 
   # Ads
   google_mobile_ads: ^7.0.0
@@ -100,6 +103,7 @@ flutter:
     - assets/audio/voice/
     - assets/audio/sounds/
     - assets/lottie/
+    - .env
 
   # fonts:
   #   - family: Roboto

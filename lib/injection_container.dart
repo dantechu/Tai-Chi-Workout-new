@@ -4,13 +4,13 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Core
 import 'core/network/dio_client.dart';
 import 'core/network/network_info.dart';
 import 'core/services/analytics_service.dart';
+import 'core/services/revenuecat_service.dart';
 
 // Data sources
 import 'data/datasources/bookmark_local_datasource.dart';
@@ -60,6 +60,10 @@ Future<void> init() async {
   await Hive.openBox('courses_box');
   await Hive.openBox<bool>('onboarding_prefs');
   await Hive.openBox<Map>('bookmarks_cache');
+
+  // Initialize RevenueCat service
+  final revenueCatService = RevenueCatService();
+  await revenueCatService.initialize();
 
 
   //! Features - Video
@@ -144,7 +148,7 @@ Future<void> init() async {
   sl.registerLazySingleton<PremiumRepository>(
     () => PremiumRepositoryImpl(
       localDataSource: sl(),
-      inAppPurchase: sl(),
+      revenueCatService: sl(),
     ),
   );
 
@@ -218,7 +222,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseAnalytics.instance);
   sl.registerLazySingleton(() => Connectivity());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
-  sl.registerLazySingleton(() => InAppPurchase.instance);
+  sl.registerLazySingleton<RevenueCatService>(() => revenueCatService);
 
   // SharedPreferences - needs to be initialized asynchronously
   final sharedPreferences = await SharedPreferences.getInstance();

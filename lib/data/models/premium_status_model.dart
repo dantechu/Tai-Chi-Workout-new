@@ -14,6 +14,9 @@ class PremiumStatusModel extends PremiumStatus {
     super.expirationDate,
     super.originalTransactionId,
     super.isActive = true,
+    super.entitlementId,
+    super.activeEntitlements,
+    super.isFromRevenueCat = true,
   });
 
   factory PremiumStatusModel.fromJson(Map<String, dynamic> json) => 
@@ -31,6 +34,9 @@ class PremiumStatusModel extends PremiumStatus {
       expirationDate: entity.expirationDate,
       originalTransactionId: entity.originalTransactionId,
       isActive: entity.isActive,
+      entitlementId: entity.entitlementId,
+      activeEntitlements: entity.activeEntitlements,
+      isFromRevenueCat: entity.isFromRevenueCat,
     );
   }
 
@@ -44,6 +50,9 @@ class PremiumStatusModel extends PremiumStatus {
       expirationDate: expirationDate,
       originalTransactionId: originalTransactionId,
       isActive: isActive,
+      entitlementId: entitlementId,
+      activeEntitlements: activeEntitlements,
+      isFromRevenueCat: isFromRevenueCat,
     );
   }
 
@@ -57,6 +66,9 @@ class PremiumStatusModel extends PremiumStatus {
     DateTime? expirationDate,
     String? originalTransactionId,
     bool? isActive,
+    String? entitlementId,
+    List<String>? activeEntitlements,
+    bool? isFromRevenueCat,
   }) {
     return PremiumStatusModel(
       isPremium: isPremium ?? this.isPremium,
@@ -67,6 +79,9 @@ class PremiumStatusModel extends PremiumStatus {
       expirationDate: expirationDate ?? this.expirationDate,
       originalTransactionId: originalTransactionId ?? this.originalTransactionId,
       isActive: isActive ?? this.isActive,
+      entitlementId: entitlementId ?? this.entitlementId,
+      activeEntitlements: activeEntitlements ?? this.activeEntitlements,
+      isFromRevenueCat: isFromRevenueCat ?? this.isFromRevenueCat,
     );
   }
 }

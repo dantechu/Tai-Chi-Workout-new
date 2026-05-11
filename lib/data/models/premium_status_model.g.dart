@@ -20,6 +20,11 @@ PremiumStatusModel _$PremiumStatusModelFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['expirationDate'] as String),
       originalTransactionId: json['originalTransactionId'] as String?,
       isActive: json['isActive'] as bool? ?? true,
+      entitlementId: json['entitlementId'] as String?,
+      activeEntitlements: (json['activeEntitlements'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      isFromRevenueCat: json['isFromRevenueCat'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$PremiumStatusModelToJson(PremiumStatusModel instance) =>
@@ -32,4 +37,7 @@ Map<String, dynamic> _$PremiumStatusModelToJson(PremiumStatusModel instance) =>
       'expirationDate': instance.expirationDate?.toIso8601String(),
       'originalTransactionId': instance.originalTransactionId,
       'isActive': instance.isActive,
+      'entitlementId': instance.entitlementId,
+      'activeEntitlements': instance.activeEntitlements,
+      'isFromRevenueCat': instance.isFromRevenueCat,
     };

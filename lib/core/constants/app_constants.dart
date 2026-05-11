@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConstants {
   static const String appName = 'Tai Chi Workout';
@@ -14,10 +15,14 @@ class AppConstants {
   static const String privacyPolicyUrl = 'https://amazingelearning.com/privacy-policy/';
   static const String termsOfServiceUrl = 'https://www.amazingelearning.com/terms';
   
-  // Premium ]
+  // Premium
   static  String premiumProductId = Platform.isAndroid ? 'com.amazingelearning.taichi.premium' :  'com.amazingelearning.taichi.Premium';
   static const String premiumPrice = '\$4.99';
-  
+
+  // RevenueCat Configuration
+  static String revenuecatEntitlementId = dotenv.env['REVENUECAT_ENTITLEMENT_ID'] ?? 'premium';
+  static String revenuecatOfferingId = dotenv.env['REVENUECAT_OFFERING_ID'] ?? 'default';
+
   // Storage Keys
   static const String hiveVideoBox = 'videos_box';
   static const String hiveDownloadBox = 'downloads_box';
