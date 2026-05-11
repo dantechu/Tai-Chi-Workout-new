@@ -11,4 +11,10 @@ abstract class PremiumRepository {
   Future<Either<Failure, List<String>>> getAvailableProducts();
   Future<Either<Failure, Map<String, dynamic>>> getProductDetails(String productId);
   Stream<PremiumStatus> get premiumStatusStream;
+
+  // User identification for cross-device syncing
+  Future<Either<Failure, String>> loginUser(String appUserId);
+  Future<Either<Failure, String>> logoutUser();
+  Future<Either<Failure, bool>> isAnonymous();
+  Future<Either<Failure, String>> getCurrentUserId();
 }

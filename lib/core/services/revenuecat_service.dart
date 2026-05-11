@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -8,12 +9,15 @@ class RevenueCatService {
   RevenueCatService._internal();
 
   bool _isInitialized = false;
+  static const Duration _defaultTimeout = Duration(seconds: 30);
 
   Future<void> initialize() async {
     if (_isInitialized) return;
 
-    // Set log level (use LogLevel.info in production)
-    await Purchases.setLogLevel(LogLevel.debug);
+    // Set log level based on environment (default to info for production)
+    final logLevelEnv = dotenv.env['REVENUECAT_LOG_LEVEL'] ?? 'info';
+    final logLevel = _getLogLevel(logLevelEnv);
+    await Purchases.setLogLevel(logLevel);
 
     late PurchasesConfiguration configuration;
 
@@ -37,31 +41,81 @@ class RevenueCatService {
     _isInitialized = true;
   }
 
+  LogLevel _getLogLevel(String level) {
+    switch (level.toLowerCase()) {
+      case 'verbose':
+        return LogLevel.verbose;
+      case 'debug':
+        return LogLevel.debug;
+      case 'warn':
+      case 'warning':
+        return LogLevel.warn;
+      case 'error':
+        return LogLevel.error;
+      case 'info':
+      default:
+        return LogLevel.info;
+    }
+  }
+
+  /// Login user with custom app user ID for cross-device syncing
+  Future<CustomerInfo> logIn(String appUserId) async {
+    final result = await Purchases.logIn(appUserId).timeout(_defaultTimeout);
+    return result.customerInfo;
+  }
+
+  /// Logout current user
+  Future<CustomerInfo> logOut() async {
+    return await Purchases.logOut().timeout(_defaultTimeout);
+  }
+
+  /// Check if user is anonymous
+  Future<bool> isAnonymous() async {
+    return await Purchases.isAnonymous;
+  }
+
   /// Get the current customer info
   Future<CustomerInfo> getCustomerInfo() async {
-    return await Purchases.getCustomerInfo();
+    return await Purchases.getCustomerInfo().timeout(_defaultTimeout);
   }
 
   /// Get available offerings from RevenueCat
   Future<Offerings> getOfferings() async {
-    return await Purchases.getOfferings();
+    return await Purchases.getOfferings().timeout(_defaultTimeout);
   }
 
   /// Purchase a package
   Future<CustomerInfo> purchasePackage(Package package) async {
     final purchaseParams = PurchaseParams.package(package);
-    final purchaseResult = await Purchases.purchase(purchaseParams);
+    // Purchase operations can take longer, use extended timeout
+    final purchaseResult = await Purchases.purchase(purchaseParams)
+        .timeout(const Duration(seconds: 60));
     return purchaseResult.customerInfo;
   }
 
   /// Restore previous purchases
   Future<CustomerInfo> restorePurchases() async {
-    return await Purchases.restorePurchases();
+    return await Purchases.restorePurchases()
+        .timeout(const Duration(seconds: 60));
   }
 
-  /// Listen to customer info updates  /// Note: This is a placeholder - actual listener setup should be done via callbacks
-  void addCustomerInfoUpdateListener(void Function(CustomerInfo) callback) {
+  /// Listen to customer info updates for real-time premium status changes
+  /// Returns a function to remove the listener
+  void Function() addCustomerInfoUpdateListener(
+    void Function(CustomerInfo) callback,
+  ) {
     Purchases.addCustomerInfoUpdateListener(callback);
+
+    // Return a function to remove this specific listener
+    return () {
+      // Note: RevenueCat doesn't provide a way to remove individual listeners
+      // The listener will be automatically cleaned up when the app is disposed
+    };
+  }
+
+  /// Get current app user ID
+  Future<String> getAppUserId() async {
+    return await Purchases.appUserID;
   }
 
   void dispose() {

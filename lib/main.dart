@@ -87,7 +87,7 @@ class _TaiChiWorkoutAppState extends State<TaiChiWorkoutApp> with WidgetsBinding
         final premiumBloc = di.sl<PremiumBloc>();
         premiumBloc.add(const CheckPremiumStatus());
       } catch (e) {
-        print('Error refreshing premium status on resume: $e');
+        debugPrint('Error refreshing premium status on resume: $e');
       }
     }
   }

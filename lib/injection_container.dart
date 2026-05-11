@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -230,5 +231,16 @@ Future<void> init() async {
 }
 
 void dispose() {
+  // Dispose of repositories that need cleanup
+  try {
+    final premiumRepo = sl<PremiumRepository>();
+    if (premiumRepo is PremiumRepositoryImpl) {
+      premiumRepo.dispose();
+    }
+  } catch (e) {
+    debugPrint('Error disposing premium repository: $e');
+  }
+
+  // Reset all registered services
   sl.reset();
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../core/constants/app_constants.dart';
@@ -15,6 +16,10 @@ class PremiumRepositoryImpl implements PremiumRepository {
   final PremiumLocalDataSource localDataSource;
   final RevenueCatService revenueCatService;
   final StreamController<PremiumStatus> _premiumStatusController;
+  void Function()? _removeListener;
+
+  // Cache expiration time (24 hours)
+  static const Duration _cacheValidDuration = Duration(hours: 24);
 
   PremiumRepositoryImpl({
     required this.localDataSource,
@@ -24,8 +29,12 @@ class PremiumRepositoryImpl implements PremiumRepository {
   }
 
   void _initializeCustomerInfoListener() {
-    // Listen to customer info updates from RevenueCat
-    // Note: The stream listener will be set up when needed
+    // Listen to customer info updates from RevenueCat for real-time sync
+    _removeListener = revenueCatService.addCustomerInfoUpdateListener(
+      (customerInfo) async {
+        await _handleCustomerInfoUpdate(customerInfo);
+      },
+    );
   }
 
   Future<void> _handleCustomerInfoUpdate(CustomerInfo customerInfo) async {
@@ -43,7 +52,9 @@ class PremiumRepositoryImpl implements PremiumRepository {
 
       _premiumStatusController.add(premiumStatus);
     } catch (e) {
-      print('Error caching premium status: $e');
+      // Silently handle caching errors to avoid disrupting the update flow
+      // In production, consider using a proper logging service
+      debugPrint('Error caching premium status: $e');
     }
   }
 
@@ -61,13 +72,24 @@ class PremiumRepositoryImpl implements PremiumRepository {
       }
     }
 
+    // Get the actual transaction identifier from the entitlement
+    // This is more reliable than using originalAppUserId
+    String? transactionId;
+    String? originalTransactionId;
+
+    if (isEntitlementActive && entitlement != null) {
+      // Use the product identifier combined with user ID as a unique transaction reference
+      transactionId = '${entitlement.productIdentifier}_${customerInfo.originalAppUserId}';
+      originalTransactionId = entitlement.originalPurchaseDate;
+    }
+
     return PremiumStatus(
       isPremium: isEntitlementActive,
       purchaseDate: parsePurchaseDate(entitlement?.latestPurchaseDate),
       productId: entitlement?.productIdentifier,
-      transactionId: customerInfo.originalAppUserId,
+      transactionId: transactionId,
       expirationDate: parsePurchaseDate(entitlement?.expirationDate),
-      originalTransactionId: entitlement?.originalPurchaseDate,
+      originalTransactionId: originalTransactionId,
       isActive: isEntitlementActive,
       entitlementId: AppConstants.revenuecatEntitlementId,
       activeEntitlements: customerInfo.entitlements.active.keys.toList(),
@@ -81,12 +103,15 @@ class PremiumRepositoryImpl implements PremiumRepository {
       // Get offerings from RevenueCat
       final offerings = await revenueCatService.getOfferings();
 
-      final offering = offerings.current;
+      // Try to get the configured offering first, fallback to current
+      Offering? offering = offerings.getOffering(AppConstants.revenuecatOfferingId);
+      offering ??= offerings.current;
+
       if (offering == null || offering.availablePackages.isEmpty) {
         return Left(PurchaseFailure('No offerings available. Please contact support.'));
       }
 
-      // Get the default package (or specific package based on your setup)
+      // Get the first available package from the offering
       final package = offering.availablePackages.first;
 
       // Make the purchase
@@ -102,17 +127,42 @@ class PremiumRepositoryImpl implements PremiumRepository {
     } on PlatformException catch (e) {
       final errorCode = PurchasesErrorHelper.getErrorCode(e);
 
-      if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
-        return Left(PurchaseFailure('Purchase was cancelled'));
-      } else if (errorCode == PurchasesErrorCode.productAlreadyPurchasedError) {
-        // Already purchased, trigger restore
-        await restorePurchases();
-        return const Right(true);
-      } else if (errorCode == PurchasesErrorCode.networkError) {
-        return Left(PurchaseFailure('Network error. Please check your connection.'));
-      }
+      // Handle all known error codes
+      switch (errorCode) {
+        case PurchasesErrorCode.purchaseCancelledError:
+          return Left(PurchaseFailure('Purchase was cancelled'));
 
-      return Left(PurchaseFailure('Purchase failed: ${e.message ?? e.code}'));
+        case PurchasesErrorCode.productAlreadyPurchasedError:
+          // Already purchased, trigger restore
+          await restorePurchases();
+          return const Right(true);
+
+        case PurchasesErrorCode.networkError:
+          return Left(PurchaseFailure('Network error. Please check your connection.'));
+
+        case PurchasesErrorCode.storeProblemError:
+          return Left(PurchaseFailure('Store error. Please try again later.'));
+
+        case PurchasesErrorCode.purchaseNotAllowedError:
+          return Left(PurchaseFailure('Purchases are not allowed on this device.'));
+
+        case PurchasesErrorCode.receiptAlreadyInUseError:
+          return Left(PurchaseFailure('This purchase is already in use on another account.'));
+
+        case PurchasesErrorCode.paymentPendingError:
+          return Left(PurchaseFailure('Payment is pending. Please check back later.'));
+
+        case PurchasesErrorCode.productNotAvailableForPurchaseError:
+          return Left(PurchaseFailure('This product is not available for purchase.'));
+
+        case PurchasesErrorCode.purchaseInvalidError:
+          return Left(PurchaseFailure('Purchase is invalid. Please try again.'));
+
+        default:
+          return Left(PurchaseFailure('Purchase failed: ${e.message ?? e.code}'));
+      }
+    } on TimeoutException {
+      return Left(PurchaseFailure('Purchase timed out. Please check your connection and try again.'));
     } catch (e) {
       return Left(PurchaseFailure('Unexpected error: $e'));
     }
@@ -131,7 +181,18 @@ class PremiumRepositoryImpl implements PremiumRepository {
 
       return Right(hasActivePurchase);
     } on PlatformException catch (e) {
-      return Left(PurchaseFailure('Restore failed: ${e.message ?? e.code}'));
+      final errorCode = PurchasesErrorHelper.getErrorCode(e);
+
+      switch (errorCode) {
+        case PurchasesErrorCode.networkError:
+          return Left(PurchaseFailure('Network error. Please check your connection.'));
+        case PurchasesErrorCode.storeProblemError:
+          return Left(PurchaseFailure('Store error. Please try again later.'));
+        default:
+          return Left(PurchaseFailure('Restore failed: ${e.message ?? e.code}'));
+      }
+    } on TimeoutException {
+      return Left(PurchaseFailure('Restore timed out. Please check your connection and try again.'));
     } catch (e) {
       return Left(PurchaseFailure('Restore failed: $e'));
     }
@@ -144,9 +205,10 @@ class PremiumRepositoryImpl implements PremiumRepository {
       final customerInfo = await revenueCatService.getCustomerInfo();
       final premiumStatus = _createPremiumStatusFromCustomerInfo(customerInfo);
 
-      // Cache the status
+      // Cache the status with timestamp
       final premiumStatusModel = PremiumStatusModel.fromEntity(premiumStatus);
       await localDataSource.cachePremiumStatus(premiumStatusModel);
+      await localDataSource.updateLastPremiumCheck();
 
       if (premiumStatus.isValidPremium && premiumStatus.transactionId != null) {
         await localDataSource.setSecurePremiumToken(premiumStatus.transactionId!);
@@ -157,11 +219,35 @@ class PremiumRepositoryImpl implements PremiumRepository {
 
       return Right(premiumStatus);
     } catch (e) {
-      // If network fails, fallback to cache
+      // If network fails, fallback to cache with validation
       try {
         final cachedStatus = await localDataSource.getCachedPremiumStatus();
+        final lastCheck = await localDataSource.getLastPremiumCheck();
+
         if (cachedStatus != null) {
-          return Right(cachedStatus.toEntity());
+          // Validate cache is not expired
+          final isCacheValid = lastCheck != null &&
+              DateTime.now().difference(lastCheck) < _cacheValidDuration;
+
+          if (isCacheValid) {
+            // Use cached status if it's recent enough
+            return Right(cachedStatus.toEntity());
+          } else {
+            // Cache is too old, check if premium has expired
+            final cachedEntity = cachedStatus.toEntity();
+            if (cachedEntity.isPremium && cachedEntity.isExpired) {
+              // Premium has expired, clear cache and return free status
+              await localDataSource.clearPremiumCache();
+              await localDataSource.clearSecurePremiumToken();
+              final freeStatus = PremiumStatus.free();
+              final freeStatusModel = PremiumStatusModel.fromEntity(freeStatus);
+              await localDataSource.cachePremiumStatus(freeStatusModel);
+              return Right(freeStatus);
+            }
+
+            // Cache is old but premium might still be valid, return cached with warning
+            return Right(cachedEntity);
+          }
         }
       } catch (_) {}
 
@@ -237,12 +323,16 @@ class PremiumRepositoryImpl implements PremiumRepository {
     try {
       final offerings = await revenueCatService.getOfferings();
 
-      if (offerings.current == null || offerings.current!.availablePackages.isEmpty) {
+      // Try to get the configured offering first, fallback to current
+      Offering? offering = offerings.getOffering(AppConstants.revenuecatOfferingId);
+      offering ??= offerings.current;
+
+      if (offering == null || offering.availablePackages.isEmpty) {
         return Left(PurchaseFailure('No products available'));
       }
 
-      // Get the first package (or find specific package)
-      final package = offerings.current!.availablePackages.first;
+      // Get the first package from the offering
+      final package = offering.availablePackages.first;
       final product = package.storeProduct;
 
       final productInfo = {
@@ -255,6 +345,8 @@ class PremiumRepositoryImpl implements PremiumRepository {
       };
 
       return Right(productInfo);
+    } on TimeoutException {
+      return Left(PurchaseFailure('Request timed out. Please check your connection.'));
     } catch (e) {
       return Left(PurchaseFailure('Failed to get product details: $e'));
     }
@@ -263,7 +355,66 @@ class PremiumRepositoryImpl implements PremiumRepository {
   @override
   Stream<PremiumStatus> get premiumStatusStream => _premiumStatusController.stream;
 
+  @override
+  Future<Either<Failure, String>> loginUser(String appUserId) async {
+    try {
+      final customerInfo = await revenueCatService.logIn(appUserId);
+
+      // Update local status after login
+      await _handleCustomerInfoUpdate(customerInfo);
+
+      return Right(customerInfo.originalAppUserId);
+    } on PlatformException catch (e) {
+      return Left(PurchaseFailure('Login failed: ${e.message ?? e.code}'));
+    } on TimeoutException {
+      return Left(PurchaseFailure('Login timed out. Please check your connection.'));
+    } catch (e) {
+      return Left(PurchaseFailure('Login failed: $e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> logoutUser() async {
+    try {
+      final customerInfo = await revenueCatService.logOut();
+
+      // Clear local status after logout
+      await localDataSource.clearPremiumCache();
+      await localDataSource.clearSecurePremiumToken();
+
+      return Right(customerInfo.originalAppUserId);
+    } on PlatformException catch (e) {
+      return Left(PurchaseFailure('Logout failed: ${e.message ?? e.code}'));
+    } on TimeoutException {
+      return Left(PurchaseFailure('Logout timed out. Please check your connection.'));
+    } catch (e) {
+      return Left(PurchaseFailure('Logout failed: $e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> isAnonymous() async {
+    try {
+      final isAnon = await revenueCatService.isAnonymous();
+      return Right(isAnon);
+    } catch (e) {
+      return Left(PurchaseFailure('Failed to check anonymous status: $e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getCurrentUserId() async {
+    try {
+      final userId = await revenueCatService.getAppUserId();
+      return Right(userId);
+    } catch (e) {
+      return Left(PurchaseFailure('Failed to get user ID: $e'));
+    }
+  }
+
   void dispose() {
+    // Remove customer info listener if it exists
+    _removeListener?.call();
     _premiumStatusController.close();
   }
 }

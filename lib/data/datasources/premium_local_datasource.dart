@@ -10,6 +10,9 @@ abstract class PremiumLocalDataSource {
   Future<String?> getSecurePremiumToken();
   Future<void> setSecurePremiumToken(String token);
   Future<void> clearSecurePremiumToken();
+  Future<DateTime?> getLastPremiumCheck();
+  Future<void> updateLastPremiumCheck();
+  Future<bool> isPremiumCached();
 }
 
 class PremiumLocalDataSourceImpl implements PremiumLocalDataSource {
@@ -84,6 +87,7 @@ class PremiumLocalDataSourceImpl implements PremiumLocalDataSource {
     }
   }
 
+  @override
   Future<DateTime?> getLastPremiumCheck() async {
     try {
       final box = await Hive.openBox<String>('premium_metadata');
@@ -94,6 +98,7 @@ class PremiumLocalDataSourceImpl implements PremiumLocalDataSource {
     }
   }
 
+  @override
   Future<void> updateLastPremiumCheck() async {
     try {
       final box = await Hive.openBox<String>('premium_metadata');
@@ -103,6 +108,7 @@ class PremiumLocalDataSourceImpl implements PremiumLocalDataSource {
     }
   }
 
+  @override
   Future<bool> isPremiumCached() async {
     try {
       final box = await Hive.openBox<Map>(premiumBoxName);
