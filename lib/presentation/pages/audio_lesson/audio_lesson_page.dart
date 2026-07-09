@@ -137,7 +137,13 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Audio Lesson'),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         elevation: 0,
       ),
       bottomNavigationBar: const SafeArea(
@@ -147,26 +153,22 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 32),
+              const SizedBox(height: 20),
 
-              // Cover image (50% smaller - was 250, now ~150)
-              _buildCoverImage(context, thumbnailUrl),
-              const SizedBox(height: 32),
-
-              // Player card
+              // Player card with cover image inside
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
                   color: isDark
                       ? colorScheme.surface.withValues(alpha: 0.8)
                       : Colors.white,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: colorScheme.primary.withValues(alpha: isDark ? 0.1 : 0.08),
-                      blurRadius: 24,
-                      offset: const Offset(0, 8),
+                      blurRadius: 20,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                   border: Border.all(
@@ -178,30 +180,34 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
                 ),
                 child: Column(
                   children: [
+                    // Cover image inside the card
+                    _buildCoverImage(context, thumbnailUrl),
+                    const SizedBox(height: 18),
+
                     // Error message
                     if (_error != null)
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.only(bottom: 12),
                         child: Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: colorScheme.errorContainer,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.error_outline,
                                 color: colorScheme.onErrorContainer,
-                                size: 20,
+                                size: 18,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
                                   _error!,
                                   style: TextStyle(
                                     color: colorScheme.onErrorContainer,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ),
@@ -210,27 +216,45 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
                         ),
                       ),
 
-                    // Progress bar
+                    // Seek bar
                     if (_error == null) ...[
-                      _buildProgressBar(context),
-                      const SizedBox(height: 8),
+                      SliderTheme(
+                        data: SliderThemeData(
+                          trackHeight: 3,
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+                          activeTrackColor: colorScheme.primary,
+                          inactiveTrackColor: colorScheme.primary.withValues(alpha: 0.2),
+                          thumbColor: colorScheme.primary,
+                          overlayColor: colorScheme.primary.withValues(alpha: 0.1),
+                        ),
+                        child: Slider(
+                          value: _position.inMilliseconds.toDouble(),
+                          max: _duration.inMilliseconds > 0
+                              ? _duration.inMilliseconds.toDouble()
+                              : 1,
+                          onChanged: (value) {
+                            _seek(Duration(milliseconds: value.toInt()));
+                          },
+                        ),
+                      ),
 
                       // Time labels
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               _formatDuration(_position),
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: theme.textTheme.labelSmall?.copyWith(
                                 color: colorScheme.onSurface.withValues(alpha: 0.6),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             Text(
                               _formatDuration(_duration),
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: theme.textTheme.labelSmall?.copyWith(
                                 color: colorScheme.onSurface.withValues(alpha: 0.6),
                                 fontWeight: FontWeight.w500,
                               ),
@@ -238,7 +262,7 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 12),
 
                       // Controls
                       _buildControls(context),
@@ -253,6 +277,7 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Title
                     Text(
@@ -261,7 +286,6 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.5,
                       ),
-                      textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -275,7 +299,6 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
                           color: colorScheme.onSurface.withValues(alpha: 0.7),
                           height: 1.5,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ],
                   ],
@@ -291,21 +314,11 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
   }
 
   Widget _buildCoverImage(BuildContext context, String? thumbnailUrl) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return Container(
-      width: 150,
-      height: 150,
+      width: 90,
+      height: 90,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.primary.withValues(alpha: 0.25),
-            blurRadius: 30,
-            offset: const Offset(0, 12),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(12),
       ),
       clipBehavior: Clip.antiAlias,
       child: thumbnailUrl != null && thumbnailUrl.isNotEmpty
@@ -335,52 +348,8 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
       ),
       child: Icon(
         Icons.headphones_rounded,
-        size: 60,
+        size: 40,
         color: colorScheme.onPrimary.withValues(alpha: 0.9),
-      ),
-    );
-  }
-
-  Widget _buildProgressBar(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final progress = _duration.inMilliseconds > 0
-        ? _position.inMilliseconds / _duration.inMilliseconds
-        : 0.0;
-
-    return GestureDetector(
-      onTapDown: (details) {
-        final box = context.findRenderObject() as RenderBox?;
-        if (box != null && _duration.inMilliseconds > 0) {
-          final localPosition = details.localPosition;
-          final width = box.size.width - 48; // Account for padding
-          final percent = (localPosition.dx / width).clamp(0.0, 1.0);
-          final newPosition = Duration(
-            milliseconds: (percent * _duration.inMilliseconds).toInt(),
-          );
-          _seek(newPosition);
-        }
-      },
-      child: Container(
-        height: 6,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(3),
-          color: colorScheme.primary.withValues(alpha: 0.15),
-        ),
-        child: FractionallySizedBox(
-          alignment: Alignment.centerLeft,
-          widthFactor: progress.clamp(0.0, 1.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              gradient: LinearGradient(
-                colors: [
-                  colorScheme.primary,
-                  colorScheme.primary.withValues(alpha: 0.8),
-                ],
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -397,42 +366,28 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
           context,
           icon: Icons.replay_10_rounded,
           onPressed: _error == null ? () => _skip(-15) : null,
-          size: 28,
+          size: 22,
           backgroundColor: colorScheme.primary.withValues(alpha: isDark ? 0.15 : 0.1),
           iconColor: colorScheme.primary,
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 16),
 
         // Play/Pause
         Container(
-          width: 72,
-          height: 72,
+          width: 56,
+          height: 56,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                colorScheme.primary,
-                colorScheme.primary.withValues(alpha: 0.85),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: colorScheme.primary.withValues(alpha: 0.4),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
+            color: colorScheme.primary,
           ),
           child: _isLoading
               ? Center(
                   child: SizedBox(
-                    width: 28,
-                    height: 28,
+                    width: 22,
+                    height: 22,
                     child: CircularProgressIndicator(
                       color: colorScheme.onPrimary,
-                      strokeWidth: 2.5,
+                      strokeWidth: 2,
                     ),
                   ),
                 )
@@ -447,20 +402,20 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
                             ? Icons.pause_rounded
                             : Icons.play_arrow_rounded,
                         color: colorScheme.onPrimary,
-                        size: 36,
+                        size: 28,
                       ),
                     ),
                   ),
                 ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 16),
 
         // Skip forward 30s
         _buildControlButton(
           context,
           icon: Icons.forward_30_rounded,
           onPressed: _error == null ? () => _skip(30) : null,
-          size: 28,
+          size: 22,
           backgroundColor: colorScheme.primary.withValues(alpha: isDark ? 0.15 : 0.1),
           iconColor: colorScheme.primary,
         ),
@@ -478,13 +433,13 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
   }) {
     return Material(
       color: backgroundColor,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         child: Container(
-          width: 52,
-          height: 52,
+          width: 40,
+          height: 40,
           alignment: Alignment.center,
           child: Icon(
             icon,
