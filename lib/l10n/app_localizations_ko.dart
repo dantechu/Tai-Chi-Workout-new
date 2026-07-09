@@ -9,13 +9,16 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appName => '태극권 운동';
+  String get appName => '기공 힐링 운동';
 
   @override
   String get home => '홈';
 
   @override
   String get videos => '비디오';
+
+  @override
+  String get lessons => '레슨';
 
   @override
   String get practice => '연습';
@@ -298,7 +301,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get johnSaxxonBio =>
-      '존 색슨은 20년 이상의 경험을 가진 공인 태극권 강사입니다. 그는 전 세계 수천 명의 학생들에게 태극권과 명상의 기술을 가르쳐 왔습니다.';
+      '존 색슨은 20년 이상의 경험을 가진 공인 기공 강사입니다. 그는 전 세계 수천 명의 학생들에게 기공과 명상의 기술을 가르쳐 왔습니다.';
 
   @override
   String get close => '닫기';
@@ -308,7 +311,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get rateAppMessage =>
-      '태극권 앱을 즐겁게 사용하고 계시다면 잠시 시간을 내어 평가해 주세요. 귀하의 피드백은 모든 사람들을 위해 앱을 개선하는 데 도움이 됩니다.';
+      '기공 앱을 즐겁게 사용하고 계시다면 잠시 시간을 내어 평가해 주세요. 귀하의 피드백은 모든 사람들을 위해 앱을 개선하는 데 도움이 됩니다.';
 
   @override
   String get later => '나중에';
@@ -366,7 +369,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get goodNight => '안녕히 주무세요';
 
   @override
-  String get readyForTaiChi => '태극권을 시작할 준비가 되셨나요?';
+  String get readyForTaiChi => '힐링 운동을 시작할 준비가 되셨나요?';
 
   @override
   String get all => '전체';
@@ -407,7 +410,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trackInnerPeace => '내면의 평화';
 
   @override
-  String get artistTaiChiMasters => '태극권 마스터';
+  String get artistTaiChiMasters => '기공 마스터';
 
   @override
   String get artistNatureSounds => '자연의 소리';
@@ -480,7 +483,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get defaultVideoDescription =>
-      '이 포괄적인 레슨으로 태극권의 예술을 마스터하세요. 연습을 향상시킬 올바른 자세, 호흡 기술, 유동적인 움직임을 배우세요.';
+      '이 포괄적인 레슨으로 기공의 예술을 마스터하세요. 연습을 향상시킬 올바른 자세, 호흡 기술, 유동적인 움직임을 배우세요.';
 
   @override
   String get premiumContent => '프리미엄 콘텐츠';
@@ -508,7 +511,7 @@ class AppLocalizationsKo extends AppLocalizations {
       '앱을 초기화하는데 실패했습니다. 인터넷 연결을 확인하고 다시 시도하세요.';
 
   @override
-  String get appTagline => '태극권의 예술을 마스터하세요';
+  String get appTagline => '기공의 예술을 마스터하세요';
 
   @override
   String get noInternetNoCachedData => '인터넷 연결 없음 및 캐시된 데이터 없음';

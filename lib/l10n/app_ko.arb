@@ -1,9 +1,10 @@
 {
   "@@locale": "ko",
 
-  "appName": "태극권 운동",
+  "appName": "기공 힐링 운동",
   "home": "홈",
   "videos": "비디오",
+  "lessons": "레슨",
   "practice": "연습",
   "settings": "설정",
   "premium": "프리미엄",
@@ -110,10 +111,10 @@
   "notificationsDisabled": "알림 비활성화됨",
 
   "aboutJohnSaxxon": "존 색슨에 대하여",
-  "johnSaxxonBio": "존 색슨은 20년 이상의 경험을 가진 공인 태극권 강사입니다. 그는 전 세계 수천 명의 학생들에게 태극권과 명상의 기술을 가르쳐 왔습니다.",
+  "johnSaxxonBio": "존 색슨은 20년 이상의 경험을 가진 공인 기공 강사입니다. 그는 전 세계 수천 명의 학생들에게 기공과 명상의 기술을 가르쳐 왔습니다.",
   "close": "닫기",
   "rateOurApp": "앱 평가하기",
-  "rateAppMessage": "태극권 앱을 즐겁게 사용하고 계시다면 잠시 시간을 내어 평가해 주세요. 귀하의 피드백은 모든 사람들을 위해 앱을 개선하는 데 도움이 됩니다.",
+  "rateAppMessage": "기공 앱을 즐겁게 사용하고 계시다면 잠시 시간을 내어 평가해 주세요. 귀하의 피드백은 모든 사람들을 위해 앱을 개선하는 데 도움이 됩니다.",
   "later": "나중에",
   "rateNow": "지금 평가",
   "thankYouRating": "감사합니다! 앱 스토어를 열고 있습니다...",
@@ -158,7 +159,7 @@
   "goodAfternoon": "좋은 오후",
   "goodEvening": "좋은 저녁",
   "goodNight": "안녕히 주무세요",
-  "readyForTaiChi": "태극권을 시작할 준비가 되셨나요?",
+  "readyForTaiChi": "힐링 운동을 시작할 준비가 되셨나요?",
   "all": "전체",
   "tryAdjustingFilter": "검색이나 카테고리 필터를 조정해 보세요",
   
@@ -173,7 +174,7 @@
   "trackFlowingWater": "흐르는 물",
   "trackMountainBreeze": "산 바람",
   "trackInnerPeace": "내면의 평화",
-  "artistTaiChiMasters": "태극권 마스터",
+  "artistTaiChiMasters": "기공 마스터",
   "artistNatureSounds": "자연의 소리",
   "artistMeditationMusic": "명상 음악",
   "artistZenCollection": "선 컬렉션",
@@ -205,7 +206,7 @@
   "getPremium": "프리미엄 받기",
   "videoPlayerNotAvailable": "비디오 플레이어를 사용할 수 없습니다",
   "description": "설명",
-  "defaultVideoDescription": "이 포괄적인 레슨으로 태극권의 예술을 마스터하세요. 연습을 향상시킬 올바른 자세, 호흡 기술, 유동적인 움직임을 배우세요.",
+  "defaultVideoDescription": "이 포괄적인 레슨으로 기공의 예술을 마스터하세요. 연습을 향상시킬 올바른 자세, 호흡 기술, 유동적인 움직임을 배우세요.",
   "premiumContent": "프리미엄 콘텐츠",
   "premiumContentDescription": "이것은 구독자를 위한 독점 프리미엄 콘텐츠입니다.",
   "downloadVideo": "비디오 다운로드",
@@ -216,7 +217,7 @@
   
   "initializationError": "초기화 오류",
   "initializationErrorMessage": "앱을 초기화하는데 실패했습니다. 인터넷 연결을 확인하고 다시 시도하세요.",
-  "appTagline": "태극권의 예술을 마스터하세요",
+  "appTagline": "기공의 예술을 마스터하세요",
   
   "noInternetNoCachedData": "인터넷 연결 없음 및 캐시된 데이터 없음",
   "noInternetNoCachedLessons": "인터넷 연결 없음 및 캐시된 데이터 없음",

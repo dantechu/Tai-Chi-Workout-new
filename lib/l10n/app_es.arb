@@ -1,9 +1,10 @@
 {
   "@@locale": "es",
 
-  "appName": "Tai Chi Entrenamiento",
+  "appName": "Qi Gong Entrenamiento Curativo",
   "home": "Inicio",
   "videos": "Videos",
+  "lessons": "Lecciones",
   "practice": "Práctica",
   "settings": "Configuración",
   "premium": "Premium",
@@ -110,10 +111,10 @@
   "notificationsDisabled": "Notificaciones deshabilitadas",
 
   "aboutJohnSaxxon": "Acerca de Dr Jerry Johnson",
-  "johnSaxxonBio": "Dr Jerry Johnson es un instructor certificado de Tai Chi con más de 20 años de experiencia. Ha entrenado a miles de estudiantes en todo el mundo en el arte del Tai Chi y la meditación.",
+  "johnSaxxonBio": "Dr Jerry Johnson es un instructor certificado de Qi Gong con más de 20 años de experiencia. Ha entrenado a miles de estudiantes en todo el mundo en el arte del Qi Gong y la meditación.",
   "close": "Cerrar",
   "rateOurApp": "Califica Nuestra App",
-  "rateAppMessage": "Si disfrutas usando nuestra aplicación de Tai Chi, por favor tómate un momento para calificarla. Tus comentarios nos ayudan a mejorar la app para todos.",
+  "rateAppMessage": "Si disfrutas usando nuestra aplicación de Qi Gong, por favor tómate un momento para calificarla. Tus comentarios nos ayudan a mejorar la app para todos.",
   "later": "Más Tarde",
   "rateNow": "Calificar Ahora",
   "thankYouRating": "¡Gracias! Abriendo la tienda de aplicaciones...",
@@ -158,7 +159,7 @@
   "goodAfternoon": "Buenas Tardes",
   "goodEvening": "Buenas Tardes",
   "goodNight": "Buenas Noches",
-  "readyForTaiChi": "¿Listo para Tai Chi?",
+  "readyForTaiChi": "¿Listo para el Entrenamiento Curativo?",
   "all": "Todo",
   "tryAdjustingFilter": "Intenta ajustar tu búsqueda o filtro de categoría",
   
@@ -173,7 +174,7 @@
   "trackFlowingWater": "Agua Fluyendo",
   "trackMountainBreeze": "Brisa de Montaña",
   "trackInnerPeace": "Paz Interior",
-  "artistTaiChiMasters": "Maestros de Tai Chi",
+  "artistTaiChiMasters": "Maestros de Qi Gong",
   "artistNatureSounds": "Sonidos de la Naturaleza",
   "artistMeditationMusic": "Música de Meditación",
   "artistZenCollection": "Colección Zen",
@@ -205,7 +206,7 @@
   "getPremium": "Obtener Premium",
   "videoPlayerNotAvailable": "Reproductor de video no disponible",
   "description": "Descripción",
-  "defaultVideoDescription": "Domina el arte del Tai Chi con esta lección integral. Aprende la forma correcta, técnicas de respiración y movimientos fluidos que mejorarán tu práctica.",
+  "defaultVideoDescription": "Domina el arte del Qi Gong con esta lección integral. Aprende la forma correcta, técnicas de respiración y movimientos fluidos que mejorarán tu práctica.",
   "premiumContent": "Contenido Premium",
   "premiumContentDescription": "Este es contenido premium exclusivo para suscriptores.",
   "downloadVideo": "Descargar Video",
@@ -216,7 +217,7 @@
   
   "initializationError": "Error de Inicialización",
   "initializationErrorMessage": "No se pudo inicializar la aplicación. Por favor verifica tu conexión a internet y vuelve a intentar.",
-  "appTagline": "Domina el Arte del Tai Chi",
+  "appTagline": "Domina el Arte del Qi Gong",
   
   "noInternetNoCachedData": "Sin conexión a internet y sin datos en caché",
   "noInternetNoCachedLessons": "Sin conexión a internet y sin datos en caché",

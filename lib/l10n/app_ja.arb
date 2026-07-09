@@ -1,9 +1,10 @@
 {
   "@@locale": "ja",
 
-  "appName": "太極拳ワークアウト",
+  "appName": "気功ヒーリングワークアウト",
   "home": "ホーム",
   "videos": "ビデオ",
+  "lessons": "レッスン",
   "practice": "練習",
   "settings": "設定",
   "premium": "プレミアム",
@@ -110,10 +111,10 @@
   "notificationsDisabled": "通知が無効",
 
   "aboutJohnSaxxon": "ジョン・サクソンについて",
-  "johnSaxxonBio": "ジョン・サクソンは20年以上の経験を持つ認定太極拳インストラクターです。世界中で何千人もの生徒に太極拳と瞑想の技術を教えています。",
+  "johnSaxxonBio": "ジョン・サクソンは20年以上の経験を持つ認定気功インストラクターです。世界中で何千人もの生徒に気功と瞑想の技術を教えています。",
   "close": "閉じる",
   "rateOurApp": "アプリを評価する",
-  "rateAppMessage": "太極拳アプリをお楽しみいただいている場合は、ぜひ評価をお願いします。あなたのフィードバックは、すべての人のためにアプリを改善するのに役立ちます。",
+  "rateAppMessage": "気功アプリをお楽しみいただいている場合は、ぜひ評価をお願いします。あなたのフィードバックは、すべての人のためにアプリを改善するのに役立ちます。",
   "later": "後で",
   "rateNow": "今すぐ評価",
   "thankYouRating": "ありがとうございます！アプリストアを開いています...",
@@ -158,7 +159,7 @@
   "goodAfternoon": "こんにちは",
   "goodEvening": "こんばんは",
   "goodNight": "おやすみなさい",
-  "readyForTaiChi": "太極拳の準備はできましたか？",
+  "readyForTaiChi": "ヒーリングワークアウトの準備はできましたか？",
   "all": "すべて",
   "tryAdjustingFilter": "検索やカテゴリフィルターを調整してみてください",
   
@@ -173,7 +174,7 @@
   "trackFlowingWater": "流れる水",
   "trackMountainBreeze": "山の風",
   "trackInnerPeace": "内なる平和",
-  "artistTaiChiMasters": "太極拳マスター",
+  "artistTaiChiMasters": "気功マスター",
   "artistNatureSounds": "自然の音",
   "artistMeditationMusic": "瞑想音楽",
   "artistZenCollection": "禅コレクション",
@@ -205,7 +206,7 @@
   "getPremium": "プレミアムを取得",
   "videoPlayerNotAvailable": "ビデオプレーヤーが利用できません",
   "description": "説明",
-  "defaultVideoDescription": "この包括的なレッスンで太極拳の芸術を習得してください。適切なフォーム、呼吸法、練習を向上させる流れるような動きを学びます。",
+  "defaultVideoDescription": "この包括的なレッスンで気功の芸術を習得してください。適切なフォーム、呼吸法、練習を向上させる流れるような動きを学びます。",
   "premiumContent": "プレミアムコンテンツ",
   "premiumContentDescription": "これは購読者専用のプレミアムコンテンツです。",
   "downloadVideo": "ビデオをダウンロード",
@@ -216,7 +217,7 @@
   
   "initializationError": "初期化エラー",
   "initializationErrorMessage": "アプリの初期化に失敗しました。インターネット接続を確認して再試行してください。",
-  "appTagline": "太極拳の芸術を習得",
+  "appTagline": "気功の芸術を習得",
   
   "noInternetNoCachedData": "インターネット接続なしでキャッシュデータなし",
   "noInternetNoCachedLessons": "インターネット接続なしでキャッシュデータなし",

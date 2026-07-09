@@ -9,13 +9,16 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appName => '太极健身';
+  String get appName => '气功养生锻炼';
 
   @override
   String get home => '首页';
 
   @override
   String get videos => '视频';
+
+  @override
+  String get lessons => '课程';
 
   @override
   String get practice => '练习';
@@ -298,7 +301,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get johnSaxxonBio =>
-      '约翰·萨克逊是一位经过认证的太极教练，拥有超过20年的经验。他已经在世界各地培训了数千名学生学习太极和冥想的艺术。';
+      '约翰·萨克逊是一位经过认证的气功教练，拥有超过20年的经验。他已经在世界各地培训了数千名学生学习气功和冥想的艺术。';
 
   @override
   String get close => '关闭';
@@ -307,7 +310,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get rateOurApp => '评价我们的应用';
 
   @override
-  String get rateAppMessage => '如果您喜欢使用我们的太极应用，请花一点时间给它评分。您的反馈帮助我们为每个人改进应用。';
+  String get rateAppMessage => '如果您喜欢使用我们的气功应用，请花一点时间给它评分。您的反馈帮助我们为每个人改进应用。';
 
   @override
   String get later => '稍后';
@@ -365,7 +368,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get goodNight => '晚安';
 
   @override
-  String get readyForTaiChi => '准备好练太极了吗？';
+  String get readyForTaiChi => '准备好养生锻炼了吗？';
 
   @override
   String get all => '全部';
@@ -404,7 +407,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trackInnerPeace => '内心平静';
 
   @override
-  String get artistTaiChiMasters => '太极大师';
+  String get artistTaiChiMasters => '气功大师';
 
   @override
   String get artistNatureSounds => '自然音响';
@@ -476,7 +479,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get defaultVideoDescription =>
-      '通过这个综合课程掌握太极的艺术。学习正确的姿势、呼吸技巧和流畅的动作，这将提升您的练习水平。';
+      '通过这个综合课程掌握气功的艺术。学习正确的姿势、呼吸技巧和流畅的动作，这将提升您的练习水平。';
 
   @override
   String get premiumContent => '高级内容';
@@ -503,7 +506,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get initializationErrorMessage => '应用程序初始化失败。请检查您的网络连接并重试。';
 
   @override
-  String get appTagline => '掌握太极艺术';
+  String get appTagline => '掌握气功艺术';
 
   @override
   String get noInternetNoCachedData => '无网络连接且无缓存数据';

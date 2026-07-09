@@ -21,8 +21,8 @@ import 'presentation/bloc/premium/premium_event.dart';
 import 'presentation/pages/splash/splash_page.dart';
 import 'presentation/pages/onboarding/onboarding_page.dart';
 import 'presentation/pages/navigation/main_navigation_page.dart';
-import 'presentation/pages/video_player/video_player_page.dart';
 import 'presentation/pages/premium/premium_page.dart';
+import 'presentation/pages/lessons/lesson_router.dart';
 import 'presentation/pages/premium/premium_unlocked_page.dart';
 import 'presentation/courses/pages/courses_page.dart';
 import 'domain/entities/section.dart';
@@ -146,18 +146,20 @@ class _TaiChiWorkoutAppState extends State<TaiChiWorkoutApp> with WidgetsBinding
                         builder: (context) => const MainNavigationPage(),
                       );
                     case '/video-player':
+                    case '/lesson':
                       final args = settings.arguments;
-                      Video video;
+                      Video lesson;
                       List<Section>? sections;
                       if (args is Map<String, dynamic>) {
-                        video = args['video'] as Video;
+                        lesson = args['video'] as Video? ?? args['lesson'] as Video;
                         sections = args['sections'] as List<Section>?;
                       } else {
-                        video = args as Video;
+                        lesson = args as Video;
                       }
+                      // Use LessonRouter to build the appropriate page based on type
                       return MaterialPageRoute(
-                        builder: (context) => VideoPlayerPage(
-                          video: video,
+                        builder: (context) => LessonRouter.buildLessonPage(
+                          lesson,
                           sections: sections,
                         ),
                       );

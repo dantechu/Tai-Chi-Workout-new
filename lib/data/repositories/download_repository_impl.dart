@@ -14,7 +14,12 @@ class DownloadRepositoryImpl implements DownloadRepository {
   @override
   Future<Either<Failure, DownloadItem>> downloadVideo(Video video) async {
     try {
-      final result = await localDataSource.startDownload(video.id, video.videoUrl);
+      // Only video and audio lessons can be downloaded
+      final url = video.videoUrl ?? video.audioUrl;
+      if (url == null || url.isEmpty) {
+        return const Left(CacheFailure('This lesson type cannot be downloaded'));
+      }
+      final result = await localDataSource.startDownload(video.id, url);
       return Right(result.toEntity());
     } on CacheException catch (e) {
       return Left(CacheFailure(e.message));

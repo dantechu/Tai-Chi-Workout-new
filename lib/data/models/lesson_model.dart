@@ -24,15 +24,15 @@ class LessonModel extends Lesson {
   }) : super(videos: videos);
 
   static List<Video> _videosFromJson(List<dynamic> json) {
-    return json.map((e) => VideoModel.fromJson(e as Map<String, dynamic>)).toList();
+    return json.map((e) => VideoModel.fromMap(e as Map<String, dynamic>)).toList();
   }
 
   static List<Map<String, dynamic>> _videosToJson(List<Video> videos) {
     return videos.map((video) {
       if (video is VideoModel) {
-        return video.toJson();
+        return video.toHiveMap();
       } else {
-        return VideoModel.fromEntity(video).toJson();
+        return VideoModel.fromEntity(video).toHiveMap();
       }
     }).toList();
   }

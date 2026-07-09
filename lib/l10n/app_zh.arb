@@ -1,9 +1,10 @@
 {
   "@@locale": "zh",
 
-  "appName": "太极健身",
+  "appName": "气功养生锻炼",
   "home": "首页",
   "videos": "视频",
+  "lessons": "课程",
   "practice": "练习",
   "settings": "设置",
   "premium": "高级版",
@@ -110,10 +111,10 @@
   "notificationsDisabled": "通知已禁用",
 
   "aboutJohnSaxxon": "关于约翰·萨克逊",
-  "johnSaxxonBio": "约翰·萨克逊是一位经过认证的太极教练，拥有超过20年的经验。他已经在世界各地培训了数千名学生学习太极和冥想的艺术。",
+  "johnSaxxonBio": "约翰·萨克逊是一位经过认证的气功教练，拥有超过20年的经验。他已经在世界各地培训了数千名学生学习气功和冥想的艺术。",
   "close": "关闭",
   "rateOurApp": "评价我们的应用",
-  "rateAppMessage": "如果您喜欢使用我们的太极应用，请花一点时间给它评分。您的反馈帮助我们为每个人改进应用。",
+  "rateAppMessage": "如果您喜欢使用我们的气功应用，请花一点时间给它评分。您的反馈帮助我们为每个人改进应用。",
   "later": "稍后",
   "rateNow": "立即评价",
   "thankYouRating": "谢谢您！正在打开应用商店...",
@@ -158,7 +159,7 @@
   "goodAfternoon": "下午好",
   "goodEvening": "晚上好",
   "goodNight": "晚安",
-  "readyForTaiChi": "准备好练太极了吗？",
+  "readyForTaiChi": "准备好养生锻炼了吗？",
   "all": "全部",
   "tryAdjustingFilter": "尝试调整您的搜索或分类筛选",
   
@@ -173,7 +174,7 @@
   "trackFlowingWater": "流水潺潺",
   "trackMountainBreeze": "山间微风",
   "trackInnerPeace": "内心平静",
-  "artistTaiChiMasters": "太极大师",
+  "artistTaiChiMasters": "气功大师",
   "artistNatureSounds": "自然音响",
   "artistMeditationMusic": "冥想音乐",
   "artistZenCollection": "禅意合集",
@@ -205,7 +206,7 @@
   "getPremium": "获取高级版",
   "videoPlayerNotAvailable": "视频播放器不可用",
   "description": "描述",
-  "defaultVideoDescription": "通过这个综合课程掌握太极的艺术。学习正确的姿势、呼吸技巧和流畅的动作，这将提升您的练习水平。",
+  "defaultVideoDescription": "通过这个综合课程掌握气功的艺术。学习正确的姿势、呼吸技巧和流畅的动作，这将提升您的练习水平。",
   "premiumContent": "高级内容",
   "premiumContentDescription": "这是订阅者专享的高级内容。",
   "downloadVideo": "下载视频",
@@ -216,7 +217,7 @@
   
   "initializationError": "初始化错误",
   "initializationErrorMessage": "应用程序初始化失败。请检查您的网络连接并重试。",
-  "appTagline": "掌握太极艺术",
+  "appTagline": "掌握气功艺术",
   
   "noInternetNoCachedData": "无网络连接且无缓存数据",
   "noInternetNoCachedLessons": "无网络连接且无缓存数据",

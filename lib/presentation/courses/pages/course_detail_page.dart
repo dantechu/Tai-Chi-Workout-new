@@ -1,4 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../../l10n/app_localizations.dart';
@@ -26,6 +28,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return BlocListener<CoursesBloc, CoursesState>(
       listener: (context, state) {
         if (state is CourseSelected) {
@@ -35,6 +40,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
               content: Text('${state.course.getLocalizedName(langCode)} selected'),
               duration: const Duration(seconds: 2),
               behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
           );
           Navigator.of(context).pop();
@@ -45,20 +51,55 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
               backgroundColor: Theme.of(context).colorScheme.error,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
           );
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)?.courseDetails ?? 'Course Details'),
-          elevation: 0,
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+        backgroundColor: theme.colorScheme.surface,
+        body: CustomScrollView(
+          slivers: [
+            // Modern glassmorphic app bar
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              backgroundColor: theme.colorScheme.surface,
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              toolbarHeight: 56,
+              systemOverlayStyle: isDark
+                  ? SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent)
+                  : SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
+              flexibleSpace: ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          theme.colorScheme.surface.withValues(alpha: 0.9),
+                          theme.colorScheme.surface.withValues(alpha: 0.7),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              title: Text(
+                AppLocalizations.of(context)?.courseDetails ?? 'Course Details',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              centerTitle: true,
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -73,99 +114,134 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       const SizedBox(height: 20),
                       _buildSections(context),
                     ],
-                    const SizedBox(height: 90),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
             ),
-            _buildBottomButton(context),
           ],
         ),
-      ),
+        bottomNavigationBar: _buildBottomButton(context),
+        ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
     final langCode = LocalizationHelper.getCurrentLanguageCode(context);
-    return Column(
+
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.course.getLocalizedName(langCode),
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Icon(
+            Icons.school_rounded,
+            size: 28,
+            color: theme.colorScheme.primary,
           ),
         ),
-        if (widget.isSelected) ...[
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.check_circle,
-                  size: 14,
-                  color: theme.colorScheme.primary,
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.course.getLocalizedName(langCode),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 22,
+                  letterSpacing: -0.5,
                 ),
-                const SizedBox(width: 5),
-                Text(
-                  AppLocalizations.of(context)?.currentlySelected ?? 'Currently Selected',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.primary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
+              ),
+              if (widget.isSelected) ...[
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle_rounded,
+                        size: 14,
+                        color: theme.colorScheme.primary,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        AppLocalizations.of(context)?.currentlySelected ?? 'Currently Selected',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ),
+            ],
           ),
-        ],
+        ),
       ],
     );
   }
 
   Widget _buildStats(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildStatItem(
-            context,
-            icon: Icons.video_library_outlined,
-            label: AppLocalizations.of(context)?.videos ?? 'Videos',
-            value: '${widget.course.metadata.totalVideos}',
+    final isDark = theme.brightness == Brightness.dark;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.06)
+                : Colors.white.withValues(alpha: 0.8),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.08)
+                  : theme.colorScheme.outline.withValues(alpha: 0.08),
+              width: 1,
+            ),
           ),
-          _buildVerticalDivider(context),
-          _buildStatItem(
-            context,
-            icon: Icons.view_module_outlined,
-            label: AppLocalizations.of(context)?.sections ?? 'Sections',
-            value: '${widget.course.metadata.totalSections}',
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildStatItem(
+                context,
+                icon: Icons.play_circle_outline_rounded,
+                label: AppLocalizations.of(context)?.lessons ?? 'Lessons',
+                value: '${widget.course.metadata.totalVideos}',
+              ),
+              _buildVerticalDivider(context),
+              _buildStatItem(
+                context,
+                icon: Icons.layers_outlined,
+                label: AppLocalizations.of(context)?.sections ?? 'Sections',
+                value: '${widget.course.metadata.totalSections}',
+              ),
+              _buildVerticalDivider(context),
+              _buildStatItem(
+                context,
+                icon: Icons.schedule_rounded,
+                label: AppLocalizations.of(context)?.duration ?? 'Duration',
+                value: widget.course.metadata.formattedDuration,
+              ),
+            ],
           ),
-          _buildVerticalDivider(context),
-          _buildStatItem(
-            context,
-            icon: Icons.access_time_outlined,
-            label: AppLocalizations.of(context)?.duration ?? 'Duration',
-            value: widget.course.metadata.formattedDuration,
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -179,24 +255,31 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     final theme = Theme.of(context);
     return Column(
       children: [
-        Icon(
-          icon,
-          color: theme.colorScheme.primary,
-          size: 24,
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            icon,
+            color: theme.colorScheme.primary,
+            size: 22,
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         Text(
           value,
           style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            fontSize: 17,
           ),
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: 3),
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             fontSize: 12,
           ),
         ),
@@ -205,10 +288,11 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   }
 
   Widget _buildVerticalDivider(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      height: 50,
+      height: 60,
       width: 1,
-      color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5),
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
     );
   }
 
@@ -366,75 +450,93 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _buildSectionCard(BuildContext context, section) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final langCode = LocalizationHelper.getCurrentLanguageCode(context);
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ExpansionTile(
-        shape: const Border(),
-        collapsedShape: const Border(),
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        childrenPadding: const EdgeInsets.only(bottom: 12),
-        leading: Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Center(
-            child: Text(
-              '${section.sectionNumber}',
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onPrimaryContainer,
-                fontSize: 14,
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          child: Container(
+            decoration: BoxDecoration(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.05)
+                  : Colors.white.withValues(alpha: 0.7),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.06)
+                    : theme.colorScheme.outline.withValues(alpha: 0.06),
+                width: 1,
               ),
             ),
-          ),
-        ),
-        title: Text(
-          section.getLocalizedTitle(langCode),
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
-          ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            '${AppLocalizations.of(context)?.videosCount(section.videos.length) ?? '${section.videos.length} videos'} • ${_formatDuration(section.totalDuration.inSeconds)}',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-              fontSize: 12,
-            ),
-          ),
-        ),
-        children: [
-          if (section.description.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-              child: Text(
-                section.description,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                  height: 1.5,
-                  fontSize: 13,
+            child: ExpansionTile(
+              shape: const Border(),
+              collapsedShape: const Border(),
+              tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              childrenPadding: const EdgeInsets.only(bottom: 14),
+              leading: Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    '${section.sectionNumber}',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: theme.colorScheme.primary,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: section.videos
-                  .map<Widget>((video) => _buildVideoItem(context, video))
-                  .toList(),
+              title: Text(
+                section.getLocalizedTitle(langCode),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  '${AppLocalizations.of(context)?.lesson(section.videos.length) ?? '${section.videos.length} lessons'} • ${_formatDuration(section.totalDuration.inSeconds)}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              children: [
+                if (section.description.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                    child: Text(
+                      section.description,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        height: 1.5,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: section.videos
+                        .map<Widget>((video) => _buildVideoItem(context, video))
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -498,84 +600,91 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _buildBottomButton(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 12,
-            offset: const Offset(0, -4),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        child: BlocBuilder<CoursesBloc, CoursesState>(
-          builder: (context, state) {
-            final isLoading = state is CoursesLoading;
+    final isDark = theme.brightness == Brightness.dark;
 
-            return SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: widget.isSelected
-                  ? OutlinedButton.icon(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.check_circle,
-                        size: 18,
-                      ),
-                      label: Text(
-                        AppLocalizations.of(context)?.selected ?? 'Selected',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.5),
-                          width: 1.5,
-                        ),
-                        foregroundColor: theme.colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    )
-                  : FilledButton(
-                      onPressed: isLoading
-                          ? null
-                          : () {
-                              context
-                                  .read<CoursesBloc>()
-                                  .add(SelectCourseEvent(widget.course.id));
-                            },
-                      style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: isLoading
-                          ? SizedBox(
-                              height: 18,
-                              width: 18,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: theme.colorScheme.onPrimary,
-                              ),
-                            )
-                          : Text(
-                              AppLocalizations.of(context)?.selectThisCourse ?? 'Select This Course',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface.withValues(alpha: isDark ? 0.85 : 0.9),
+            border: Border(
+              top: BorderSide(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.06),
+                width: 1,
+              ),
+            ),
+          ),
+          child: SafeArea(
+            top: false,
+            child: BlocBuilder<CoursesBloc, CoursesState>(
+              builder: (context, state) {
+                final isLoading = state is CoursesLoading;
+
+                return SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: widget.isSelected
+                      ? OutlinedButton.icon(
+                          onPressed: null,
+                          icon: const Icon(
+                            Icons.check_circle_rounded,
+                            size: 18,
+                          ),
+                          label: Text(
+                            AppLocalizations.of(context)?.selected ?? 'Selected',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
                             ),
-                    ),
-            );
-          },
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                              width: 1.5,
+                            ),
+                            foregroundColor: theme.colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                        )
+                      : FilledButton(
+                          onPressed: isLoading
+                              ? null
+                              : () {
+                                  context
+                                      .read<CoursesBloc>()
+                                      .add(SelectCourseEvent(widget.course.id));
+                                },
+                          style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: isLoading
+                              ? SizedBox(
+                                  height: 18,
+                                  width: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: theme.colorScheme.onPrimary,
+                                  ),
+                                )
+                              : Text(
+                                  AppLocalizations.of(context)?.selectThisCourse ?? 'Select This Course',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );

@@ -1,13 +1,14 @@
 {
   "@@locale": "en",
 
-  "appName": "Tai Chi Workout",
+  "appName": "Excel Mastery",
   "@appName": {
     "description": "Application name"
   },
 
   "home": "Home",
   "videos": "Videos",
+  "lessons": "Lessons",
   "practice": "Practice",
   "settings": "Settings",
   "premium": "Premium",
@@ -115,10 +116,10 @@
   "notificationsDisabled": "Notifications disabled",
 
   "aboutJohnSaxxon": "About Dr Jerry Johnson",
-  "johnSaxxonBio": "Dr Jerry Johnson is a certified Tai Chi instructor with over 20 years of experience. He has trained thousands of students worldwide in the art of Tai Chi and meditation.",
+  "johnSaxxonBio": "Our Excel Training Team consists of certified Microsoft Office specialists with over 20 years of experience. They have trained thousands of students worldwide in mastering spreadsheets and data analysis.",
   "close": "Close",
   "rateOurApp": "Rate Our App",
-  "rateAppMessage": "If you enjoy using our Tai Chi app, please take a moment to rate it. Your feedback helps us improve the app for everyone.",
+  "rateAppMessage": "If you enjoy using Excel Mastery, please take a moment to rate it. Your feedback helps us improve the app for everyone.",
   "later": "Later",
   "rateNow": "Rate Now",
   "thankYouRating": "Thank you! Opening app store...",
@@ -163,7 +164,7 @@
   "goodAfternoon": "Good Afternoon",
   "goodEvening": "Good Evening",
   "goodNight": "Good Night",
-  "readyForTaiChi": "Ready for Tai Chi?",
+  "readyForTaiChi": "Ready to Master Excel?",
   "all": "All",
   "tryAdjustingFilter": "Try adjusting your search or category filter",
   
@@ -178,7 +179,7 @@
   "trackFlowingWater": "Flowing Water",
   "trackMountainBreeze": "Mountain Breeze",
   "trackInnerPeace": "Inner Peace",
-  "artistTaiChiMasters": "Tai Chi Masters",
+  "artistTaiChiMasters": "Excel Experts",
   "artistNatureSounds": "Nature Sounds",
   "artistMeditationMusic": "Meditation Music",
   "artistZenCollection": "Zen Collection",
@@ -210,7 +211,7 @@
   "getPremium": "Get Premium",
   "videoPlayerNotAvailable": "Video player not available",
   "description": "Description",
-  "defaultVideoDescription": "Master the art of Tai Chi with this comprehensive lesson. Learn proper form, breathing techniques, and fluid movements that will enhance your practice.",
+  "defaultVideoDescription": "Master Excel with this comprehensive lesson. Learn essential formulas, data analysis techniques, and productivity tips that will enhance your spreadsheet skills.",
   "premiumContent": "Premium Content",
   "premiumContentDescription": "This is exclusive premium content for subscribers.",
   "downloadVideo": "Download Video",
@@ -221,7 +222,7 @@
   
   "initializationError": "Initialization Error",
   "initializationErrorMessage": "Failed to initialize the app. Please check your internet connection and try again.",
-  "appTagline": "Master the Art of Tai Chi",
+  "appTagline": "Master Spreadsheets Step by Step",
   
   "noInternetNoCachedData": "No internet connection and no cached data",
   "noInternetNoCachedLessons": "No internet connection and no cached data",

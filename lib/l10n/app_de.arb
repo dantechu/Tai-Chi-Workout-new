@@ -1,9 +1,10 @@
 {
   "@@locale": "de",
 
-  "appName": "Tai Chi Training",
+  "appName": "Qi Gong Heiltraining",
   "home": "Startseite",
   "videos": "Videos",
+  "lessons": "Lektionen",
   "practice": "Praxis",
   "settings": "Einstellungen",
   "premium": "Premium",
@@ -110,10 +111,10 @@
   "notificationsDisabled": "Benachrichtigungen deaktiviert",
 
   "aboutJohnSaxxon": "Über Dr Jerry Johnson",
-  "johnSaxxonBio": "Dr Jerry Johnson ist ein zertifizierter Tai Chi-Instruktor mit über 20 Jahren Erfahrung. Er hat Tausende von Schülern weltweit in der Kunst des Tai Chi und der Meditation ausgebildet.",
+  "johnSaxxonBio": "Dr Jerry Johnson ist ein zertifizierter Qi Gong-Instruktor mit über 20 Jahren Erfahrung. Er hat Tausende von Schülern weltweit in der Kunst des Qi Gong und der Meditation ausgebildet.",
   "close": "Schließen",
   "rateOurApp": "Unsere App bewerten",
-  "rateAppMessage": "Wenn Ihnen unsere Tai Chi-App gefällt, nehmen Sie sich bitte einen Moment Zeit, sie zu bewerten. Ihr Feedback hilft uns, die App für alle zu verbessern.",
+  "rateAppMessage": "Wenn Ihnen unsere Qi Gong-App gefällt, nehmen Sie sich bitte einen Moment Zeit, sie zu bewerten. Ihr Feedback hilft uns, die App für alle zu verbessern.",
   "later": "Später",
   "rateNow": "Jetzt bewerten",
   "thankYouRating": "Vielen Dank! App Store wird geöffnet...",
@@ -158,7 +159,7 @@
   "goodAfternoon": "Guten Tag",
   "goodEvening": "Guten Abend",
   "goodNight": "Gute Nacht",
-  "readyForTaiChi": "Bereit für Tai Chi?",
+  "readyForTaiChi": "Bereit für Heiltraining?",
   "all": "Alle",
   "tryAdjustingFilter": "Versuchen Sie, Ihre Such- oder Kategoriefilter anzupassen",
   
@@ -173,7 +174,7 @@
   "trackFlowingWater": "Fließendes Wasser",
   "trackMountainBreeze": "Bergbrise",
   "trackInnerPeace": "Innerer Frieden",
-  "artistTaiChiMasters": "Tai Chi Meister",
+  "artistTaiChiMasters": "Qi Gong Meister",
   "artistNatureSounds": "Naturgeräusche",
   "artistMeditationMusic": "Meditationsmusik",
   "artistZenCollection": "Zen Kollektion",
@@ -205,7 +206,7 @@
   "getPremium": "Premium erhalten",
   "videoPlayerNotAvailable": "Video-Player nicht verfügbar",
   "description": "Beschreibung",
-  "defaultVideoDescription": "Meistern Sie die Kunst des Tai Chi mit dieser umfassenden Lektion. Lernen Sie die richtige Form, Atemtechniken und fließende Bewegungen, die Ihre Praxis verbessern werden.",
+  "defaultVideoDescription": "Meistern Sie die Kunst des Qi Gong mit dieser umfassenden Lektion. Lernen Sie die richtige Form, Atemtechniken und fließende Bewegungen, die Ihre Praxis verbessern werden.",
   "premiumContent": "Premium-Inhalt",
   "premiumContentDescription": "Dies ist exklusiver Premium-Inhalt für Abonnenten.",
   "downloadVideo": "Video herunterladen",
@@ -216,7 +217,7 @@
   
   "initializationError": "Initialisierungsfehler",
   "initializationErrorMessage": "Die App konnte nicht initialisiert werden. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
-  "appTagline": "Meistern Sie die Kunst des Tai Chi",
+  "appTagline": "Meistern Sie die Kunst des Qi Gong",
   
   "noInternetNoCachedData": "Keine Internetverbindung und keine zwischengespeicherten Daten",
   "noInternetNoCachedLessons": "Keine Internetverbindung und keine zwischengespeicherten Daten",

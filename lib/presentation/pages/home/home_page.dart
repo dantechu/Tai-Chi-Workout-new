@@ -7,6 +7,7 @@ import '../../../core/utils/localization_helper.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../domain/entities/section.dart';
 import '../../../domain/entities/video.dart';
+import '../lessons/lesson_router.dart';
 import '../../bloc/bookmark/bookmark_bloc.dart';
 import '../../bloc/bookmark/bookmark_state.dart';
 import '../../bloc/video/video_bloc.dart';
@@ -119,6 +120,7 @@ class _HomePageState extends State<HomePage> {
         }
 
         final theme = Theme.of(context);
+        final isDark = theme.brightness == Brightness.dark;
 
         return Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
@@ -129,47 +131,43 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      _getTimeBasedGreeting(),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                    // Greeting with subtle styling
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(alpha: isDark ? 0.15 : 0.08),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        _getTimeBasedGreeting(),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.3,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 10),
+                    // Course name
                     Text(
-                      courseName.isNotEmpty ? courseName : (AppLocalizations.of(context)?.readyForTaiChi ?? 'Ready for Tai Chi?'),
+                      courseName.isNotEmpty ? courseName : 'Excel Training',
                       style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 19,
-                        letterSpacing: -0.2,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22,
+                        letterSpacing: -0.5,
                         color: theme.colorScheme.onSurface,
+                        height: 1.2,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 16),
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      theme.colorScheme.primary.withValues(alpha: 0.15),
-                      theme.colorScheme.primary.withValues(alpha: 0.08),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(
-                  Icons.self_improvement_rounded,
-                  color: theme.colorScheme.primary,
-                  size: 26,
-                ),
+              const SizedBox(width: 12),
+              Icon(
+                Icons.grid_on_rounded,
+                color: theme.colorScheme.primary.withValues(alpha: 0.5),
+                size: 32,
               ),
             ],
           ),
@@ -180,40 +178,64 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildSearchBar() {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-      height: 50,
+      height: 46,
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(14),
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.06)
+            : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.08),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.08)
+              : theme.colorScheme.outline.withValues(alpha: 0.08),
           width: 1,
         ),
       ),
       child: TextField(
         controller: _searchController,
-        style: theme.textTheme.bodyLarge?.copyWith(
-          fontSize: 15,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          fontSize: 14,
           color: theme.colorScheme.onSurface,
+          fontWeight: FontWeight.w400,
         ),
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context)?.searchVideos ?? 'Search videos...',
-          hintStyle: theme.textTheme.bodyLarge?.copyWith(
+          hintStyle: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
-            fontSize: 15,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
           ),
           prefixIcon: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 12),
+            padding: const EdgeInsets.only(left: 14, right: 10),
             child: Icon(
               Icons.search_rounded,
-              size: 22,
+              size: 20,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
             ),
           ),
-          prefixIconConstraints: const BoxConstraints(minWidth: 50),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 14),
+          prefixIconConstraints: const BoxConstraints(minWidth: 44),
+          suffixIcon: _searchQuery.isNotEmpty
+              ? IconButton(
+                  icon: Icon(
+                    Icons.close_rounded,
+                    size: 18,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                    setState(() {
+                      _searchQuery = '';
+                    });
+                    _performSearch();
+                  },
+                )
+              : null,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
@@ -223,8 +245,7 @@ class _HomePageState extends State<HomePage> {
             _searchQuery = query;
           });
           _debounceTimer?.cancel();
-          
-          // For immediate clearing when text becomes empty
+
           if (query.isEmpty) {
             _performSearch();
           } else {
@@ -450,27 +471,9 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ],
-                          // All videos section header
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                20,
-                                bookmarkedVideos.isNotEmpty ? 8 : 12,
-                                20,
-                                12,
-                              ),
-                              child: Text(
-                                AppLocalizations.of(context)?.allLessons ?? 'All Lessons',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
                           // Video list
                           SliverPadding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                            padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                             sliver: SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) {
@@ -478,7 +481,7 @@ class _HomePageState extends State<HomePage> {
                                   return VideoCard(
                                     video: video,
                                     isPremiumUser: isPremium,
-                                    onTap: () => _navigateToVideoPlayer(video, sections: sections),
+                                    onTap: () => _navigateToLesson(video, sections: sections),
                                     sections: sections,
                                   );
                                 },
@@ -536,51 +539,69 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBookmarksSection(List<Video> bookmarkedVideos, bool isPremium, List<Section>? sections) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-          child: Row(
-            children: [
-              Icon(
-                Icons.bookmark_rounded,
-                size: 20,
-                color: theme.colorScheme.primary,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Continue Watching',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section header - clean, flat design
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withValues(alpha: isDark ? 0.15 : 0.08),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.bookmark_rounded,
+                  size: 16,
+                  color: theme.colorScheme.primary,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Text(
+                  'Continue Watching',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 140,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: bookmarkedVideos.length,
-            itemBuilder: (context, index) {
-              final video = bookmarkedVideos[index];
-              return BookmarkCard(
-                video: video,
-                isPremiumUser: isPremium,
-                onTap: () => _navigateToVideoPlayer(video, sections: sections),
-              );
-            },
+          const SizedBox(height: 12),
+          // Horizontal scrolling bookmark cards
+          SizedBox(
+            height: 160,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              clipBehavior: Clip.none,
+              itemCount: bookmarkedVideos.length,
+              itemBuilder: (context, index) {
+                final video = bookmarkedVideos[index];
+                return Padding(
+                  padding: EdgeInsets.only(
+                    right: index == bookmarkedVideos.length - 1 ? 0 : 12,
+                  ),
+                  child: BookmarkCard(
+                    video: video,
+                    isPremiumUser: isPremium,
+                    onTap: () => _navigateToLesson(video, sections: sections),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  void _navigateToVideoPlayer(Video video, {List<Section>? sections}) {
+  void _navigateToLesson(Video lesson, {List<Section>? sections}) {
     // Get the currently selected course
     final coursesState = context.read<CoursesBloc>().state;
     String? selectedCourseId;
@@ -597,30 +618,40 @@ class _HomePageState extends State<HomePage> {
       courseSections ??= coursesState.course.sections;
     }
 
-    // Check if the video belongs to a different course
-    if (video.courseId != null &&
+    // Check if the lesson belongs to a different course
+    if (lesson.courseId != null &&
         selectedCourseId != null &&
-        video.courseId != selectedCourseId) {
-      // Video is from a different course - navigate to course details page
-      _navigateToCourseDetails(video.courseId!);
+        lesson.courseId != selectedCourseId) {
+      // Lesson is from a different course - navigate to course details page
+      _navigateToCourseDetails(lesson.courseId!);
       return;
     }
 
-    // Check if video is premium and user doesn't have premium access
+    // Check if lesson is premium and user doesn't have premium access
     // Use singleton service - SINGLE SOURCE OF TRUTH
     final hasPremiumAccess = PremiumService().isPremium;
 
-    if (video.isPremium && !hasPremiumAccess) {
+    if (lesson.isPremium && !hasPremiumAccess) {
       // Navigate to premium unlock screen
       Navigator.of(context).pushNamed('/premium');
     } else {
-      // Navigate to video player
-      Navigator.of(context).pushNamed(
-        '/video-player',
-        arguments: {
-          'video': video,
-          'sections': courseSections,
-        },
+      // Check if lesson can be played
+      if (!LessonRouter.canPlayLesson(lesson)) {
+        final reason = LessonRouter.getCannotPlayReason(lesson);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(reason ?? 'Cannot play this lesson'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return;
+      }
+
+      // Navigate to appropriate lesson page based on type
+      LessonRouter.navigateToLesson(
+        context,
+        lesson,
+        sections: courseSections,
       );
     }
   }

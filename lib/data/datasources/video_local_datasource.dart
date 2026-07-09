@@ -26,7 +26,9 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
       
       for (final videoMap in box.values) {
         if (videoMap is Map<String, dynamic>) {
-          videos.add(VideoModel.fromJson(videoMap));
+          videos.add(VideoModel.fromMap(videoMap));
+        } else if (videoMap is Map) {
+          videos.add(VideoModel.fromMap(Map<String, dynamic>.from(videoMap)));
         }
       }
       
@@ -60,8 +62,12 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
       final box = await Hive.openBox<Map>(videoBoxName);
       final videoMap = box.get(id);
       
-      if (videoMap != null && videoMap is Map<String, dynamic>) {
-        return VideoModel.fromJson(videoMap);
+      if (videoMap != null) {
+        if (videoMap is Map<String, dynamic>) {
+          return VideoModel.fromMap(videoMap);
+        } else if (videoMap is Map) {
+          return VideoModel.fromMap(Map<String, dynamic>.from(videoMap));
+        }
       }
       
       return null;
@@ -92,7 +98,7 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
       final box = await Hive.openBox<Map>(videoBoxName);
       
       for (final video in videos) {
-        await box.put(video.id, video.toJson());
+        await box.put(video.id, video.toHiveMap());
       }
     } catch (e) {
       throw CacheException('Failed to cache videos: $e');

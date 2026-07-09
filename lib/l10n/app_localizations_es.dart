@@ -9,13 +9,16 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appName => 'Tai Chi Entrenamiento';
+  String get appName => 'Qi Gong Entrenamiento Curativo';
 
   @override
   String get home => 'Inicio';
 
   @override
   String get videos => 'Videos';
+
+  @override
+  String get lessons => 'Lecciones';
 
   @override
   String get practice => 'Práctica';
@@ -299,7 +302,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get johnSaxxonBio =>
-      'Dr Jerry Johnson es un instructor certificado de Tai Chi con más de 20 años de experiencia. Ha entrenado a miles de estudiantes en todo el mundo en el arte del Tai Chi y la meditación.';
+      'Dr Jerry Johnson es un instructor certificado de Qi Gong con más de 20 años de experiencia. Ha entrenado a miles de estudiantes en todo el mundo en el arte del Qi Gong y la meditación.';
 
   @override
   String get close => 'Cerrar';
@@ -309,7 +312,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rateAppMessage =>
-      'Si disfrutas usando nuestra aplicación de Tai Chi, por favor tómate un momento para calificarla. Tus comentarios nos ayudan a mejorar la app para todos.';
+      'Si disfrutas usando nuestra aplicación de Qi Gong, por favor tómate un momento para calificarla. Tus comentarios nos ayudan a mejorar la app para todos.';
 
   @override
   String get later => 'Más Tarde';
@@ -368,7 +371,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get goodNight => 'Buenas Noches';
 
   @override
-  String get readyForTaiChi => '¿Listo para Tai Chi?';
+  String get readyForTaiChi => '¿Listo para el Entrenamiento Curativo?';
 
   @override
   String get all => 'Todo';
@@ -412,7 +415,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trackInnerPeace => 'Paz Interior';
 
   @override
-  String get artistTaiChiMasters => 'Maestros de Tai Chi';
+  String get artistTaiChiMasters => 'Maestros de Qi Gong';
 
   @override
   String get artistNatureSounds => 'Sonidos de la Naturaleza';
@@ -486,7 +489,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get defaultVideoDescription =>
-      'Domina el arte del Tai Chi con esta lección integral. Aprende la forma correcta, técnicas de respiración y movimientos fluidos que mejorarán tu práctica.';
+      'Domina el arte del Qi Gong con esta lección integral. Aprende la forma correcta, técnicas de respiración y movimientos fluidos que mejorarán tu práctica.';
 
   @override
   String get premiumContent => 'Contenido Premium';
@@ -516,7 +519,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo inicializar la aplicación. Por favor verifica tu conexión a internet y vuelve a intentar.';
 
   @override
-  String get appTagline => 'Domina el Arte del Tai Chi';
+  String get appTagline => 'Domina el Arte del Qi Gong';
 
   @override
   String get noInternetNoCachedData =>

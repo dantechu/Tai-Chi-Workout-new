@@ -9,13 +9,16 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get appName => '太極拳ワークアウト';
+  String get appName => '気功ヒーリングワークアウト';
 
   @override
   String get home => 'ホーム';
 
   @override
   String get videos => 'ビデオ';
+
+  @override
+  String get lessons => 'レッスン';
 
   @override
   String get practice => '練習';
@@ -298,7 +301,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get johnSaxxonBio =>
-      'ジョン・サクソンは20年以上の経験を持つ認定太極拳インストラクターです。世界中で何千人もの生徒に太極拳と瞑想の技術を教えています。';
+      'ジョン・サクソンは20年以上の経験を持つ認定気功インストラクターです。世界中で何千人もの生徒に気功と瞑想の技術を教えています。';
 
   @override
   String get close => '閉じる';
@@ -308,7 +311,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get rateAppMessage =>
-      '太極拳アプリをお楽しみいただいている場合は、ぜひ評価をお願いします。あなたのフィードバックは、すべての人のためにアプリを改善するのに役立ちます。';
+      '気功アプリをお楽しみいただいている場合は、ぜひ評価をお願いします。あなたのフィードバックは、すべての人のためにアプリを改善するのに役立ちます。';
 
   @override
   String get later => '後で';
@@ -366,7 +369,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get goodNight => 'おやすみなさい';
 
   @override
-  String get readyForTaiChi => '太極拳の準備はできましたか？';
+  String get readyForTaiChi => 'ヒーリングワークアウトの準備はできましたか？';
 
   @override
   String get all => 'すべて';
@@ -406,7 +409,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trackInnerPeace => '内なる平和';
 
   @override
-  String get artistTaiChiMasters => '太極拳マスター';
+  String get artistTaiChiMasters => '気功マスター';
 
   @override
   String get artistNatureSounds => '自然の音';
@@ -478,7 +481,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get defaultVideoDescription =>
-      'この包括的なレッスンで太極拳の芸術を習得してください。適切なフォーム、呼吸法、練習を向上させる流れるような動きを学びます。';
+      'この包括的なレッスンで気功の芸術を習得してください。適切なフォーム、呼吸法、練習を向上させる流れるような動きを学びます。';
 
   @override
   String get premiumContent => 'プレミアムコンテンツ';
@@ -506,7 +509,7 @@ class AppLocalizationsJa extends AppLocalizations {
       'アプリの初期化に失敗しました。インターネット接続を確認して再試行してください。';
 
   @override
-  String get appTagline => '太極拳の芸術を習得';
+  String get appTagline => '気功の芸術を習得';
 
   @override
   String get noInternetNoCachedData => 'インターネット接続なしでキャッシュデータなし';

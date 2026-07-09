@@ -111,7 +111,7 @@ abstract class AppLocalizations {
   /// Application name
   ///
   /// In en, this message translates to:
-  /// **'Tai Chi Workout'**
+  /// **'Excel Mastery'**
   String get appName;
 
   /// No description provided for @home.
@@ -125,6 +125,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Videos'**
   String get videos;
+
+  /// No description provided for @lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons'**
+  String get lessons;
 
   /// No description provided for @practice.
   ///
@@ -687,7 +693,7 @@ abstract class AppLocalizations {
   /// No description provided for @johnSaxxonBio.
   ///
   /// In en, this message translates to:
-  /// **'Dr Jerry Johnson is a certified Tai Chi instructor with over 20 years of experience. He has trained thousands of students worldwide in the art of Tai Chi and meditation.'**
+  /// **'Our Excel Training Team consists of certified Microsoft Office specialists with over 20 years of experience. They have trained thousands of students worldwide in mastering spreadsheets and data analysis.'**
   String get johnSaxxonBio;
 
   /// No description provided for @close.
@@ -705,7 +711,7 @@ abstract class AppLocalizations {
   /// No description provided for @rateAppMessage.
   ///
   /// In en, this message translates to:
-  /// **'If you enjoy using our Tai Chi app, please take a moment to rate it. Your feedback helps us improve the app for everyone.'**
+  /// **'If you enjoy using Excel Mastery, please take a moment to rate it. Your feedback helps us improve the app for everyone.'**
   String get rateAppMessage;
 
   /// No description provided for @later.
@@ -777,7 +783,7 @@ abstract class AppLocalizations {
   /// No description provided for @readyForTaiChi.
   ///
   /// In en, this message translates to:
-  /// **'Ready for Tai Chi?'**
+  /// **'Ready to Master Excel?'**
   String get readyForTaiChi;
 
   /// No description provided for @all.
@@ -855,7 +861,7 @@ abstract class AppLocalizations {
   /// No description provided for @artistTaiChiMasters.
   ///
   /// In en, this message translates to:
-  /// **'Tai Chi Masters'**
+  /// **'Excel Experts'**
   String get artistTaiChiMasters;
 
   /// No description provided for @artistNatureSounds.
@@ -993,7 +999,7 @@ abstract class AppLocalizations {
   /// No description provided for @defaultVideoDescription.
   ///
   /// In en, this message translates to:
-  /// **'Master the art of Tai Chi with this comprehensive lesson. Learn proper form, breathing techniques, and fluid movements that will enhance your practice.'**
+  /// **'Master Excel with this comprehensive lesson. Learn essential formulas, data analysis techniques, and productivity tips that will enhance your spreadsheet skills.'**
   String get defaultVideoDescription;
 
   /// No description provided for @premiumContent.
@@ -1047,7 +1053,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTagline.
   ///
   /// In en, this message translates to:
-  /// **'Master the Art of Tai Chi'**
+  /// **'Master Spreadsheets Step by Step'**
   String get appTagline;
 
   /// No description provided for @noInternetNoCachedData.

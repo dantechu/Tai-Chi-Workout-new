@@ -9,13 +9,16 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'Tai Chi Workout';
+  String get appName => 'Excel Mastery';
 
   @override
   String get home => 'Home';
 
   @override
   String get videos => 'Videos';
+
+  @override
+  String get lessons => 'Lessons';
 
   @override
   String get practice => 'Practice';
@@ -299,7 +302,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get johnSaxxonBio =>
-      'Dr Jerry Johnson is a certified Tai Chi instructor with over 20 years of experience. He has trained thousands of students worldwide in the art of Tai Chi and meditation.';
+      'Our Excel Training Team consists of certified Microsoft Office specialists with over 20 years of experience. They have trained thousands of students worldwide in mastering spreadsheets and data analysis.';
 
   @override
   String get close => 'Close';
@@ -309,7 +312,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rateAppMessage =>
-      'If you enjoy using our Tai Chi app, please take a moment to rate it. Your feedback helps us improve the app for everyone.';
+      'If you enjoy using Excel Mastery, please take a moment to rate it. Your feedback helps us improve the app for everyone.';
 
   @override
   String get later => 'Later';
@@ -367,7 +370,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goodNight => 'Good Night';
 
   @override
-  String get readyForTaiChi => 'Ready for Tai Chi?';
+  String get readyForTaiChi => 'Ready to Master Excel?';
 
   @override
   String get all => 'All';
@@ -411,7 +414,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackInnerPeace => 'Inner Peace';
 
   @override
-  String get artistTaiChiMasters => 'Tai Chi Masters';
+  String get artistTaiChiMasters => 'Excel Experts';
 
   @override
   String get artistNatureSounds => 'Nature Sounds';
@@ -485,7 +488,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get defaultVideoDescription =>
-      'Master the art of Tai Chi with this comprehensive lesson. Learn proper form, breathing techniques, and fluid movements that will enhance your practice.';
+      'Master Excel with this comprehensive lesson. Learn essential formulas, data analysis techniques, and productivity tips that will enhance your spreadsheet skills.';
 
   @override
   String get premiumContent => 'Premium Content';
@@ -515,7 +518,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Failed to initialize the app. Please check your internet connection and try again.';
 
   @override
-  String get appTagline => 'Master the Art of Tai Chi';
+  String get appTagline => 'Master Spreadsheets Step by Step';
 
   @override
   String get noInternetNoCachedData =>

@@ -1,7 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'video.dart';
+import 'lesson_type.dart';
 
-/// Domain entity representing a section within a course
+/// Domain entity representing a section within a course.
+///
+/// Sections contain lessons of various types (video, audio, text, quiz, flashcard).
 class Section extends Equatable {
   final String id;
   final int sectionNumber;
@@ -38,53 +41,136 @@ class Section extends Equatable {
   String getLocalizedTitle(String languageCode) {
     switch (languageCode) {
       case 'de':
-        return titleDe ?? title;
+        return titleDe?.isNotEmpty == true ? titleDe! : title;
       case 'es':
-        return titleEs ?? title;
+        return titleEs?.isNotEmpty == true ? titleEs! : title;
       case 'fr':
-        return titleFr ?? title;
+        return titleFr?.isNotEmpty == true ? titleFr! : title;
       case 'ja':
-        return titleJa ?? title;
+        return titleJa?.isNotEmpty == true ? titleJa! : title;
       case 'ko':
-        return titleKo ?? title;
+        return titleKo?.isNotEmpty == true ? titleKo! : title;
       case 'zh':
-        return titleZh ?? title;
+        return titleZh?.isNotEmpty == true ? titleZh! : title;
       default:
         return title;
     }
   }
 
-  /// Get total duration of all videos in this section
+  /// Alias for videos list - all lessons regardless of type
+  List<Video> get lessons => videos;
+
+  /// Get total duration of all lessons in this section
   Duration get totalDuration {
     return videos.fold(
       Duration.zero,
-      (total, video) => total + video.duration,
+      (total, video) => total + video.estimatedDuration,
     );
   }
 
-  /// Get video count
-  int get videoCount => videos.length;
+  /// Get total lesson count
+  int get lessonCount => videos.length;
 
-  /// Get premium video count
+  /// Get video count (legacy compatibility)
+  int get videoCount => getLessonCountByType(LessonType.video);
+
+  /// Get premium video count (all premium lessons)
   int get premiumVideoCount => videos.where((video) => video.isPremium).length;
 
-  /// Get free video count
+  /// Get free video count (all free lessons)
   int get freeVideoCount => videos.where((video) => !video.isPremium).length;
 
-  /// Check if section has any premium videos
+  /// Check if section has any premium lessons
   bool get hasAnyPremiumVideos => premiumVideoCount > 0;
 
-  /// Check if all videos are premium
-  bool get hasOnlyPremiumVideos => premiumVideoCount == videoCount && videoCount > 0;
+  /// Check if all lessons are premium
+  bool get hasOnlyPremiumVideos =>
+      premiumVideoCount == lessonCount && lessonCount > 0;
 
-  /// Check if all videos are free
-  bool get hasOnlyFreeVideos => freeVideoCount == videoCount && videoCount > 0;
+  /// Check if all lessons are free
+  bool get hasOnlyFreeVideos =>
+      freeVideoCount == lessonCount && lessonCount > 0;
 
-  /// Get free videos
-  List<Video> get freeVideos => videos.where((video) => !video.isPremium).toList();
+  /// Get free lessons
+  List<Video> get freeVideos =>
+      videos.where((video) => !video.isPremium).toList();
 
-  /// Get premium videos
-  List<Video> get premiumVideos => videos.where((video) => video.isPremium).toList();
+  /// Get premium lessons
+  List<Video> get premiumVideos =>
+      videos.where((video) => video.isPremium).toList();
+
+  // === Lesson Type Helpers ===
+
+  /// Get lessons filtered by type
+  List<Video> getLessonsByType(LessonType type) {
+    return videos.where((v) => v.type == type).toList();
+  }
+
+  /// Get count of lessons by type
+  int getLessonCountByType(LessonType type) {
+    return videos.where((v) => v.type == type).length;
+  }
+
+  /// Get video lessons only
+  List<Video> get videoLessons => getLessonsByType(LessonType.video);
+
+  /// Get audio lessons only
+  List<Video> get audioLessons => getLessonsByType(LessonType.audio);
+
+  /// Get text lessons only
+  List<Video> get textLessons => getLessonsByType(LessonType.text);
+
+  /// Get quiz lessons only
+  List<Video> get quizLessons => getLessonsByType(LessonType.quiz);
+
+  /// Get flashcard lessons only
+  List<Video> get flashcardLessons => getLessonsByType(LessonType.flashcard);
+
+  /// Get count of each lesson type
+  Map<LessonType, int> get lessonTypeCounts {
+    final counts = <LessonType, int>{};
+    for (final type in LessonType.values) {
+      final count = getLessonCountByType(type);
+      if (count > 0) {
+        counts[type] = count;
+      }
+    }
+    return counts;
+  }
+
+  /// Check if section has lessons of a specific type
+  bool hasLessonType(LessonType type) => getLessonCountByType(type) > 0;
+
+  /// Check if section has video lessons
+  bool get hasVideoLessons => hasLessonType(LessonType.video);
+
+  /// Check if section has audio lessons
+  bool get hasAudioLessons => hasLessonType(LessonType.audio);
+
+  /// Check if section has text lessons
+  bool get hasTextLessons => hasLessonType(LessonType.text);
+
+  /// Check if section has quiz lessons
+  bool get hasQuizLessons => hasLessonType(LessonType.quiz);
+
+  /// Check if section has flashcard lessons
+  bool get hasFlashcardLessons => hasLessonType(LessonType.flashcard);
+
+  /// Get a summary string of lesson types (e.g., "3 videos, 2 quizzes")
+  String getLessonTypeSummary() {
+    final parts = <String>[];
+    final counts = lessonTypeCounts;
+
+    for (final type in LessonType.values) {
+      final count = counts[type];
+      if (count != null && count > 0) {
+        final label = count == 1 ? type.displayName : '${type.displayName}s';
+        parts.add('$count $label');
+      }
+    }
+
+    return parts.join(', ');
+  }
 
   Section copyWith({
     String? id,
@@ -134,6 +220,6 @@ class Section extends Equatable {
 
   @override
   String toString() {
-    return 'Section(id: $id, number: $sectionNumber, title: $title, videos: $videoCount)';
+    return 'Section(id: $id, number: $sectionNumber, title: $title, lessons: $lessonCount)';
   }
 }
