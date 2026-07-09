@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/entities/quiz_question.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../widgets/banner_ad_widget.dart';
 
 /// Page for interactive quiz lessons.
 ///
@@ -25,8 +26,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   int _currentQuestionIndex = 0;
   int? _selectedOptionIndex;
-  bool _hasAnswered = false;
-  int _correctAnswers = 0;
   bool _quizCompleted = false;
   final List<int?> _userAnswers = [];
 
@@ -45,32 +44,21 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _selectOption(int index) {
-    if (_hasAnswered) return;
-
     setState(() {
       _selectedOptionIndex = index;
     });
   }
 
-  void _submitAnswer() {
-    if (_selectedOptionIndex == null || _hasAnswered) return;
-
-    setState(() {
-      _hasAnswered = true;
-      _userAnswers[_currentQuestionIndex] = _selectedOptionIndex;
-
-      if (currentQuestion!.isCorrectAnswer(_selectedOptionIndex!)) {
-        _correctAnswers++;
-      }
-    });
-  }
-
   void _nextQuestion() {
+    if (_selectedOptionIndex == null) return;
+
+    // Store the user's answer
+    _userAnswers[_currentQuestionIndex] = _selectedOptionIndex;
+
     if (_currentQuestionIndex < totalQuestions - 1) {
       setState(() {
         _currentQuestionIndex++;
-        _selectedOptionIndex = null;
-        _hasAnswered = false;
+        _selectedOptionIndex = _userAnswers[_currentQuestionIndex];
       });
     } else {
       setState(() {
@@ -79,16 +67,37 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
+  void _previousQuestion() {
+    if (_currentQuestionIndex > 0) {
+      // Store current answer before going back
+      _userAnswers[_currentQuestionIndex] = _selectedOptionIndex;
+
+      setState(() {
+        _currentQuestionIndex--;
+        _selectedOptionIndex = _userAnswers[_currentQuestionIndex];
+      });
+    }
+  }
+
   void _restartQuiz() {
     setState(() {
       _currentQuestionIndex = 0;
       _selectedOptionIndex = null;
-      _hasAnswered = false;
-      _correctAnswers = 0;
       _quizCompleted = false;
       _userAnswers.clear();
       _userAnswers.addAll(List.filled(questions.length, null));
     });
+  }
+
+  int get _correctAnswers {
+    int correct = 0;
+    for (int i = 0; i < questions.length; i++) {
+      if (_userAnswers[i] != null &&
+          questions[i].isCorrectAnswer(_userAnswers[i]!)) {
+        correct++;
+      }
+    }
+    return correct;
   }
 
   double get scorePercentage => totalQuestions > 0
@@ -117,6 +126,11 @@ class _QuizPageState extends State<QuizPage> {
         title: Text(title),
         elevation: 0,
       ),
+      bottomNavigationBar: _quizCompleted
+          ? const SafeArea(
+              child: BannerAdWidget(),
+            )
+          : null,
       body: _quizCompleted
           ? _buildResultsView(context, languageCode)
           : _buildQuizView(context, languageCode, description),
@@ -175,7 +189,6 @@ class _QuizPageState extends State<QuizPage> {
                       context,
                       index,
                       option.getLocalizedText(languageCode),
-                      question.correctOptionIndex,
                     );
                   }),
                 ],
@@ -183,35 +196,62 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
 
-          // Bottom action button
+          // Bottom navigation buttons
           Padding(
             padding: const EdgeInsets.all(24),
-            child: SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: _hasAnswered
-                    ? _nextQuestion
-                    : (_selectedOptionIndex != null ? _submitAnswer : null),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+            child: Row(
+              children: [
+                // Previous button
+                if (_currentQuestionIndex > 0) ...[
+                  Expanded(
+                    child: SizedBox(
+                      height: 56,
+                      child: OutlinedButton(
+                        onPressed: _previousQuestion,
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: const Text(
+                          'Previous',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                ],
+
+                // Next/Submit button
+                Expanded(
+                  child: SizedBox(
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: _selectedOptionIndex != null ? _nextQuestion : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: Text(
+                        _currentQuestionIndex < totalQuestions - 1
+                            ? 'Next'
+                            : 'See Results',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                child: Text(
-                  _hasAnswered
-                      ? (_currentQuestionIndex < totalQuestions - 1
-                          ? 'Next Question'
-                          : 'See Results')
-                      : 'Submit Answer',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+              ],
             ),
           ),
         ],
@@ -223,26 +263,13 @@ class _QuizPageState extends State<QuizPage> {
     BuildContext context,
     int index,
     String text,
-    int correctIndex,
   ) {
     final isSelected = _selectedOptionIndex == index;
-    final isCorrect = index == correctIndex;
 
     Color? backgroundColor;
     Color? borderColor;
-    IconData? trailingIcon;
 
-    if (_hasAnswered) {
-      if (isCorrect) {
-        backgroundColor = Colors.green.withValues(alpha: 0.1);
-        borderColor = Colors.green;
-        trailingIcon = Icons.check_circle;
-      } else if (isSelected) {
-        backgroundColor = Colors.red.withValues(alpha: 0.1);
-        borderColor = Colors.red;
-        trailingIcon = Icons.cancel;
-      }
-    } else if (isSelected) {
+    if (isSelected) {
       backgroundColor = Theme.of(context).colorScheme.primary.withValues(alpha: 0.1);
       borderColor = Theme.of(context).colorScheme.primary;
     }
@@ -260,7 +287,7 @@ class _QuizPageState extends State<QuizPage> {
             border: Border.all(
               color: borderColor ??
                   Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
-              width: isSelected || (_hasAnswered && isCorrect) ? 2 : 1,
+              width: isSelected ? 2 : 1,
             ),
           ),
           child: Row(
@@ -272,7 +299,7 @@ class _QuizPageState extends State<QuizPage> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isSelected
-                      ? (borderColor ?? Theme.of(context).colorScheme.primary)
+                      ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).colorScheme.surfaceContainerHighest,
                 ),
                 child: Center(
@@ -297,11 +324,11 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
 
-              // Result icon
-              if (_hasAnswered && trailingIcon != null)
+              // Check icon for selected
+              if (isSelected)
                 Icon(
-                  trailingIcon,
-                  color: isCorrect ? Colors.green : Colors.red,
+                  Icons.check_circle,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
             ],
           ),

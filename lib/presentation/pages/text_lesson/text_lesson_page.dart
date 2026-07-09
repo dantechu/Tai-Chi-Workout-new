@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../domain/entities/video.dart';
 import '../../../core/utils/quill_delta_parser.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../widgets/banner_ad_widget.dart';
 
 /// Page for displaying text/article lessons.
 ///
@@ -29,51 +30,39 @@ class TextLessonPage extends StatelessWidget {
     final readTimeMinutes = ((lesson.estimatedReadTime ?? lesson.duration.inSeconds) / 60).ceil();
 
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          // App bar with banner image
-          SliverAppBar(
-            expandedHeight: bannerUrl != null ? 250 : 0,
-            pinned: true,
-            flexibleSpace: bannerUrl != null
-                ? FlexibleSpaceBar(
-                    background: _buildBannerImage(bannerUrl),
-                  )
-                : null,
-            title: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.share),
-                onPressed: () {
-                  // TODO: Implement share
-                },
-              ),
-            ],
+      appBar: AppBar(
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
           ),
+        ),
+      ),
+      bottomNavigationBar: const SafeArea(
+        child: BannerAdWidget(),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Banner image below app bar
+            if (bannerUrl != null) _buildBannerImage(bannerUrl),
 
-          // Content
-          SliverToBoxAdapter(
-            child: Padding(
+            // Content
+            Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title (if no banner)
-                  if (bannerUrl == null) ...[
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
+                  // Title
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 12),
 
                   // Read time badge
                   _buildReadTimeBadge(context, readTimeMinutes),
@@ -103,53 +92,33 @@ class TextLessonPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
 
-          // Bottom padding
-          const SliverPadding(padding: EdgeInsets.only(bottom: 100)),
-        ],
+            // Bottom padding
+            const SizedBox(height: 24),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildBannerImage(String url) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        CachedNetworkImage(
-          imageUrl: url,
-          fit: BoxFit.cover,
-          placeholder: (context, url) => Container(
-            color: Colors.grey.withValues(alpha: 0.3),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-          errorWidget: (context, url, error) => Container(
-            color: Colors.grey.withValues(alpha: 0.3),
-            child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
+    return SizedBox(
+      width: double.infinity,
+      height: 220,
+      child: CachedNetworkImage(
+        imageUrl: url,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => Container(
+          color: Colors.grey.withValues(alpha: 0.3),
+          child: const Center(
+            child: CircularProgressIndicator(),
           ),
         ),
-        // Gradient overlay for better text readability
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 100,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.7),
-                ],
-              ),
-            ),
-          ),
+        errorWidget: (context, url, error) => Container(
+          color: Colors.grey.withValues(alpha: 0.3),
+          child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
         ),
-      ],
+      ),
     );
   }
 

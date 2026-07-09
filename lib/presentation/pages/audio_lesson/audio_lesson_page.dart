@@ -3,14 +3,17 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../domain/entities/video.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../widgets/banner_ad_widget.dart';
 
 /// Page for playing audio lessons (podcasts, guided meditations, etc.)
 ///
 /// Features:
-/// - Cover image display
+/// - Compact cover image display
 /// - Audio playback with play/pause, seek bar
 /// - Duration display
-/// - Background playback support
+/// - Title and description below controls
+/// - Scrollable content
+/// - Banner ad at bottom
 class AudioLessonPage extends StatefulWidget {
   final Video lesson;
 
@@ -124,6 +127,9 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
     final languageCode = LocalizationHelper.getCurrentLanguageCode(context);
     final title = widget.lesson.getLocalizedTitle(languageCode);
     final description = widget.lesson.getLocalizedDescription(languageCode);
@@ -134,104 +140,149 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
         title: const Text('Audio Lesson'),
         elevation: 0,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
+      bottomNavigationBar: const SafeArea(
+        child: BannerAdWidget(),
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Column(
             children: [
-              const Spacer(),
-
-              // Cover image
-              _buildCoverImage(thumbnailUrl),
               const SizedBox(height: 32),
 
-              // Title
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+              // Cover image (50% smaller - was 250, now ~150)
+              _buildCoverImage(context, thumbnailUrl),
+              const SizedBox(height: 32),
+
+              // Player card
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? colorScheme.surface.withValues(alpha: 0.8)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.primary.withValues(alpha: isDark ? 0.1 : 0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 8),
                     ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                  ],
+                  border: Border.all(
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.08)
+                        : colorScheme.outline.withValues(alpha: 0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    // Error message
+                    if (_error != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: colorScheme.errorContainer,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                color: colorScheme.onErrorContainer,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _error!,
+                                  style: TextStyle(
+                                    color: colorScheme.onErrorContainer,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    // Progress bar
+                    if (_error == null) ...[
+                      _buildProgressBar(context),
+                      const SizedBox(height: 8),
+
+                      // Time labels
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              _formatDuration(_position),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurface.withValues(alpha: 0.6),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              _formatDuration(_duration),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurface.withValues(alpha: 0.6),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Controls
+                      _buildControls(context),
+                    ],
+                  ],
+                ),
               ),
-              const SizedBox(height: 8),
 
-              // Description
-              if (description != null && description.isNotEmpty)
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.7),
+              const SizedBox(height: 32),
+
+              // Title and Description below controls
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    // Title
+                    Text(
+                      title,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -0.5,
                       ),
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-
-              const Spacer(),
-
-              // Error message
-              if (_error != null)
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    _error!,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
 
-              // Progress bar
-              if (_error == null) ...[
-                SliderTheme(
-                  data: SliderThemeData(
-                    trackHeight: 4,
-                    thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
-                    overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
-                    activeTrackColor: Theme.of(context).colorScheme.primary,
-                    inactiveTrackColor:
-                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-                    thumbColor: Theme.of(context).colorScheme.primary,
-                  ),
-                  child: Slider(
-                    value: _position.inMilliseconds.toDouble(),
-                    max: _duration.inMilliseconds > 0
-                        ? _duration.inMilliseconds.toDouble()
-                        : 1,
-                    onChanged: (value) {
-                      _seek(Duration(milliseconds: value.toInt()));
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    // Description
+                    if (description != null && description.isNotEmpty) ...[
+                      const SizedBox(height: 12),
                       Text(
-                        _formatDuration(_position),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Text(
-                        _formatDuration(_duration),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        description,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurface.withValues(alpha: 0.7),
+                          height: 1.5,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
-                  ),
+                  ],
                 ),
-                const SizedBox(height: 24),
+              ),
 
-                // Controls
-                _buildControls(),
-              ],
-
-              const Spacer(),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -239,17 +290,20 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
     );
   }
 
-  Widget _buildCoverImage(String? thumbnailUrl) {
+  Widget _buildCoverImage(BuildContext context, String? thumbnailUrl) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
-      width: 250,
-      height: 250,
+      width: 150,
+      height: 150,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: colorScheme.primary.withValues(alpha: 0.25),
+            blurRadius: 30,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
@@ -258,71 +312,189 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
           ? CachedNetworkImage(
               imageUrl: thumbnailUrl,
               fit: BoxFit.cover,
-              placeholder: (context, url) => _buildPlaceholder(),
-              errorWidget: (context, url, error) => _buildPlaceholder(),
+              placeholder: (context, url) => _buildPlaceholder(context),
+              errorWidget: (context, url, error) => _buildPlaceholder(context),
             )
-          : _buildPlaceholder(),
+          : _buildPlaceholder(context),
     );
   }
 
-  Widget _buildPlaceholder() {
+  Widget _buildPlaceholder(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      color: Theme.of(context).colorScheme.primaryContainer,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colorScheme.primary,
+            colorScheme.primary.withValues(alpha: 0.7),
+          ],
+        ),
+      ),
       child: Icon(
-        Icons.headphones,
-        size: 80,
-        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        Icons.headphones_rounded,
+        size: 60,
+        color: colorScheme.onPrimary.withValues(alpha: 0.9),
       ),
     );
   }
 
-  Widget _buildControls() {
+  Widget _buildProgressBar(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final progress = _duration.inMilliseconds > 0
+        ? _position.inMilliseconds / _duration.inMilliseconds
+        : 0.0;
+
+    return GestureDetector(
+      onTapDown: (details) {
+        final box = context.findRenderObject() as RenderBox?;
+        if (box != null && _duration.inMilliseconds > 0) {
+          final localPosition = details.localPosition;
+          final width = box.size.width - 48; // Account for padding
+          final percent = (localPosition.dx / width).clamp(0.0, 1.0);
+          final newPosition = Duration(
+            milliseconds: (percent * _duration.inMilliseconds).toInt(),
+          );
+          _seek(newPosition);
+        }
+      },
+      child: Container(
+        height: 6,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(3),
+          color: colorScheme.primary.withValues(alpha: 0.15),
+        ),
+        child: FractionallySizedBox(
+          alignment: Alignment.centerLeft,
+          widthFactor: progress.clamp(0.0, 1.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              gradient: LinearGradient(
+                colors: [
+                  colorScheme.primary,
+                  colorScheme.primary.withValues(alpha: 0.8),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildControls(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Skip backward
-        IconButton(
+        // Skip backward 15s
+        _buildControlButton(
+          context,
+          icon: Icons.replay_10_rounded,
           onPressed: _error == null ? () => _skip(-15) : null,
-          icon: const Icon(Icons.replay_10),
-          iconSize: 36,
-          color: Theme.of(context).colorScheme.onSurface,
+          size: 28,
+          backgroundColor: colorScheme.primary.withValues(alpha: isDark ? 0.15 : 0.1),
+          iconColor: colorScheme.primary,
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 20),
 
         // Play/Pause
         Container(
-          width: 80,
-          height: 80,
+          width: 72,
+          height: 72,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.primary,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                colorScheme.primary,
+                colorScheme.primary.withValues(alpha: 0.85),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: colorScheme.primary.withValues(alpha: 0.4),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 3,
+              ? Center(
+                  child: SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: CircularProgressIndicator(
+                      color: colorScheme.onPrimary,
+                      strokeWidth: 2.5,
+                    ),
                   ),
                 )
-              : IconButton(
-                  onPressed: _error == null ? _playPause : null,
-                  icon: Icon(
-                    _isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    size: 40,
+              : Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: _error == null ? _playPause : null,
+                    customBorder: const CircleBorder(),
+                    child: Center(
+                      child: Icon(
+                        _isPlaying
+                            ? Icons.pause_rounded
+                            : Icons.play_arrow_rounded,
+                        color: colorScheme.onPrimary,
+                        size: 36,
+                      ),
+                    ),
                   ),
                 ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 20),
 
-        // Skip forward
-        IconButton(
+        // Skip forward 30s
+        _buildControlButton(
+          context,
+          icon: Icons.forward_30_rounded,
           onPressed: _error == null ? () => _skip(30) : null,
-          icon: const Icon(Icons.forward_30),
-          iconSize: 36,
-          color: Theme.of(context).colorScheme.onSurface,
+          size: 28,
+          backgroundColor: colorScheme.primary.withValues(alpha: isDark ? 0.15 : 0.1),
+          iconColor: colorScheme.primary,
         ),
       ],
+    );
+  }
+
+  Widget _buildControlButton(
+    BuildContext context, {
+    required IconData icon,
+    required VoidCallback? onPressed,
+    required double size,
+    required Color backgroundColor,
+    required Color iconColor,
+  }) {
+    return Material(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: 52,
+          height: 52,
+          alignment: Alignment.center,
+          child: Icon(
+            icon,
+            size: size,
+            color: onPressed != null
+                ? iconColor
+                : iconColor.withValues(alpha: 0.4),
+          ),
+        ),
+      ),
     );
   }
 }
