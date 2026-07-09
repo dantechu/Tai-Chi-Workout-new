@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
 import '../../../core/utils/quill_delta_parser.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
+import '../../bloc/lesson_completion/lesson_completion_event.dart';
+import '../../bloc/lesson_completion/lesson_completion_state.dart';
 import '../../widgets/banner_ad_widget.dart';
 
 /// Page for displaying text/article lessons.
@@ -89,6 +93,11 @@ class TextLessonPage extends StatelessWidget {
 
                   // Main content
                   _buildContent(context, content),
+
+                  const SizedBox(height: 32),
+
+                  // Mark as Complete button
+                  _buildCompletionButton(context),
                 ],
               ),
             ),
@@ -98,6 +107,82 @@ class TextLessonPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCompletionButton(BuildContext context) {
+    return BlocBuilder<LessonCompletionBloc, LessonCompletionState>(
+      builder: (context, state) {
+        final isCompleted = state is LessonCompletionLoaded &&
+            state.isLessonCompleted(lesson.id);
+
+        if (isCompleted) {
+          return Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.green.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.green.withValues(alpha: 0.3),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 24,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Completed',
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton.icon(
+            onPressed: () {
+              context.read<LessonCompletionBloc>().add(
+                MarkLessonCompleted(lesson.id),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Lesson marked as complete!'),
+                  backgroundColor: Colors.green,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            icon: const Icon(Icons.check_circle_outline),
+            label: const Text(
+              'Mark as Complete',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

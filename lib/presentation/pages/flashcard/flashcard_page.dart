@@ -1,8 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/entities/flash_card.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
+import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../widgets/banner_ad_widget.dart';
 
 /// Page for flashcard study sessions with spaced repetition-style rating.
@@ -97,6 +100,19 @@ class _FlashcardPageState extends State<FlashcardPage>
       setState(() {
         _sessionCompleted = true;
       });
+      // Mark as complete if passed (60% or more)
+      _checkAndMarkComplete();
+    }
+  }
+
+  void _checkAndMarkComplete() {
+    if (passed) {
+      context.read<LessonCompletionBloc>().add(
+        MarkLessonCompleted(
+          widget.lesson.id,
+          scorePercentage: scorePercentage.toInt(),
+        ),
+      );
     }
   }
 
@@ -115,7 +131,8 @@ class _FlashcardPageState extends State<FlashcardPage>
       ? (_correctCount / totalCards) * 100
       : 0;
 
-  bool get passed => scorePercentage >= 70;
+  // Flashcards pass at 60% (different from quiz which is 70%)
+  bool get passed => scorePercentage >= 60;
 
   @override
   Widget build(BuildContext context) {

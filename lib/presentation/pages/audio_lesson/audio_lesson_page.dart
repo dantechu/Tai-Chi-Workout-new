@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
+import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../widgets/banner_ad_widget.dart';
 
 /// Page for playing audio lessons (podcasts, guided meditations, etc.)
@@ -33,6 +36,7 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
   bool _isPlaying = false;
   bool _isLoading = true;
   String? _error;
+  bool _hasMarkedComplete = false;
 
   @override
   void initState() {
@@ -58,6 +62,7 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
 
       _audioPlayer.onPositionChanged.listen((position) {
         setState(() => _position = position);
+        _checkAudioProgress();
       });
 
       _audioPlayer.onPlayerStateChanged.listen((state) {
@@ -82,6 +87,21 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
         _error = 'Failed to load audio: $e';
         _isLoading = false;
       });
+    }
+  }
+
+  void _checkAudioProgress() {
+    if (_hasMarkedComplete) return;
+    if (_duration.inMilliseconds == 0) return;
+
+    final progress = _position.inMilliseconds / _duration.inMilliseconds;
+
+    // Mark as complete if progress is 90% or more
+    if (progress >= 0.9) {
+      _hasMarkedComplete = true;
+      context.read<LessonCompletionBloc>().add(
+        MarkLessonCompleted(widget.lesson.id),
+      );
     }
   }
 

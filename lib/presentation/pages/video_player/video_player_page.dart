@@ -15,6 +15,8 @@ import '../../../l10n/app_localizations.dart';
 import '../../bloc/bookmark/bookmark_bloc.dart';
 import '../../bloc/bookmark/bookmark_event.dart';
 import '../../bloc/bookmark/bookmark_state.dart';
+import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
+import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../bloc/premium/premium_bloc.dart';
 import '../../bloc/premium/premium_state.dart';
 import '../../widgets/banner_ad_widget.dart';
@@ -38,6 +40,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   ChewieController? _chewieController;
   bool _isLoading = true;
   String? _error;
+  bool _hasMarkedComplete = false;
 
   @override
   void initState() {
@@ -76,6 +79,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       );
 
       await _videoPlayerController.initialize();
+
+      // Add listener for completion tracking
+      _videoPlayerController.addListener(_checkVideoProgress);
 
       // Initialize Chewie controller
       _chewieController = ChewieController(
@@ -142,8 +148,28 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     }
   }
 
+  void _checkVideoProgress() {
+    if (_hasMarkedComplete) return;
+
+    final position = _videoPlayerController.value.position;
+    final duration = _videoPlayerController.value.duration;
+
+    if (duration.inMilliseconds == 0) return;
+
+    final progress = position.inMilliseconds / duration.inMilliseconds;
+
+    // Mark as complete if progress is 90% or more
+    if (progress >= 0.9) {
+      _hasMarkedComplete = true;
+      context.read<LessonCompletionBloc>().add(
+        MarkLessonCompleted(widget.video.id),
+      );
+    }
+  }
+
   @override
   void dispose() {
+    _videoPlayerController.removeListener(_checkVideoProgress);
     _videoPlayerController.dispose();
     _chewieController?.dispose();
     SystemChrome.setPreferredOrientations([

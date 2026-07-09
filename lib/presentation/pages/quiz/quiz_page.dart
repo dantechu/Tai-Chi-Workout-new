@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/entities/quiz_question.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
+import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../widgets/banner_ad_widget.dart';
 
 /// Page for interactive quiz lessons.
@@ -64,6 +67,19 @@ class _QuizPageState extends State<QuizPage> {
       setState(() {
         _quizCompleted = true;
       });
+      // Mark as complete if passed (70% or more)
+      _checkAndMarkComplete();
+    }
+  }
+
+  void _checkAndMarkComplete() {
+    if (passed) {
+      context.read<LessonCompletionBloc>().add(
+        MarkLessonCompleted(
+          widget.lesson.id,
+          scorePercentage: scorePercentage.toInt(),
+        ),
+      );
     }
   }
 

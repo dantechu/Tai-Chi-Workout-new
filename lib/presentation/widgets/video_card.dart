@@ -11,6 +11,8 @@ import '../../domain/entities/lesson_type.dart';
 import '../bloc/bookmark/bookmark_bloc.dart';
 import '../bloc/bookmark/bookmark_event.dart';
 import '../bloc/bookmark/bookmark_state.dart';
+import '../bloc/lesson_completion/lesson_completion_bloc.dart';
+import '../bloc/lesson_completion/lesson_completion_state.dart';
 
 class VideoCard extends StatefulWidget {
   final Video video;
@@ -228,6 +230,39 @@ class _VideoCardState extends State<VideoCard> {
                   ),
                 ),
               ),
+
+            // Completion indicator - top right
+            BlocBuilder<LessonCompletionBloc, LessonCompletionState>(
+              builder: (context, state) {
+                final isCompleted = state is LessonCompletionLoaded &&
+                    state.isLessonCompleted(video.id);
+                if (!isCompleted) return const SizedBox.shrink();
+
+                return Positioned(
+                  top: 6,
+                  right: 6,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.3),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.check,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

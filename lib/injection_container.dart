@@ -18,6 +18,7 @@ import 'data/datasources/bookmark_local_datasource.dart';
 import 'data/datasources/course_local_datasource.dart';
 import 'data/datasources/course_remote_datasource.dart';
 import 'data/datasources/download_local_datasource.dart';
+import 'data/datasources/lesson_completion_local_datasource.dart';
 import 'data/datasources/onboarding_local_datasource.dart';
 import 'data/datasources/premium_local_datasource.dart';
 import 'data/datasources/video_local_datasource.dart';
@@ -45,6 +46,7 @@ import 'domain/usecases/select_course.dart';
 
 // BLoCs
 import 'presentation/bloc/bookmark/bookmark_bloc.dart';
+import 'presentation/bloc/lesson_completion/lesson_completion_bloc.dart';
 import 'presentation/bloc/video/video_bloc.dart';
 import 'presentation/bloc/premium/premium_bloc.dart';
 import 'presentation/bloc/theme/theme_bloc.dart';
@@ -61,6 +63,7 @@ Future<void> init() async {
   await Hive.openBox('courses_box');
   await Hive.openBox<bool>('onboarding_prefs');
   await Hive.openBox<Map>('bookmarks_cache');
+  await Hive.openBox<Map>('lesson_completions_cache');
 
   // Initialize RevenueCat service
   final revenueCatService = RevenueCatService();
@@ -137,6 +140,14 @@ Future<void> init() async {
     ),
   );
 
+  //! Features - Lesson Completion
+  // Bloc
+  sl.registerFactory(
+    () => LessonCompletionBloc(
+      localDataSource: sl(),
+    ),
+  );
+
   //! Repository
   sl.registerLazySingleton<VideoRepository>(
     () => VideoRepositoryImpl(
@@ -208,6 +219,10 @@ Future<void> init() async {
 
   sl.registerLazySingleton<BookmarkLocalDataSource>(
     () => BookmarkLocalDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<LessonCompletionLocalDataSource>(
+    () => LessonCompletionLocalDataSourceImpl(),
   );
 
   //! Core
