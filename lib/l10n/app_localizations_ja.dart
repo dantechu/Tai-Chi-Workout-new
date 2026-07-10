@@ -733,92 +733,98 @@ class AppLocalizationsJa extends AppLocalizations {
   String get lessonMarkedComplete => 'レッスンを完了としてマークしました！';
 
   @override
-  String get noQuestionsForQuiz => 'No questions available for this quiz.';
+  String get noQuestionsForQuiz => 'このクイズに利用可能な質問がありません。';
 
   @override
   String questionXOfY(int current, int total) {
-    return 'Question $current of $total';
+    return '質問 $current / $total';
   }
 
   @override
-  String get previous => 'Previous';
+  String get previous => '前へ';
 
   @override
-  String get next => 'Next';
+  String get next => '次へ';
 
   @override
-  String get seeResults => 'See Results';
+  String get seeResults => '結果を見る';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => 'おめでとうございます！';
 
   @override
-  String get keepPracticing => 'Keep Practicing!';
+  String get keepPracticing => '練習を続けましょう！';
 
   @override
   String youScoredPercent(int score) {
-    return 'You scored $score%';
+    return '$score%のスコアです';
   }
 
   @override
   String xOutOfYCorrect(int correct, int total) {
-    return '$correct out of $total correct';
+    return '$total問中$correct問正解';
   }
 
   @override
   String passingScorePercent(int score) {
-    return 'Passing score: $score%';
+    return '合格点: $score%';
   }
 
   @override
-  String get tryAgain => 'Try Again';
+  String get tryAgain => 'もう一度';
 
   @override
-  String get backToLessons => 'Back to Lessons';
+  String get backToLessons => 'レッスンに戻る';
 
   @override
-  String get noFlashcardsAvailableMessage => 'No flashcards available.';
+  String get noFlashcardsAvailableMessage => 'フラッシュカードがありません。';
 
   @override
   String cardXOfY(int current, int total) {
-    return 'Card $current of $total';
+    return 'カード $current / $total';
   }
 
   @override
-  String get tapToReveal => 'Tap to reveal';
+  String get tapToReveal => 'タップして表示';
 
   @override
-  String get tapToFlipBack => 'Tap to flip back';
+  String get tapToFlipBack => 'タップして裏返す';
 
   @override
-  String get front => 'FRONT';
+  String get front => '表';
 
   @override
-  String get back => 'BACK';
+  String get back => '裏';
 
   @override
-  String get showAnswer => 'Show Answer';
+  String get showAnswer => '答えを見る';
 
   @override
-  String get again => 'Again';
+  String get again => 'もう一度';
 
   @override
-  String get hard => 'Hard';
+  String get hard => '難しい';
 
   @override
-  String get good => 'Good';
+  String get good => '良い';
 
   @override
-  String get easy => 'Easy';
+  String get easy => '簡単';
 
   @override
-  String get greatJob => 'Great Job!';
+  String get greatJob => 'よくできました！';
 
   @override
-  String get studyAgain => 'Study Again';
+  String get studyAgain => 'もう一度学習';
 
   @override
   String xCorrectYWrong(int correct, int wrong) {
-    return '$correct correct, $wrong wrong';
+    return '$correct個正解、$wrong個不正解';
   }
+
+  @override
+  String get lifetimeAccess => '永久アクセス';
+
+  @override
+  String get oneTimePayment => '一回限りのお支払い';
 }

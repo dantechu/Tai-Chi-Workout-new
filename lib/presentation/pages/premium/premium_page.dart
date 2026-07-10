@@ -220,7 +220,7 @@ class _PremiumPageState extends State<PremiumPage> {
       child: Column(
         children: [
           Text(
-            'Lifetime Access',
+            AppLocalizations.of(context)?.lifetimeAccess ?? 'Lifetime Access',
             style: theme.textTheme.titleMedium?.copyWith(
               fontSize: 15,
               color: theme.colorScheme.primary,
@@ -238,7 +238,7 @@ class _PremiumPageState extends State<PremiumPage> {
           ),
           const SizedBox(height: 2),
           Text(
-            'One-time payment',
+            AppLocalizations.of(context)?.oneTimePayment ?? 'One-time payment',
             style: theme.textTheme.bodySmall?.copyWith(
               fontSize: 12,
               color: theme.colorScheme.onSurfaceVariant,

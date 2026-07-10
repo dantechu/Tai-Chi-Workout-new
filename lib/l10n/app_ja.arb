@@ -302,5 +302,67 @@
   "nCards": "{count} 枚",
   "markAsComplete": "完了としてマーク",
   "completed": "完了",
-  "lessonMarkedComplete": "レッスンを完了としてマークしました！"
+  "lessonMarkedComplete": "レッスンを完了としてマークしました！",
+  "noQuestionsForQuiz": "このクイズに利用可能な質問がありません。",
+  "questionXOfY": "質問 {current} / {total}",
+  "@questionXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "previous": "前へ",
+  "next": "次へ",
+  "seeResults": "結果を見る",
+  "congratulations": "おめでとうございます！",
+  "keepPracticing": "練習を続けましょう！",
+  "youScoredPercent": "{score}%のスコアです",
+  "@youScoredPercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "xOutOfYCorrect": "{total}問中{correct}問正解",
+  "@xOutOfYCorrect": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "passingScorePercent": "合格点: {score}%",
+  "@passingScorePercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "tryAgain": "もう一度",
+  "backToLessons": "レッスンに戻る",
+  "noFlashcardsAvailableMessage": "フラッシュカードがありません。",
+  "cardXOfY": "カード {current} / {total}",
+  "@cardXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "tapToReveal": "タップして表示",
+  "tapToFlipBack": "タップして裏返す",
+  "front": "表",
+  "back": "裏",
+  "showAnswer": "答えを見る",
+  "again": "もう一度",
+  "hard": "難しい",
+  "good": "良い",
+  "easy": "簡単",
+  "greatJob": "よくできました！",
+  "studyAgain": "もう一度学習",
+  "xCorrectYWrong": "{correct}個正解、{wrong}個不正解",
+  "@xCorrectYWrong": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "wrong": {"type": "int"}
+    }
+  },
+  "lifetimeAccess": "永久アクセス",
+  "oneTimePayment": "一回限りのお支払い"
 }

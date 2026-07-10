@@ -837,4 +837,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String xCorrectYWrong(int correct, int wrong) {
     return '$correct correct, $wrong wrong';
   }
+
+  @override
+  String get lifetimeAccess => 'Lifetime Access';
+
+  @override
+  String get oneTimePayment => 'One-time payment';
 }

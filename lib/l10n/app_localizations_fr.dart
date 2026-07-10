@@ -751,92 +751,98 @@ class AppLocalizationsFr extends AppLocalizations {
   String get lessonMarkedComplete => 'Leçon marquée comme terminée !';
 
   @override
-  String get noQuestionsForQuiz => 'No questions available for this quiz.';
+  String get noQuestionsForQuiz => 'Aucune question disponible pour ce quiz.';
 
   @override
   String questionXOfY(int current, int total) {
-    return 'Question $current of $total';
+    return 'Question $current sur $total';
   }
 
   @override
-  String get previous => 'Previous';
+  String get previous => 'Précédent';
 
   @override
-  String get next => 'Next';
+  String get next => 'Suivant';
 
   @override
-  String get seeResults => 'See Results';
+  String get seeResults => 'Voir les résultats';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => 'Félicitations !';
 
   @override
-  String get keepPracticing => 'Keep Practicing!';
+  String get keepPracticing => 'Continuez à pratiquer !';
 
   @override
   String youScoredPercent(int score) {
-    return 'You scored $score%';
+    return 'Vous avez obtenu $score%';
   }
 
   @override
   String xOutOfYCorrect(int correct, int total) {
-    return '$correct out of $total correct';
+    return '$correct sur $total correctes';
   }
 
   @override
   String passingScorePercent(int score) {
-    return 'Passing score: $score%';
+    return 'Score de passage : $score%';
   }
 
   @override
-  String get tryAgain => 'Try Again';
+  String get tryAgain => 'Réessayer';
 
   @override
-  String get backToLessons => 'Back to Lessons';
+  String get backToLessons => 'Retour aux leçons';
 
   @override
-  String get noFlashcardsAvailableMessage => 'No flashcards available.';
+  String get noFlashcardsAvailableMessage => 'Aucune carte mémoire disponible.';
 
   @override
   String cardXOfY(int current, int total) {
-    return 'Card $current of $total';
+    return 'Carte $current sur $total';
   }
 
   @override
-  String get tapToReveal => 'Tap to reveal';
+  String get tapToReveal => 'Appuyez pour révéler';
 
   @override
-  String get tapToFlipBack => 'Tap to flip back';
+  String get tapToFlipBack => 'Appuyez pour retourner';
 
   @override
-  String get front => 'FRONT';
+  String get front => 'RECTO';
 
   @override
-  String get back => 'BACK';
+  String get back => 'VERSO';
 
   @override
-  String get showAnswer => 'Show Answer';
+  String get showAnswer => 'Afficher la réponse';
 
   @override
-  String get again => 'Again';
+  String get again => 'Encore';
 
   @override
-  String get hard => 'Hard';
+  String get hard => 'Difficile';
 
   @override
-  String get good => 'Good';
+  String get good => 'Bien';
 
   @override
-  String get easy => 'Easy';
+  String get easy => 'Facile';
 
   @override
-  String get greatJob => 'Great Job!';
+  String get greatJob => 'Excellent travail !';
 
   @override
-  String get studyAgain => 'Study Again';
+  String get studyAgain => 'Étudier à nouveau';
 
   @override
   String xCorrectYWrong(int correct, int wrong) {
-    return '$correct correct, $wrong wrong';
+    return '$correct correctes, $wrong incorrectes';
   }
+
+  @override
+  String get lifetimeAccess => 'Accès à vie';
+
+  @override
+  String get oneTimePayment => 'Paiement unique';
 }

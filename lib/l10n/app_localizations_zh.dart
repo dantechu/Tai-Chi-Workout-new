@@ -730,92 +730,98 @@ class AppLocalizationsZh extends AppLocalizations {
   String get lessonMarkedComplete => '课程已标记为完成！';
 
   @override
-  String get noQuestionsForQuiz => 'No questions available for this quiz.';
+  String get noQuestionsForQuiz => '此测验没有可用的问题。';
 
   @override
   String questionXOfY(int current, int total) {
-    return 'Question $current of $total';
+    return '问题 $current / $total';
   }
 
   @override
-  String get previous => 'Previous';
+  String get previous => '上一题';
 
   @override
-  String get next => 'Next';
+  String get next => '下一题';
 
   @override
-  String get seeResults => 'See Results';
+  String get seeResults => '查看结果';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => '恭喜！';
 
   @override
-  String get keepPracticing => 'Keep Practicing!';
+  String get keepPracticing => '继续练习！';
 
   @override
   String youScoredPercent(int score) {
-    return 'You scored $score%';
+    return '您的得分是 $score%';
   }
 
   @override
   String xOutOfYCorrect(int correct, int total) {
-    return '$correct out of $total correct';
+    return '$total 题中答对 $correct 题';
   }
 
   @override
   String passingScorePercent(int score) {
-    return 'Passing score: $score%';
+    return '及格分数：$score%';
   }
 
   @override
-  String get tryAgain => 'Try Again';
+  String get tryAgain => '再试一次';
 
   @override
-  String get backToLessons => 'Back to Lessons';
+  String get backToLessons => '返回课程';
 
   @override
-  String get noFlashcardsAvailableMessage => 'No flashcards available.';
+  String get noFlashcardsAvailableMessage => '没有可用的闪卡。';
 
   @override
   String cardXOfY(int current, int total) {
-    return 'Card $current of $total';
+    return '卡片 $current / $total';
   }
 
   @override
-  String get tapToReveal => 'Tap to reveal';
+  String get tapToReveal => '点击查看';
 
   @override
-  String get tapToFlipBack => 'Tap to flip back';
+  String get tapToFlipBack => '点击翻回';
 
   @override
-  String get front => 'FRONT';
+  String get front => '正面';
 
   @override
-  String get back => 'BACK';
+  String get back => '背面';
 
   @override
-  String get showAnswer => 'Show Answer';
+  String get showAnswer => '显示答案';
 
   @override
-  String get again => 'Again';
+  String get again => '再来';
 
   @override
-  String get hard => 'Hard';
+  String get hard => '困难';
 
   @override
-  String get good => 'Good';
+  String get good => '不错';
 
   @override
-  String get easy => 'Easy';
+  String get easy => '简单';
 
   @override
-  String get greatJob => 'Great Job!';
+  String get greatJob => '做得好！';
 
   @override
-  String get studyAgain => 'Study Again';
+  String get studyAgain => '再学一次';
 
   @override
   String xCorrectYWrong(int correct, int wrong) {
-    return '$correct correct, $wrong wrong';
+    return '$correct 个正确，$wrong 个错误';
   }
+
+  @override
+  String get lifetimeAccess => '终身会员';
+
+  @override
+  String get oneTimePayment => '一次性付款';
 }

@@ -1637,6 +1637,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{correct} correct, {wrong} wrong'**
   String xCorrectYWrong(int correct, int wrong);
+
+  /// No description provided for @lifetimeAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime Access'**
+  String get lifetimeAccess;
+
+  /// No description provided for @oneTimePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time payment'**
+  String get oneTimePayment;
 }
 
 class _AppLocalizationsDelegate

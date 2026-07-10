@@ -302,5 +302,67 @@
   "nCards": "{count} Karten",
   "markAsComplete": "Als abgeschlossen markieren",
   "completed": "Abgeschlossen",
-  "lessonMarkedComplete": "Lektion als abgeschlossen markiert!"
+  "lessonMarkedComplete": "Lektion als abgeschlossen markiert!",
+  "noQuestionsForQuiz": "Keine Fragen für dieses Quiz verfügbar.",
+  "questionXOfY": "Frage {current} von {total}",
+  "@questionXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "previous": "Zurück",
+  "next": "Weiter",
+  "seeResults": "Ergebnisse anzeigen",
+  "congratulations": "Herzlichen Glückwunsch!",
+  "keepPracticing": "Weiter üben!",
+  "youScoredPercent": "Sie haben {score}% erreicht",
+  "@youScoredPercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "xOutOfYCorrect": "{correct} von {total} richtig",
+  "@xOutOfYCorrect": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "passingScorePercent": "Bestehensgrenze: {score}%",
+  "@passingScorePercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "tryAgain": "Erneut versuchen",
+  "backToLessons": "Zurück zu Lektionen",
+  "noFlashcardsAvailableMessage": "Keine Lernkarten verfügbar.",
+  "cardXOfY": "Karte {current} von {total}",
+  "@cardXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "tapToReveal": "Tippen zum Anzeigen",
+  "tapToFlipBack": "Tippen zum Umdrehen",
+  "front": "VORDERSEITE",
+  "back": "RÜCKSEITE",
+  "showAnswer": "Antwort anzeigen",
+  "again": "Nochmal",
+  "hard": "Schwer",
+  "good": "Gut",
+  "easy": "Leicht",
+  "greatJob": "Großartig!",
+  "studyAgain": "Erneut lernen",
+  "xCorrectYWrong": "{correct} richtig, {wrong} falsch",
+  "@xCorrectYWrong": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "wrong": {"type": "int"}
+    }
+  },
+  "lifetimeAccess": "Lebenslanger Zugang",
+  "oneTimePayment": "Einmalzahlung"
 }

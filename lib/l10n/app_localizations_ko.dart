@@ -823,4 +823,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String xCorrectYWrong(int correct, int wrong) {
     return '$correct개 정답, $wrong개 오답';
   }
+
+  @override
+  String get lifetimeAccess => '평생 이용권';
+
+  @override
+  String get oneTimePayment => '일회성 결제';
 }

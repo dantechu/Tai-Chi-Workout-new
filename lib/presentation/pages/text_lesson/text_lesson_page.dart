@@ -259,7 +259,7 @@ class TextLessonPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'No content available',
+                AppLocalizations.of(context)?.noContentAvailable ?? 'No content available',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(context).colorScheme.outline,
                     ),

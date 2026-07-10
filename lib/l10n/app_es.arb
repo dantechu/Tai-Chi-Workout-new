@@ -302,5 +302,67 @@
   "nCards": "{count} tarjetas",
   "markAsComplete": "Marcar como completado",
   "completed": "Completado",
-  "lessonMarkedComplete": "¡Lección marcada como completada!"
+  "lessonMarkedComplete": "¡Lección marcada como completada!",
+  "noQuestionsForQuiz": "No hay preguntas disponibles para este cuestionario.",
+  "questionXOfY": "Pregunta {current} de {total}",
+  "@questionXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "previous": "Anterior",
+  "next": "Siguiente",
+  "seeResults": "Ver Resultados",
+  "congratulations": "¡Felicitaciones!",
+  "keepPracticing": "¡Sigue practicando!",
+  "youScoredPercent": "Obtuviste {score}%",
+  "@youScoredPercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "xOutOfYCorrect": "{correct} de {total} correctas",
+  "@xOutOfYCorrect": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "passingScorePercent": "Puntaje para aprobar: {score}%",
+  "@passingScorePercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "tryAgain": "Intentar de nuevo",
+  "backToLessons": "Volver a lecciones",
+  "noFlashcardsAvailableMessage": "No hay tarjetas disponibles.",
+  "cardXOfY": "Tarjeta {current} de {total}",
+  "@cardXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "tapToReveal": "Toca para revelar",
+  "tapToFlipBack": "Toca para voltear",
+  "front": "FRENTE",
+  "back": "DORSO",
+  "showAnswer": "Mostrar Respuesta",
+  "again": "Otra vez",
+  "hard": "Difícil",
+  "good": "Bien",
+  "easy": "Fácil",
+  "greatJob": "¡Excelente!",
+  "studyAgain": "Estudiar de nuevo",
+  "xCorrectYWrong": "{correct} correctas, {wrong} incorrectas",
+  "@xCorrectYWrong": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "wrong": {"type": "int"}
+    }
+  },
+  "lifetimeAccess": "Acceso de por vida",
+  "oneTimePayment": "Pago único"
 }

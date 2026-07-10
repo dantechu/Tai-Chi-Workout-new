@@ -328,5 +328,7 @@
   "easy": "쉬움",
   "greatJob": "잘했어요!",
   "studyAgain": "다시 학습",
-  "xCorrectYWrong": "{correct}개 정답, {wrong}개 오답"
+  "xCorrectYWrong": "{correct}개 정답, {wrong}개 오답",
+  "lifetimeAccess": "평생 이용권",
+  "oneTimePayment": "일회성 결제"
 }

@@ -302,5 +302,45 @@
   "nCards": "{count} 张卡片",
   "markAsComplete": "标记为完成",
   "completed": "已完成",
-  "lessonMarkedComplete": "课程已标记为完成！"
+  "lessonMarkedComplete": "课程已标记为完成！",
+  "noQuestionsForQuiz": "此测验没有可用的问题。",
+  "questionXOfY": "问题 {current} / {total}",
+  "previous": "上一题",
+  "next": "下一题",
+  "seeResults": "查看结果",
+  "congratulations": "恭喜！",
+  "keepPracticing": "继续练习！",
+  "youScoredPercent": "您的得分是 {score}%",
+  "xOutOfYCorrect": "{total} 题中答对 {correct} 题",
+  "passingScorePercent": "及格分数：{score}%",
+  "tryAgain": "再试一次",
+  "backToLessons": "返回课程",
+  "noFlashcardsAvailableMessage": "没有可用的闪卡。",
+  "cardXOfY": "卡片 {current} / {total}",
+  "@cardXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "tapToReveal": "点击查看",
+  "tapToFlipBack": "点击翻回",
+  "front": "正面",
+  "back": "背面",
+  "showAnswer": "显示答案",
+  "again": "再来",
+  "hard": "困难",
+  "good": "不错",
+  "easy": "简单",
+  "greatJob": "做得好！",
+  "studyAgain": "再学一次",
+  "xCorrectYWrong": "{correct} 个正确，{wrong} 个错误",
+  "@xCorrectYWrong": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "wrong": {"type": "int"}
+    }
+  },
+  "lifetimeAccess": "终身会员",
+  "oneTimePayment": "一次性付款"
 }

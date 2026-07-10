@@ -302,5 +302,67 @@
   "nCards": "{count} cartes",
   "markAsComplete": "Marquer comme terminé",
   "completed": "Terminé",
-  "lessonMarkedComplete": "Leçon marquée comme terminée !"
+  "lessonMarkedComplete": "Leçon marquée comme terminée !",
+  "noQuestionsForQuiz": "Aucune question disponible pour ce quiz.",
+  "questionXOfY": "Question {current} sur {total}",
+  "@questionXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "previous": "Précédent",
+  "next": "Suivant",
+  "seeResults": "Voir les résultats",
+  "congratulations": "Félicitations !",
+  "keepPracticing": "Continuez à pratiquer !",
+  "youScoredPercent": "Vous avez obtenu {score}%",
+  "@youScoredPercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "xOutOfYCorrect": "{correct} sur {total} correctes",
+  "@xOutOfYCorrect": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "passingScorePercent": "Score de passage : {score}%",
+  "@passingScorePercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "tryAgain": "Réessayer",
+  "backToLessons": "Retour aux leçons",
+  "noFlashcardsAvailableMessage": "Aucune carte mémoire disponible.",
+  "cardXOfY": "Carte {current} sur {total}",
+  "@cardXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "tapToReveal": "Appuyez pour révéler",
+  "tapToFlipBack": "Appuyez pour retourner",
+  "front": "RECTO",
+  "back": "VERSO",
+  "showAnswer": "Afficher la réponse",
+  "again": "Encore",
+  "hard": "Difficile",
+  "good": "Bien",
+  "easy": "Facile",
+  "greatJob": "Excellent travail !",
+  "studyAgain": "Étudier à nouveau",
+  "xCorrectYWrong": "{correct} correctes, {wrong} incorrectes",
+  "@xCorrectYWrong": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "wrong": {"type": "int"}
+    }
+  },
+  "lifetimeAccess": "Accès à vie",
+  "oneTimePayment": "Paiement unique"
 }

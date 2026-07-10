@@ -393,5 +393,7 @@
       "correct": {"type": "int"},
       "wrong": {"type": "int"}
     }
-  }
+  },
+  "lifetimeAccess": "Lifetime Access",
+  "oneTimePayment": "One-time payment"
 }
