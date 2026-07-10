@@ -577,7 +577,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                 ),
               ),
               child: Text(
-                'PRO',
+                AppLocalizations.of(context)?.pro ?? 'PRO',
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: theme.colorScheme.secondary,
                   fontWeight: FontWeight.bold,

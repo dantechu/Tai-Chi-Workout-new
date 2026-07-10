@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/entities/quiz_question.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../widgets/banner_ad_widget.dart';
@@ -131,11 +132,13 @@ class _QuizPageState extends State<QuizPage> {
     final title = widget.lesson.getLocalizedTitle(languageCode);
     final description = widget.lesson.getLocalizedDescription(languageCode);
 
+    final l10n = AppLocalizations.of(context);
+
     if (questions.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: Text(title)),
-        body: const Center(
-          child: Text('No questions available for this quiz.'),
+        body: Center(
+          child: Text(l10n?.noQuestionsForQuiz ?? 'No questions available for this quiz.'),
         ),
       );
     }
@@ -151,8 +154,8 @@ class _QuizPageState extends State<QuizPage> {
             )
           : null,
       body: _quizCompleted
-          ? _buildResultsView(context, languageCode)
-          : _buildQuizView(context, languageCode, description),
+          ? _buildResultsView(context, languageCode, l10n)
+          : _buildQuizView(context, languageCode, description, l10n),
     );
   }
 
@@ -160,6 +163,7 @@ class _QuizPageState extends State<QuizPage> {
     BuildContext context,
     String languageCode,
     String? description,
+    AppLocalizations? l10n,
   ) {
     final question = currentQuestion!;
     final questionText = question.getLocalizedQuestionText(languageCode);
@@ -184,7 +188,7 @@ class _QuizPageState extends State<QuizPage> {
                 children: [
                   // Question counter
                   Text(
-                    'Question ${_currentQuestionIndex + 1} of $totalQuestions',
+                    l10n?.questionXOfY(_currentQuestionIndex + 1, totalQuestions) ?? 'Question ${_currentQuestionIndex + 1} of $totalQuestions',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w600,
@@ -232,8 +236,8 @@ class _QuizPageState extends State<QuizPage> {
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        child: const Text(
-                          'Previous',
+                        child: Text(
+                          l10n?.previous ?? 'Previous',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -260,8 +264,8 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                       child: Text(
                         _currentQuestionIndex < totalQuestions - 1
-                            ? 'Next'
-                            : 'See Results',
+                            ? (l10n?.next ?? 'Next')
+                            : (l10n?.seeResults ?? 'See Results'),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -356,7 +360,7 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  Widget _buildResultsView(BuildContext context, String languageCode) {
+  Widget _buildResultsView(BuildContext context, String languageCode, AppLocalizations? l10n) {
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -384,7 +388,7 @@ class _QuizPageState extends State<QuizPage> {
 
             // Result text
             Text(
-              passed ? 'Congratulations!' : 'Keep Practicing!',
+              passed ? (l10n?.congratulations ?? 'Congratulations!') : (l10n?.keepPracticing ?? 'Keep Practicing!'),
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: passed ? Colors.green : Colors.orange,
@@ -394,19 +398,19 @@ class _QuizPageState extends State<QuizPage> {
 
             // Score
             Text(
-              'You scored ${scorePercentage.toInt()}%',
+              l10n?.youScoredPercent(scorePercentage.toInt()) ?? 'You scored ${scorePercentage.toInt()}%',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
             Text(
-              '$_correctAnswers out of $totalQuestions correct',
+              l10n?.xOutOfYCorrect(_correctAnswers, totalQuestions) ?? '$_correctAnswers out of $totalQuestions correct',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Passing score: $passingPercentage%',
+              l10n?.passingScorePercent(passingPercentage) ?? 'Passing score: $passingPercentage%',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
@@ -426,8 +430,8 @@ class _QuizPageState extends State<QuizPage> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                child: const Text(
-                  'Try Again',
+                child: Text(
+                  l10n?.tryAgain ?? 'Try Again',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -446,8 +450,8 @@ class _QuizPageState extends State<QuizPage> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                child: const Text(
-                  'Back to Lessons',
+                child: Text(
+                  l10n?.backToLessons ?? 'Back to Lessons',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

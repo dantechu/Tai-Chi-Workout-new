@@ -1409,6 +1409,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{completed}/{total} completed'**
   String completedCount(int completed, int total);
+
+  /// No description provided for @noVideoUrlAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No video URL available'**
+  String get noVideoUrlAvailable;
+
+  /// No description provided for @noAudioUrlAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No audio URL available'**
+  String get noAudioUrlAvailable;
+
+  /// No description provided for @noContentAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No content available'**
+  String get noContentAvailable;
+
+  /// No description provided for @noQuestionsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions available'**
+  String get noQuestionsAvailable;
+
+  /// No description provided for @noFlashcardsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No flashcards available'**
+  String get noFlashcardsAvailable;
+
+  /// No description provided for @lessonTypeArticle.
+  ///
+  /// In en, this message translates to:
+  /// **'Article'**
+  String get lessonTypeArticle;
+
+  /// No description provided for @minRead.
+  ///
+  /// In en, this message translates to:
+  /// **'min read'**
+  String get minRead;
+
+  /// No description provided for @nQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} questions'**
+  String nQuestions(int count);
+
+  /// No description provided for @nCards.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cards'**
+  String nCards(int count);
+
+  /// No description provided for @markAsComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Complete'**
+  String get markAsComplete;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @lessonMarkedComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson marked as complete!'**
+  String get lessonMarkedComplete;
+
+  /// No description provided for @noQuestionsForQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions available for this quiz.'**
+  String get noQuestionsForQuiz;
+
+  /// No description provided for @questionXOfY.
+  ///
+  /// In en, this message translates to:
+  /// **'Question {current} of {total}'**
+  String questionXOfY(int current, int total);
+
+  /// No description provided for @previous.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @seeResults.
+  ///
+  /// In en, this message translates to:
+  /// **'See Results'**
+  String get seeResults;
+
+  /// No description provided for @congratulations.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations!'**
+  String get congratulations;
+
+  /// No description provided for @keepPracticing.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Practicing!'**
+  String get keepPracticing;
+
+  /// No description provided for @youScoredPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'You scored {score}%'**
+  String youScoredPercent(int score);
+
+  /// No description provided for @xOutOfYCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} out of {total} correct'**
+  String xOutOfYCorrect(int correct, int total);
+
+  /// No description provided for @passingScorePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Passing score: {score}%'**
+  String passingScorePercent(int score);
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @backToLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Lessons'**
+  String get backToLessons;
+
+  /// No description provided for @noFlashcardsAvailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No flashcards available.'**
+  String get noFlashcardsAvailableMessage;
+
+  /// No description provided for @cardXOfY.
+  ///
+  /// In en, this message translates to:
+  /// **'Card {current} of {total}'**
+  String cardXOfY(int current, int total);
+
+  /// No description provided for @tapToReveal.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to reveal'**
+  String get tapToReveal;
+
+  /// No description provided for @tapToFlipBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to flip back'**
+  String get tapToFlipBack;
+
+  /// No description provided for @front.
+  ///
+  /// In en, this message translates to:
+  /// **'FRONT'**
+  String get front;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'BACK'**
+  String get back;
+
+  /// No description provided for @showAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Answer'**
+  String get showAnswer;
+
+  /// No description provided for @again.
+  ///
+  /// In en, this message translates to:
+  /// **'Again'**
+  String get again;
+
+  /// No description provided for @hard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get hard;
+
+  /// No description provided for @good.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get good;
+
+  /// No description provided for @easy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get easy;
+
+  /// No description provided for @greatJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Great Job!'**
+  String get greatJob;
+
+  /// No description provided for @studyAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Again'**
+  String get studyAgain;
+
+  /// No description provided for @xCorrectYWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} correct, {wrong} wrong'**
+  String xCorrectYWrong(int correct, int wrong);
 }
 
 class _AppLocalizationsDelegate

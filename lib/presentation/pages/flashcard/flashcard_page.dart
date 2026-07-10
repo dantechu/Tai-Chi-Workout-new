@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/entities/flash_card.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../widgets/banner_ad_widget.dart';
@@ -141,12 +142,13 @@ class _FlashcardPageState extends State<FlashcardPage>
   Widget build(BuildContext context) {
     final languageCode = LocalizationHelper.getCurrentLanguageCode(context);
     final title = widget.lesson.getLocalizedTitle(languageCode);
+    final l10n = AppLocalizations.of(context);
 
     if (cards.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: Text(title)),
-        body: const Center(
-          child: Text('No flashcards available.'),
+        body: Center(
+          child: Text(l10n?.noFlashcardsAvailableMessage ?? 'No flashcards available.'),
         ),
       );
     }
@@ -160,12 +162,12 @@ class _FlashcardPageState extends State<FlashcardPage>
           ? const SafeArea(child: BannerAdWidget())
           : null,
       body: _sessionCompleted
-          ? _buildResultsView(context)
-          : _buildStudyView(context, languageCode),
+          ? _buildResultsView(context, l10n)
+          : _buildStudyView(context, languageCode, l10n),
     );
   }
 
-  Widget _buildStudyView(BuildContext context, String languageCode) {
+  Widget _buildStudyView(BuildContext context, String languageCode, AppLocalizations? l10n) {
     final description = widget.lesson.getLocalizedDescription(languageCode);
 
     return SafeArea(
@@ -187,14 +189,14 @@ class _FlashcardPageState extends State<FlashcardPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Card ${_currentCardIndex + 1} of $totalCards',
+                  l10n?.cardXOfY(_currentCardIndex + 1, totalCards) ?? 'Card ${_currentCardIndex + 1} of $totalCards',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
                       ),
                 ),
                 Text(
-                  _showingAnswer ? 'Tap to flip back' : 'Tap to reveal',
+                  _showingAnswer ? (l10n?.tapToFlipBack ?? 'Tap to flip back') : (l10n?.tapToReveal ?? 'Tap to reveal'),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
@@ -229,7 +231,7 @@ class _FlashcardPageState extends State<FlashcardPage>
             child: GestureDetector(
               onTap: _showingAnswer ? _hideAnswer : _showAnswer,
               child: Center(
-                child: _buildFlipCard(context, languageCode),
+                child: _buildFlipCard(context, languageCode, l10n),
               ),
             ),
           ),
@@ -238,15 +240,15 @@ class _FlashcardPageState extends State<FlashcardPage>
           Padding(
             padding: const EdgeInsets.all(24),
             child: _showingAnswer
-                ? _buildRatingButtons(context)
-                : _buildShowAnswerButton(context),
+                ? _buildRatingButtons(context, l10n)
+                : _buildShowAnswerButton(context, l10n),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFlipCard(BuildContext context, String languageCode) {
+  Widget _buildFlipCard(BuildContext context, String languageCode, AppLocalizations? l10n) {
     final card = currentCard!;
     final frontText = card.getLocalizedFrontText(languageCode);
     final backText = card.getLocalizedBackText(languageCode);
@@ -318,7 +320,7 @@ class _FlashcardPageState extends State<FlashcardPage>
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          showingFront ? 'FRONT' : 'BACK',
+                          showingFront ? (l10n?.front ?? 'FRONT') : (l10n?.back ?? 'BACK'),
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -357,7 +359,7 @@ class _FlashcardPageState extends State<FlashcardPage>
     );
   }
 
-  Widget _buildShowAnswerButton(BuildContext context) {
+  Widget _buildShowAnswerButton(BuildContext context, AppLocalizations? l10n) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return SizedBox(
@@ -366,8 +368,8 @@ class _FlashcardPageState extends State<FlashcardPage>
       child: ElevatedButton.icon(
         onPressed: _showAnswer,
         icon: const Icon(Icons.visibility_outlined),
-        label: const Text(
-          'Show Answer',
+        label: Text(
+          l10n?.showAnswer ?? 'Show Answer',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -385,7 +387,7 @@ class _FlashcardPageState extends State<FlashcardPage>
     );
   }
 
-  Widget _buildRatingButtons(BuildContext context) {
+  Widget _buildRatingButtons(BuildContext context, AppLocalizations? l10n) {
     return Column(
       children: [
         // Top row: Again, Hard
@@ -394,7 +396,7 @@ class _FlashcardPageState extends State<FlashcardPage>
             Expanded(
               child: _buildRatingButton(
                 context,
-                label: 'Again',
+                label: l10n?.again ?? 'Again',
                 icon: Icons.close,
                 color: const Color(0xFFE91E63), // Pink
                 onPressed: () => _rateCard(false),
@@ -404,7 +406,7 @@ class _FlashcardPageState extends State<FlashcardPage>
             Expanded(
               child: _buildRatingButton(
                 context,
-                label: 'Hard',
+                label: l10n?.hard ?? 'Hard',
                 icon: Icons.remove,
                 color: const Color(0xFFFF9800), // Orange
                 onPressed: () => _rateCard(false),
@@ -419,7 +421,7 @@ class _FlashcardPageState extends State<FlashcardPage>
             Expanded(
               child: _buildRatingButton(
                 context,
-                label: 'Good',
+                label: l10n?.good ?? 'Good',
                 icon: Icons.check,
                 color: const Color(0xFF2196F3), // Blue
                 onPressed: () => _rateCard(true),
@@ -429,7 +431,7 @@ class _FlashcardPageState extends State<FlashcardPage>
             Expanded(
               child: _buildRatingButton(
                 context,
-                label: 'Easy',
+                label: l10n?.easy ?? 'Easy',
                 icon: Icons.done_all,
                 color: const Color(0xFF4CAF50), // Green
                 onPressed: () => _rateCard(true),
@@ -472,7 +474,7 @@ class _FlashcardPageState extends State<FlashcardPage>
     );
   }
 
-  Widget _buildResultsView(BuildContext context) {
+  Widget _buildResultsView(BuildContext context, AppLocalizations? l10n) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -503,7 +505,7 @@ class _FlashcardPageState extends State<FlashcardPage>
 
             // Result text
             Text(
-              passed ? 'Great Job!' : 'Keep Practicing!',
+              passed ? (l10n?.greatJob ?? 'Great Job!') : (l10n?.keepPracticing ?? 'Keep Practicing!'),
               style: theme.textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: passed ? Colors.green : Colors.orange,
@@ -513,12 +515,12 @@ class _FlashcardPageState extends State<FlashcardPage>
 
             // Score
             Text(
-              'You scored ${scorePercentage.toInt()}%',
+              l10n?.youScoredPercent(scorePercentage.toInt()) ?? 'You scored ${scorePercentage.toInt()}%',
               style: theme.textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
             Text(
-              '$_correctCount correct, $_wrongCount wrong',
+              l10n?.xCorrectYWrong(_correctCount, _wrongCount) ?? '$_correctCount correct, $_wrongCount wrong',
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: colorScheme.onSurface.withValues(alpha: 0.7),
               ),
@@ -538,8 +540,8 @@ class _FlashcardPageState extends State<FlashcardPage>
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                child: const Text(
-                  'Study Again',
+                child: Text(
+                  l10n?.studyAgain ?? 'Study Again',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -558,8 +560,8 @@ class _FlashcardPageState extends State<FlashcardPage>
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                child: const Text(
-                  'Back to Lessons',
+                child: Text(
+                  l10n?.backToLessons ?? 'Back to Lessons',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

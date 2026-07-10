@@ -693,4 +693,134 @@ class AppLocalizationsKo extends AppLocalizations {
   String completedCount(int completed, int total) {
     return '$completed/$total 완료';
   }
+
+  @override
+  String get noVideoUrlAvailable => '비디오 URL을 사용할 수 없습니다';
+
+  @override
+  String get noAudioUrlAvailable => '오디오 URL을 사용할 수 없습니다';
+
+  @override
+  String get noContentAvailable => '콘텐츠를 사용할 수 없습니다';
+
+  @override
+  String get noQuestionsAvailable => '질문을 사용할 수 없습니다';
+
+  @override
+  String get noFlashcardsAvailable => '플래시카드를 사용할 수 없습니다';
+
+  @override
+  String get lessonTypeArticle => '기사';
+
+  @override
+  String get minRead => '분 소요';
+
+  @override
+  String nQuestions(int count) {
+    return '$count개 질문';
+  }
+
+  @override
+  String nCards(int count) {
+    return '$count장 카드';
+  }
+
+  @override
+  String get markAsComplete => '완료로 표시';
+
+  @override
+  String get completed => '완료됨';
+
+  @override
+  String get lessonMarkedComplete => '레슨이 완료로 표시되었습니다!';
+
+  @override
+  String get noQuestionsForQuiz => '이 퀴즈에 사용할 수 있는 질문이 없습니다.';
+
+  @override
+  String questionXOfY(int current, int total) {
+    return '질문 $current / $total';
+  }
+
+  @override
+  String get previous => '이전';
+
+  @override
+  String get next => '다음';
+
+  @override
+  String get seeResults => '결과 보기';
+
+  @override
+  String get congratulations => '축하합니다!';
+
+  @override
+  String get keepPracticing => '계속 연습하세요!';
+
+  @override
+  String youScoredPercent(int score) {
+    return '$score% 점수를 받았습니다';
+  }
+
+  @override
+  String xOutOfYCorrect(int correct, int total) {
+    return '$total개 중 $correct개 정답';
+  }
+
+  @override
+  String passingScorePercent(int score) {
+    return '합격 점수: $score%';
+  }
+
+  @override
+  String get tryAgain => '다시 시도';
+
+  @override
+  String get backToLessons => '레슨으로 돌아가기';
+
+  @override
+  String get noFlashcardsAvailableMessage => '플래시카드가 없습니다.';
+
+  @override
+  String cardXOfY(int current, int total) {
+    return '카드 $current / $total';
+  }
+
+  @override
+  String get tapToReveal => '탭하여 보기';
+
+  @override
+  String get tapToFlipBack => '탭하여 뒤집기';
+
+  @override
+  String get front => '앞면';
+
+  @override
+  String get back => '뒷면';
+
+  @override
+  String get showAnswer => '정답 보기';
+
+  @override
+  String get again => '다시';
+
+  @override
+  String get hard => '어려움';
+
+  @override
+  String get good => '좋음';
+
+  @override
+  String get easy => '쉬움';
+
+  @override
+  String get greatJob => '잘했어요!';
+
+  @override
+  String get studyAgain => '다시 학습';
+
+  @override
+  String xCorrectYWrong(int correct, int wrong) {
+    return '$correct개 정답, $wrong개 오답';
+  }
 }

@@ -289,5 +289,18 @@
   "flashcardsAccuracy": "Précision des Cartes Mémoire",
   "average": "Moyenne",
   "best": "Meilleur",
-  "completedCount": "{completed}/{total} terminés"
+  "completedCount": "{completed}/{total} terminés",
+
+  "noVideoUrlAvailable": "URL vidéo non disponible",
+  "noAudioUrlAvailable": "URL audio non disponible",
+  "noContentAvailable": "Contenu non disponible",
+  "noQuestionsAvailable": "Aucune question disponible",
+  "noFlashcardsAvailable": "Aucune carte mémoire disponible",
+  "lessonTypeArticle": "Article",
+  "minRead": "min de lecture",
+  "nQuestions": "{count} questions",
+  "nCards": "{count} cartes",
+  "markAsComplete": "Marquer comme terminé",
+  "completed": "Terminé",
+  "lessonMarkedComplete": "Leçon marquée comme terminée !"
 }

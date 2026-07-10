@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../domain/entities/video.dart';
 import '../../domain/entities/lesson_type.dart';
 import '../../core/utils/localization_helper.dart';
+import '../../l10n/app_localizations.dart';
 
 /// A list tile widget for displaying lessons of any type.
 ///
@@ -28,7 +29,7 @@ class LessonListTile extends StatelessWidget {
     final langCode =
         languageCode ?? LocalizationHelper.getCurrentLanguageCode(context);
     final title = lesson.getLocalizedTitle(langCode);
-    final subtitle = lesson.getSubtitle();
+    final subtitle = _getLocalizedSubtitle(context);
     final icon = _getIconForType(lesson.type);
 
     return Card(
@@ -79,7 +80,7 @@ class LessonListTile extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          lesson.type.displayName,
+                          _getLocalizedLessonType(context, lesson.type),
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: _getColorForType(context, lesson.type),
@@ -201,7 +202,7 @@ class LessonListTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  'PRO',
+                  AppLocalizations.of(context)?.pro ?? 'PRO',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -251,6 +252,46 @@ class LessonListTile extends StatelessWidget {
         return Colors.pink;
     }
   }
+
+  String _getLocalizedLessonType(BuildContext context, LessonType type) {
+    final l10n = AppLocalizations.of(context);
+    switch (type) {
+      case LessonType.video:
+        return l10n?.lessonTypeVideo ?? 'Video';
+      case LessonType.audio:
+        return l10n?.lessonTypeAudio ?? 'Audio';
+      case LessonType.text:
+        return l10n?.lessonTypeText ?? 'Text';
+      case LessonType.quiz:
+        return l10n?.lessonTypeQuiz ?? 'Quiz';
+      case LessonType.flashcard:
+        return l10n?.lessonTypeFlashcards ?? 'Flashcards';
+    }
+  }
+
+  String _getLocalizedSubtitle(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (lesson.type) {
+      case LessonType.video:
+      case LessonType.audio:
+        return _formatDuration(lesson.duration.inSeconds);
+      case LessonType.text:
+        final minutes = ((lesson.estimatedReadTime ?? lesson.duration.inSeconds) / 60).ceil();
+        return '$minutes ${l10n?.minRead ?? 'min read'}';
+      case LessonType.quiz:
+        final count = lesson.questions?.length ?? 0;
+        return l10n?.nQuestions(count) ?? '$count questions';
+      case LessonType.flashcard:
+        final count = lesson.cards?.length ?? 0;
+        return l10n?.nCards(count) ?? '$count cards';
+    }
+  }
+
+  String _formatDuration(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
 }
 
 /// A compact chip-style widget for displaying lesson type
@@ -288,7 +329,7 @@ class LessonTypeChip extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                type.displayName,
+                _getLocalizedLessonType(context, type),
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
@@ -329,6 +370,22 @@ class LessonTypeChip extends StatelessWidget {
         return Colors.orange;
       case LessonType.flashcard:
         return Colors.pink;
+    }
+  }
+
+  String _getLocalizedLessonType(BuildContext context, LessonType type) {
+    final l10n = AppLocalizations.of(context);
+    switch (type) {
+      case LessonType.video:
+        return l10n?.lessonTypeVideo ?? 'Video';
+      case LessonType.audio:
+        return l10n?.lessonTypeAudio ?? 'Audio';
+      case LessonType.text:
+        return l10n?.lessonTypeText ?? 'Text';
+      case LessonType.quiz:
+        return l10n?.lessonTypeQuiz ?? 'Quiz';
+      case LessonType.flashcard:
+        return l10n?.lessonTypeFlashcards ?? 'Flashcards';
     }
   }
 }

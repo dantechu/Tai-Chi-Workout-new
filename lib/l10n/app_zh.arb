@@ -289,5 +289,18 @@
   "flashcardsAccuracy": "闪卡准确率",
   "average": "平均",
   "best": "最佳",
-  "completedCount": "{completed}/{total} 已完成"
+  "completedCount": "{completed}/{total} 已完成",
+
+  "noVideoUrlAvailable": "没有可用的视频链接",
+  "noAudioUrlAvailable": "没有可用的音频链接",
+  "noContentAvailable": "没有可用的内容",
+  "noQuestionsAvailable": "没有可用的问题",
+  "noFlashcardsAvailable": "没有可用的闪卡",
+  "lessonTypeArticle": "文章",
+  "minRead": "分钟阅读",
+  "nQuestions": "{count} 道题",
+  "nCards": "{count} 张卡片",
+  "markAsComplete": "标记为完成",
+  "completed": "已完成",
+  "lessonMarkedComplete": "课程已标记为完成！"
 }

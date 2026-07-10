@@ -289,5 +289,18 @@
   "flashcardsAccuracy": "Lernkarten-Genauigkeit",
   "average": "Durchschnitt",
   "best": "Beste",
-  "completedCount": "{completed}/{total} abgeschlossen"
+  "completedCount": "{completed}/{total} abgeschlossen",
+
+  "noVideoUrlAvailable": "Keine Video-URL verfügbar",
+  "noAudioUrlAvailable": "Keine Audio-URL verfügbar",
+  "noContentAvailable": "Kein Inhalt verfügbar",
+  "noQuestionsAvailable": "Keine Fragen verfügbar",
+  "noFlashcardsAvailable": "Keine Lernkarten verfügbar",
+  "lessonTypeArticle": "Artikel",
+  "minRead": "Min. Lesezeit",
+  "nQuestions": "{count} Fragen",
+  "nCards": "{count} Karten",
+  "markAsComplete": "Als abgeschlossen markieren",
+  "completed": "Abgeschlossen",
+  "lessonMarkedComplete": "Lektion als abgeschlossen markiert!"
 }

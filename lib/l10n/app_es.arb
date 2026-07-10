@@ -289,5 +289,18 @@
   "flashcardsAccuracy": "Precisión de Tarjetas",
   "average": "Promedio",
   "best": "Mejor",
-  "completedCount": "{completed}/{total} completados"
+  "completedCount": "{completed}/{total} completados",
+
+  "noVideoUrlAvailable": "URL de video no disponible",
+  "noAudioUrlAvailable": "URL de audio no disponible",
+  "noContentAvailable": "Contenido no disponible",
+  "noQuestionsAvailable": "No hay preguntas disponibles",
+  "noFlashcardsAvailable": "No hay tarjetas disponibles",
+  "lessonTypeArticle": "Artículo",
+  "minRead": "min de lectura",
+  "nQuestions": "{count} preguntas",
+  "nCards": "{count} tarjetas",
+  "markAsComplete": "Marcar como completado",
+  "completed": "Completado",
+  "lessonMarkedComplete": "¡Lección marcada como completada!"
 }

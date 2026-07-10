@@ -306,5 +306,92 @@
         "type": "int"
       }
     }
+  },
+
+  "noVideoUrlAvailable": "No video URL available",
+  "noAudioUrlAvailable": "No audio URL available",
+  "noContentAvailable": "No content available",
+  "noQuestionsAvailable": "No questions available",
+  "noFlashcardsAvailable": "No flashcards available",
+  "lessonTypeArticle": "Article",
+  "minRead": "min read",
+  "nQuestions": "{count} questions",
+  "@nQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nCards": "{count} cards",
+  "@nCards": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "markAsComplete": "Mark as Complete",
+  "completed": "Completed",
+  "lessonMarkedComplete": "Lesson marked as complete!",
+  "noQuestionsForQuiz": "No questions available for this quiz.",
+  "questionXOfY": "Question {current} of {total}",
+  "@questionXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "previous": "Previous",
+  "next": "Next",
+  "seeResults": "See Results",
+  "congratulations": "Congratulations!",
+  "keepPracticing": "Keep Practicing!",
+  "youScoredPercent": "You scored {score}%",
+  "@youScoredPercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "xOutOfYCorrect": "{correct} out of {total} correct",
+  "@xOutOfYCorrect": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "passingScorePercent": "Passing score: {score}%",
+  "@passingScorePercent": {
+    "placeholders": {
+      "score": {"type": "int"}
+    }
+  },
+  "tryAgain": "Try Again",
+  "backToLessons": "Back to Lessons",
+  "noFlashcardsAvailableMessage": "No flashcards available.",
+  "cardXOfY": "Card {current} of {total}",
+  "@cardXOfY": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "tapToReveal": "Tap to reveal",
+  "tapToFlipBack": "Tap to flip back",
+  "front": "FRONT",
+  "back": "BACK",
+  "showAnswer": "Show Answer",
+  "again": "Again",
+  "hard": "Hard",
+  "good": "Good",
+  "easy": "Easy",
+  "greatJob": "Great Job!",
+  "studyAgain": "Study Again",
+  "xCorrectYWrong": "{correct} correct, {wrong} wrong",
+  "@xCorrectYWrong": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "wrong": {"type": "int"}
+    }
   }
 }

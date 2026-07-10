@@ -289,5 +289,18 @@
   "flashcardsAccuracy": "フラッシュカード正確度",
   "average": "平均",
   "best": "最高",
-  "completedCount": "{completed}/{total} 完了"
+  "completedCount": "{completed}/{total} 完了",
+
+  "noVideoUrlAvailable": "ビデオURLがありません",
+  "noAudioUrlAvailable": "オーディオURLがありません",
+  "noContentAvailable": "コンテンツがありません",
+  "noQuestionsAvailable": "質問がありません",
+  "noFlashcardsAvailable": "フラッシュカードがありません",
+  "lessonTypeArticle": "記事",
+  "minRead": "分で読めます",
+  "nQuestions": "{count} 問",
+  "nCards": "{count} 枚",
+  "markAsComplete": "完了としてマーク",
+  "completed": "完了",
+  "lessonMarkedComplete": "レッスンを完了としてマークしました！"
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
 import '../../../core/utils/quill_delta_parser.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../bloc/lesson_completion/lesson_completion_state.dart';
@@ -116,6 +117,8 @@ class TextLessonPage extends StatelessWidget {
         final isCompleted = state is LessonCompletionLoaded &&
             state.isLessonCompleted(lesson.id);
 
+        final l10n = AppLocalizations.of(context);
+
         if (isCompleted) {
           return Container(
             width: double.infinity,
@@ -137,7 +140,7 @@ class TextLessonPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Completed',
+                  l10n?.completed ?? 'Completed',
                   style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.w600,
@@ -163,16 +166,16 @@ class TextLessonPage extends StatelessWidget {
                 ),
               );
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Lesson marked as complete!'),
+                SnackBar(
+                  content: Text(l10n?.lessonMarkedComplete ?? 'Lesson marked as complete!'),
                   backgroundColor: Colors.green,
                   duration: Duration(seconds: 2),
                 ),
               );
             },
             icon: const Icon(Icons.check_circle_outline),
-            label: const Text(
-              'Mark as Complete',
+            label: Text(
+              l10n?.markAsComplete ?? 'Mark as Complete',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -213,6 +216,7 @@ class TextLessonPage extends StatelessWidget {
   }
 
   Widget _buildReadTimeBadge(BuildContext context, int minutes) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
@@ -229,7 +233,7 @@ class TextLessonPage extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Text(
-            '$minutes min read',
+            '$minutes ${l10n?.minRead ?? 'min read'}',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,

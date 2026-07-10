@@ -707,4 +707,134 @@ class AppLocalizationsEn extends AppLocalizations {
   String completedCount(int completed, int total) {
     return '$completed/$total completed';
   }
+
+  @override
+  String get noVideoUrlAvailable => 'No video URL available';
+
+  @override
+  String get noAudioUrlAvailable => 'No audio URL available';
+
+  @override
+  String get noContentAvailable => 'No content available';
+
+  @override
+  String get noQuestionsAvailable => 'No questions available';
+
+  @override
+  String get noFlashcardsAvailable => 'No flashcards available';
+
+  @override
+  String get lessonTypeArticle => 'Article';
+
+  @override
+  String get minRead => 'min read';
+
+  @override
+  String nQuestions(int count) {
+    return '$count questions';
+  }
+
+  @override
+  String nCards(int count) {
+    return '$count cards';
+  }
+
+  @override
+  String get markAsComplete => 'Mark as Complete';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get lessonMarkedComplete => 'Lesson marked as complete!';
+
+  @override
+  String get noQuestionsForQuiz => 'No questions available for this quiz.';
+
+  @override
+  String questionXOfY(int current, int total) {
+    return 'Question $current of $total';
+  }
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get seeResults => 'See Results';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get keepPracticing => 'Keep Practicing!';
+
+  @override
+  String youScoredPercent(int score) {
+    return 'You scored $score%';
+  }
+
+  @override
+  String xOutOfYCorrect(int correct, int total) {
+    return '$correct out of $total correct';
+  }
+
+  @override
+  String passingScorePercent(int score) {
+    return 'Passing score: $score%';
+  }
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get backToLessons => 'Back to Lessons';
+
+  @override
+  String get noFlashcardsAvailableMessage => 'No flashcards available.';
+
+  @override
+  String cardXOfY(int current, int total) {
+    return 'Card $current of $total';
+  }
+
+  @override
+  String get tapToReveal => 'Tap to reveal';
+
+  @override
+  String get tapToFlipBack => 'Tap to flip back';
+
+  @override
+  String get front => 'FRONT';
+
+  @override
+  String get back => 'BACK';
+
+  @override
+  String get showAnswer => 'Show Answer';
+
+  @override
+  String get again => 'Again';
+
+  @override
+  String get hard => 'Hard';
+
+  @override
+  String get good => 'Good';
+
+  @override
+  String get easy => 'Easy';
+
+  @override
+  String get greatJob => 'Great Job!';
+
+  @override
+  String get studyAgain => 'Study Again';
+
+  @override
+  String xCorrectYWrong(int correct, int wrong) {
+    return '$correct correct, $wrong wrong';
+  }
 }

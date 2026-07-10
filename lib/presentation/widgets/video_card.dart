@@ -8,6 +8,7 @@ import '../../core/utils/localization_helper.dart';
 import '../../domain/entities/section.dart';
 import '../../domain/entities/video.dart';
 import '../../domain/entities/lesson_type.dart';
+import '../../l10n/app_localizations.dart';
 import '../bloc/bookmark/bookmark_bloc.dart';
 import '../bloc/bookmark/bookmark_event.dart';
 import '../bloc/bookmark/bookmark_state.dart';
@@ -376,7 +377,7 @@ class _VideoCardState extends State<VideoCard> {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  'PRO',
+                  AppLocalizations.of(context)?.pro ?? 'PRO',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -509,19 +510,20 @@ class _VideoCardState extends State<VideoCard> {
 
   /// Get subtitle text based on lesson type
   String _getLessonSubtitle() {
+    final l10n = AppLocalizations.of(context);
     switch (video.type) {
       case LessonType.video:
       case LessonType.audio:
         return _formatDuration(video.duration.inSeconds);
       case LessonType.text:
         final minutes = (video.estimatedReadTime ?? video.duration.inSeconds) ~/ 60;
-        return '$minutes min read';
+        return '$minutes ${l10n?.minRead ?? 'min read'}';
       case LessonType.quiz:
         final count = video.questions?.length ?? 0;
-        return '$count questions';
+        return l10n?.nQuestions(count) ?? '$count questions';
       case LessonType.flashcard:
         final count = video.cards?.length ?? 0;
-        return '$count cards';
+        return l10n?.nCards(count) ?? '$count cards';
     }
   }
 }
