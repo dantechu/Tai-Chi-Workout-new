@@ -110,7 +110,10 @@ class _FlashcardPageState extends State<FlashcardPage>
       context.read<LessonCompletionBloc>().add(
         MarkLessonCompleted(
           widget.lesson.id,
+          courseId: widget.lesson.courseId,
+          lessonType: 'flashcard',
           scorePercentage: scorePercentage.toInt(),
+          durationSeconds: widget.lesson.duration?.inSeconds,
         ),
       );
     }

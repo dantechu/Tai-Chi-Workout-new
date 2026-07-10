@@ -27,6 +27,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settings => 'Paramètres';
 
   @override
+  String get statisticsTab => 'Statistics';
+
+  @override
+  String get courses => 'Cours';
+
+  @override
   String get premium => 'Premium';
 
   @override
@@ -574,9 +580,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get exhaleSlowly => 'Expirez lentement et complètement';
-
-  @override
-  String get courses => 'Cours';
 
   @override
   String get refreshCourses => 'Actualiser les cours';

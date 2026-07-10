@@ -77,7 +77,10 @@ class _QuizPageState extends State<QuizPage> {
       context.read<LessonCompletionBloc>().add(
         MarkLessonCompleted(
           widget.lesson.id,
+          courseId: widget.lesson.courseId,
+          lessonType: 'quiz',
           scorePercentage: scorePercentage.toInt(),
+          durationSeconds: widget.lesson.duration?.inSeconds,
         ),
       );
     }

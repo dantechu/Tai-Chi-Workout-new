@@ -38,7 +38,10 @@ class LessonCompletionBloc extends Bloc<LessonCompletionEvent, LessonCompletionS
     try {
       await localDataSource.markCompleted(
         event.lessonId,
+        courseId: event.courseId,
         scorePercentage: event.scorePercentage,
+        lessonType: event.lessonType,
+        durationSeconds: event.durationSeconds,
       );
       add(const LoadCompletions());
     } catch (e) {

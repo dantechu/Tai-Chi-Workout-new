@@ -155,7 +155,12 @@ class TextLessonPage extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: () {
               context.read<LessonCompletionBloc>().add(
-                MarkLessonCompleted(lesson.id),
+                MarkLessonCompleted(
+                  lesson.id,
+                  courseId: lesson.courseId,
+                  lessonType: 'text',
+                  durationSeconds: lesson.duration?.inSeconds,
+                ),
               );
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

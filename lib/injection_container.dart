@@ -47,6 +47,7 @@ import 'domain/usecases/select_course.dart';
 // BLoCs
 import 'presentation/bloc/bookmark/bookmark_bloc.dart';
 import 'presentation/bloc/lesson_completion/lesson_completion_bloc.dart';
+import 'presentation/bloc/statistics/statistics_bloc.dart';
 import 'presentation/bloc/video/video_bloc.dart';
 import 'presentation/bloc/premium/premium_bloc.dart';
 import 'presentation/bloc/theme/theme_bloc.dart';
@@ -145,6 +146,15 @@ Future<void> init() async {
   sl.registerFactory(
     () => LessonCompletionBloc(
       localDataSource: sl(),
+    ),
+  );
+
+  //! Features - Statistics
+  // Bloc
+  sl.registerFactory(
+    () => StatisticsBloc(
+      completionDataSource: sl(),
+      courseRepository: sl(),
     ),
   );
 

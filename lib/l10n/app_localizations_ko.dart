@@ -27,6 +27,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settings => '설정';
 
   @override
+  String get statisticsTab => 'Statistics';
+
+  @override
+  String get courses => '코스';
+
+  @override
   String get premium => '프리미엄';
 
   @override
@@ -560,9 +566,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get exhaleSlowly => '천천히 완전히 숨을 내쉬세요';
-
-  @override
-  String get courses => '코스';
 
   @override
   String get refreshCourses => '코스 새로고침';

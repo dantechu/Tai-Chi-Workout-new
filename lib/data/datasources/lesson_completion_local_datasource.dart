@@ -4,7 +4,13 @@ import '../models/lesson_completion_model.dart';
 
 abstract class LessonCompletionLocalDataSource {
   Future<List<LessonCompletionModel>> getAllCompletions();
-  Future<void> markCompleted(String lessonId, {int? scorePercentage});
+  Future<void> markCompleted(
+    String lessonId, {
+    String? courseId,
+    int? scorePercentage,
+    String? lessonType,
+    int? durationSeconds,
+  });
   Future<void> removeCompletion(String lessonId);
   Future<bool> isLessonCompleted(String lessonId);
   Future<LessonCompletionModel?> getCompletion(String lessonId);
@@ -36,14 +42,23 @@ class LessonCompletionLocalDataSourceImpl implements LessonCompletionLocalDataSo
   }
 
   @override
-  Future<void> markCompleted(String lessonId, {int? scorePercentage}) async {
+  Future<void> markCompleted(
+    String lessonId, {
+    String? courseId,
+    int? scorePercentage,
+    String? lessonType,
+    int? durationSeconds,
+  }) async {
     try {
       final box = await Hive.openBox<Map>(completionBoxName);
 
       // Update existing or create new completion
       final completion = LessonCompletionModel.create(
         lessonId,
+        courseId: courseId,
         scorePercentage: scorePercentage,
+        lessonType: lessonType,
+        durationSeconds: durationSeconds,
       );
       await box.put(lessonId, completion.toJson());
     } catch (e) {

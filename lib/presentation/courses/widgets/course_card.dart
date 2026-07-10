@@ -179,7 +179,7 @@ class CourseCard extends StatelessWidget {
           _buildStatChip(
             context,
             icon: Icons.play_circle_outline_rounded,
-            label: '${course.metadata.totalVideos}',
+            label: '${course.totalVideos}',
             sublabel: AppLocalizations.of(context)?.lessons ?? 'Lessons',
           ),
           Container(

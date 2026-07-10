@@ -223,7 +223,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                 context,
                 icon: Icons.play_circle_outline_rounded,
                 label: AppLocalizations.of(context)?.lessons ?? 'Lessons',
-                value: '${widget.course.metadata.totalVideos}',
+                value: '${widget.course.totalVideos}',
               ),
               _buildVerticalDivider(context),
               _buildStatItem(

@@ -162,7 +162,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     if (progress >= 0.9) {
       _hasMarkedComplete = true;
       context.read<LessonCompletionBloc>().add(
-        MarkLessonCompleted(widget.video.id),
+        MarkLessonCompleted(
+          widget.video.id,
+          courseId: widget.video.courseId,
+          lessonType: 'video',
+          durationSeconds: widget.video.duration?.inSeconds,
+        ),
       );
     }
   }

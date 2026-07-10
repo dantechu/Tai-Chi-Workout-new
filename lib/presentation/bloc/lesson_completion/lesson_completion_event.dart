@@ -13,12 +13,21 @@ class LoadCompletions extends LessonCompletionEvent {
 
 class MarkLessonCompleted extends LessonCompletionEvent {
   final String lessonId;
+  final String? courseId;
   final int? scorePercentage;
+  final String? lessonType;
+  final int? durationSeconds;
 
-  const MarkLessonCompleted(this.lessonId, {this.scorePercentage});
+  const MarkLessonCompleted(
+    this.lessonId, {
+    this.courseId,
+    this.scorePercentage,
+    this.lessonType,
+    this.durationSeconds,
+  });
 
   @override
-  List<Object?> get props => [lessonId, scorePercentage];
+  List<Object?> get props => [lessonId, courseId, scorePercentage, lessonType, durationSeconds];
 }
 
 class RemoveLessonCompletion extends LessonCompletionEvent {

@@ -100,7 +100,12 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
     if (progress >= 0.9) {
       _hasMarkedComplete = true;
       context.read<LessonCompletionBloc>().add(
-        MarkLessonCompleted(widget.lesson.id),
+        MarkLessonCompleted(
+          widget.lesson.id,
+          courseId: widget.lesson.courseId,
+          lessonType: 'audio',
+          durationSeconds: widget.lesson.duration?.inSeconds,
+        ),
       );
     }
   }

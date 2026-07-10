@@ -27,6 +27,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings => '設定';
 
   @override
+  String get statisticsTab => 'Statistics';
+
+  @override
+  String get courses => 'コース';
+
+  @override
   String get premium => 'プレミアム';
 
   @override
@@ -558,9 +564,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get exhaleSlowly => 'ゆっくりと完全に息を吐いて';
-
-  @override
-  String get courses => 'コース';
 
   @override
   String get refreshCourses => 'コースを更新';
