@@ -11,9 +11,9 @@
   "lessons": "Lessons",
   "practice": "Practice",
   "settings": "Settings",
+  "premium": "Premium",
   "statisticsTab": "Statistics",
   "courses": "Courses",
-  "premium": "Premium",
 
   "allLessons": "All Lessons",
   "aboutUs": "About Us",
@@ -271,5 +271,40 @@
     }
   },
   "selected": "Selected",
-  "selectThisCourse": "Select This Course"
+  "selectThisCourse": "Select This Course",
+
+  "filterToday": "Today",
+  "filterThisWeek": "This Week",
+  "filterThisMonth": "This Month",
+  "filterAllTime": "All Time",
+  "currentCourse": "Current Course",
+  "selectCourseToSeeProgress": "Select a course to see progress",
+  "done": "Done!",
+  "complete": "Complete",
+  "totalTime": "Total Time",
+  "weeklyActivity": "Weekly Activity",
+  "noActivityThisWeek": "No activity this week",
+  "lessonTypeVideo": "Video",
+  "lessonTypeAudio": "Audio",
+  "lessonTypeText": "Text",
+  "lessonTypeQuiz": "Quiz",
+  "lessonTypeFlashcards": "Flashcards",
+  "byLessonType": "By Lesson Type",
+  "completeLessonsToSeeBreakdown": "Complete lessons to see breakdown",
+  "courseProgress": "Course Progress",
+  "quizzesAccuracy": "Quizzes Accuracy",
+  "flashcardsAccuracy": "Flashcards Accuracy",
+  "average": "Average",
+  "best": "Best",
+  "completedCount": "{completed}/{total} completed",
+  "@completedCount": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

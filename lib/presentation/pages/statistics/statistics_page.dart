@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import '../../../domain/entities/user_statistics.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/statistics/statistics_bloc.dart';
@@ -121,7 +122,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
       backgroundColor: theme.colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
-      toolbarHeight: 56,
+      toolbarHeight: 50,
       systemOverlayStyle: isDark
           ? SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent)
           : SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
@@ -157,7 +158,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       ),
                     ),
                     const Spacer(),
-                    _buildTimeFilterDropdown(theme, currentFilter),
+                    _buildTimeFilterDropdown(theme, l10n, currentFilter),
                   ],
                 ),
               ),
@@ -168,12 +169,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildTimeFilterDropdown(ThemeData theme, StatisticsTimeFilter currentFilter) {
+  Widget _buildTimeFilterDropdown(ThemeData theme, AppLocalizations? l10n, StatisticsTimeFilter currentFilter) {
     final filters = {
-      StatisticsTimeFilter.today: 'Today',
-      StatisticsTimeFilter.thisWeek: 'This Week',
-      StatisticsTimeFilter.thisMonth: 'This Month',
-      StatisticsTimeFilter.allTime: 'All Time',
+      StatisticsTimeFilter.today: l10n?.filterToday ?? 'Today',
+      StatisticsTimeFilter.thisWeek: l10n?.filterThisWeek ?? 'This Week',
+      StatisticsTimeFilter.thisMonth: l10n?.filterThisMonth ?? 'This Month',
+      StatisticsTimeFilter.allTime: l10n?.filterAllTime ?? 'All Time',
     };
 
     return Container(
@@ -236,17 +237,17 @@ class _StatisticsPageState extends State<StatisticsPage> {
         children: [
           // Current Course section
           Text(
-            'Current Course',
+            l10n?.currentCourse ?? 'Current Course',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 12),
-          _buildCurrentCourseProgressCard(theme, selectedCourse, stats),
+          _buildCurrentCourseProgressCard(theme, l10n, selectedCourse, stats),
           const SizedBox(height: 24),
 
           // Weekly activity chart
-          _buildWeeklyActivitySection(theme, stats),
+          _buildWeeklyActivitySection(theme, l10n, Localizations.localeOf(context).languageCode, stats),
           const SizedBox(height: 24),
 
           // Lesson type breakdown with pie chart
@@ -255,7 +256,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
           // Course progress section
           if (stats.courseProgressList.isNotEmpty)
-            _buildCourseProgressSection(theme, stats),
+            _buildCourseProgressSection(theme, l10n, stats),
 
           // Score section (if quiz/flashcard completed)
           if (stats.quizCompletions > 0 || stats.flashcardCompletions > 0) ...[
@@ -269,7 +270,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildCurrentCourseProgressCard(ThemeData theme, CourseProgress? selectedCourse, UserStatistics stats) {
+  Widget _buildCurrentCourseProgressCard(ThemeData theme, AppLocalizations? l10n, CourseProgress? selectedCourse, UserStatistics stats) {
     // If no course selected, show a placeholder
     if (selectedCourse == null) {
       return Container(
@@ -285,12 +286,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
           ),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: const Center(
+        child: Center(
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Text(
-              'Select a course to see progress',
-              style: TextStyle(
+              l10n?.selectCourseToSeeProgress ?? 'Select a course to see progress',
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.white70,
               ),
@@ -350,7 +351,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                         ),
                       ),
                     Text(
-                      isCompleted ? 'Done!' : 'Complete',
+                      isCompleted ? (l10n?.done ?? 'Done!') : (l10n?.complete ?? 'Complete'),
                       style: const TextStyle(
                         fontSize: 11,
                         color: Colors.white70,
@@ -380,13 +381,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 _buildProgressStat(
                   Icons.menu_book_rounded,
                   '${selectedCourse.completedLessons}/${selectedCourse.totalLessons}',
-                  'Lessons',
+                  l10n?.lessons ?? 'Lessons',
                 ),
                 const SizedBox(height: 8),
                 _buildProgressStat(
                   Icons.access_time_rounded,
                   stats.formattedTotalTime,
-                  'Total Time',
+                  l10n?.totalTime ?? 'Total Time',
                 ),
               ],
             ),
@@ -421,7 +422,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildWeeklyActivitySection(ThemeData theme, UserStatistics stats) {
+  Widget _buildWeeklyActivitySection(ThemeData theme, AppLocalizations? l10n, String localeCode, UserStatistics stats) {
     final hasData = stats.weeklyActivity.any((a) => a.timeSpentSeconds > 0);
     // Convert to minutes for easier display
     final maxMinutes = stats.weeklyActivity.isEmpty
@@ -434,7 +435,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Weekly Activity',
+          l10n?.weeklyActivity ?? 'Weekly Activity',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -483,10 +484,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           showTitles: true,
                           getTitlesWidget: (value, meta) {
                             if (value.toInt() >= 0 && value.toInt() < stats.weeklyActivity.length) {
+                              final date = stats.weeklyActivity[value.toInt()].date;
+                              final dayName = DateFormat.E(localeCode).format(date);
                               return Padding(
                                 padding: const EdgeInsets.only(top: 8),
                                 child: Text(
-                                  stats.weeklyActivity[value.toInt()].dayLabel,
+                                  dayName,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                                   ),
@@ -578,7 +581,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'No activity this week',
+                        l10n?.noActivityThisWeek ?? 'No activity this week',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                         ),
@@ -596,11 +599,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
     // Colors match video_card.dart for consistency across the app
     final types = [
-      (_LessonTypeData(Icons.play_circle_rounded, Colors.blue, 'Video', stats.videoCompletions)),
-      (_LessonTypeData(Icons.headphones_rounded, Colors.purple, 'Audio', stats.audioCompletions)),
-      (_LessonTypeData(Icons.article_rounded, Colors.teal, 'Text', stats.textCompletions)),
-      (_LessonTypeData(Icons.quiz_rounded, Colors.orange, 'Quiz', stats.quizCompletions)),
-      (_LessonTypeData(Icons.style_rounded, Colors.pink, 'Flashcards', stats.flashcardCompletions)),
+      (_LessonTypeData(Icons.play_circle_rounded, Colors.blue, l10n?.lessonTypeVideo ?? 'Video', stats.videoCompletions)),
+      (_LessonTypeData(Icons.headphones_rounded, Colors.purple, l10n?.lessonTypeAudio ?? 'Audio', stats.audioCompletions)),
+      (_LessonTypeData(Icons.article_rounded, Colors.teal, l10n?.lessonTypeText ?? 'Text', stats.textCompletions)),
+      (_LessonTypeData(Icons.quiz_rounded, Colors.orange, l10n?.lessonTypeQuiz ?? 'Quiz', stats.quizCompletions)),
+      (_LessonTypeData(Icons.style_rounded, Colors.pink, l10n?.lessonTypeFlashcards ?? 'Flashcards', stats.flashcardCompletions)),
     ];
 
     // Filter out types with 0 completions for the pie chart
@@ -610,7 +613,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'By Lesson Type',
+          l10n?.byLessonType ?? 'By Lesson Type',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -701,7 +704,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Complete lessons to see breakdown',
+                          l10n?.completeLessonsToSeeBreakdown ?? 'Complete lessons to see breakdown',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
@@ -715,7 +718,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildCourseProgressSection(ThemeData theme, UserStatistics stats) {
+  Widget _buildCourseProgressSection(ThemeData theme, AppLocalizations? l10n, UserStatistics stats) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -723,7 +726,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Course Progress',
+              l10n?.courseProgress ?? 'Course Progress',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -735,7 +738,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                '${stats.completedCourses}/${stats.totalCourses} completed',
+                l10n?.completedCount(stats.completedCourses, stats.totalCourses) ?? '${stats.completedCourses}/${stats.totalCourses} completed',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
@@ -832,8 +835,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Quiz Accuracy Section
         Text(
-          'Quiz & Flashcard Scores',
+          l10n?.quizzesAccuracy ?? 'Quizzes Accuracy',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -845,9 +849,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
               child: _buildScoreCard(
                 theme,
                 icon: Icons.trending_up_rounded,
-                iconColor: Colors.blue,
-                label: 'Average',
-                score: stats.averageScore,
+                iconColor: Colors.orange,
+                label: l10n?.average ?? 'Average',
+                score: stats.quizAverageScore,
+                completions: stats.quizCompletions,
               ),
             ),
             const SizedBox(width: 12),
@@ -856,8 +861,43 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 theme,
                 icon: Icons.emoji_events_rounded,
                 iconColor: Colors.amber,
-                label: 'Best',
-                score: stats.bestScore.toDouble(),
+                label: l10n?.best ?? 'Best',
+                score: stats.quizBestScore.toDouble(),
+                completions: stats.quizCompletions,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        // Flashcard Accuracy Section
+        Text(
+          l10n?.flashcardsAccuracy ?? 'Flashcards Accuracy',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildScoreCard(
+                theme,
+                icon: Icons.trending_up_rounded,
+                iconColor: Colors.pink,
+                label: l10n?.average ?? 'Average',
+                score: stats.flashcardAverageScore,
+                completions: stats.flashcardCompletions,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildScoreCard(
+                theme,
+                icon: Icons.emoji_events_rounded,
+                iconColor: Colors.amber,
+                label: l10n?.best ?? 'Best',
+                score: stats.flashcardBestScore.toDouble(),
+                completions: stats.flashcardCompletions,
               ),
             ),
           ],
@@ -872,10 +912,15 @@ class _StatisticsPageState extends State<StatisticsPage> {
     required Color iconColor,
     required String label,
     required double score,
+    required int completions,
   }) {
+    final hasData = completions > 0;
+
     // Determine color based on score
     Color scoreColor;
-    if (score >= 80) {
+    if (!hasData) {
+      scoreColor = theme.colorScheme.onSurface.withValues(alpha: 0.4);
+    } else if (score >= 80) {
       scoreColor = Colors.green;
     } else if (score >= 60) {
       scoreColor = Colors.orange;
@@ -906,7 +951,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
           ),
           const SizedBox(height: 12),
           Text(
-            '${score.toInt()}%',
+            hasData ? '${score.toInt()}%' : '-',
             style: theme.textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: scoreColor,

@@ -27,13 +27,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
+  String get premium => 'Premium';
+
+  @override
   String get statisticsTab => 'Statistics';
 
   @override
   String get courses => 'Courses';
-
-  @override
-  String get premium => 'Premium';
 
   @override
   String get allLessons => 'All Lessons';
@@ -632,4 +632,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectThisCourse => 'Select This Course';
+
+  @override
+  String get filterToday => 'Today';
+
+  @override
+  String get filterThisWeek => 'This Week';
+
+  @override
+  String get filterThisMonth => 'This Month';
+
+  @override
+  String get filterAllTime => 'All Time';
+
+  @override
+  String get currentCourse => 'Current Course';
+
+  @override
+  String get selectCourseToSeeProgress => 'Select a course to see progress';
+
+  @override
+  String get done => 'Done!';
+
+  @override
+  String get complete => 'Complete';
+
+  @override
+  String get totalTime => 'Total Time';
+
+  @override
+  String get weeklyActivity => 'Weekly Activity';
+
+  @override
+  String get noActivityThisWeek => 'No activity this week';
+
+  @override
+  String get lessonTypeVideo => 'Video';
+
+  @override
+  String get lessonTypeAudio => 'Audio';
+
+  @override
+  String get lessonTypeText => 'Text';
+
+  @override
+  String get lessonTypeQuiz => 'Quiz';
+
+  @override
+  String get lessonTypeFlashcards => 'Flashcards';
+
+  @override
+  String get byLessonType => 'By Lesson Type';
+
+  @override
+  String get completeLessonsToSeeBreakdown =>
+      'Complete lessons to see breakdown';
+
+  @override
+  String get courseProgress => 'Course Progress';
+
+  @override
+  String get quizzesAccuracy => 'Quizzes Accuracy';
+
+  @override
+  String get flashcardsAccuracy => 'Flashcards Accuracy';
+
+  @override
+  String get average => 'Average';
+
+  @override
+  String get best => 'Best';
+
+  @override
+  String completedCount(int completed, int total) {
+    return '$completed/$total completed';
+  }
 }

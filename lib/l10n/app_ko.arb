@@ -263,5 +263,31 @@
     }
   },
   "selected": "선택됨",
-  "selectThisCourse": "이 코스 선택"
+  "selectThisCourse": "이 코스 선택",
+
+  "statisticsTab": "통계",
+  "filterToday": "오늘",
+  "filterThisWeek": "이번 주",
+  "filterThisMonth": "이번 달",
+  "filterAllTime": "전체 기간",
+  "currentCourse": "현재 코스",
+  "selectCourseToSeeProgress": "진행 상황을 보려면 코스를 선택하세요",
+  "done": "완료!",
+  "complete": "완료",
+  "totalTime": "총 시간",
+  "weeklyActivity": "주간 활동",
+  "noActivityThisWeek": "이번 주 활동 없음",
+  "lessonTypeVideo": "비디오",
+  "lessonTypeAudio": "오디오",
+  "lessonTypeText": "텍스트",
+  "lessonTypeQuiz": "퀴즈",
+  "lessonTypeFlashcards": "플래시카드",
+  "byLessonType": "레슨 유형별",
+  "completeLessonsToSeeBreakdown": "분석을 보려면 레슨을 완료하세요",
+  "courseProgress": "코스 진행",
+  "quizzesAccuracy": "퀴즈 정확도",
+  "flashcardsAccuracy": "플래시카드 정확도",
+  "average": "평균",
+  "best": "최고",
+  "completedCount": "{completed}/{total} 완료"
 }

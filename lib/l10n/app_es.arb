@@ -263,5 +263,31 @@
     }
   },
   "selected": "Seleccionado",
-  "selectThisCourse": "Seleccionar Este Curso"
+  "selectThisCourse": "Seleccionar Este Curso",
+
+  "statisticsTab": "Estadísticas",
+  "filterToday": "Hoy",
+  "filterThisWeek": "Esta Semana",
+  "filterThisMonth": "Este Mes",
+  "filterAllTime": "Todo el Tiempo",
+  "currentCourse": "Curso Actual",
+  "selectCourseToSeeProgress": "Selecciona un curso para ver el progreso",
+  "done": "¡Hecho!",
+  "complete": "Completar",
+  "totalTime": "Tiempo Total",
+  "weeklyActivity": "Actividad Semanal",
+  "noActivityThisWeek": "Sin actividad esta semana",
+  "lessonTypeVideo": "Video",
+  "lessonTypeAudio": "Audio",
+  "lessonTypeText": "Texto",
+  "lessonTypeQuiz": "Cuestionario",
+  "lessonTypeFlashcards": "Tarjetas",
+  "byLessonType": "Por Tipo de Lección",
+  "completeLessonsToSeeBreakdown": "Completa lecciones para ver el desglose",
+  "courseProgress": "Progreso del Curso",
+  "quizzesAccuracy": "Precisión de Cuestionarios",
+  "flashcardsAccuracy": "Precisión de Tarjetas",
+  "average": "Promedio",
+  "best": "Mejor",
+  "completedCount": "{completed}/{total} completados"
 }

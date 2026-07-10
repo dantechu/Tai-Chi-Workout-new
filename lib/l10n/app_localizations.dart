@@ -144,6 +144,12 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings;
 
+  /// No description provided for @premium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premium;
+
   /// No description provided for @statisticsTab.
   ///
   /// In en, this message translates to:
@@ -155,12 +161,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Courses'**
   String get courses;
-
-  /// No description provided for @premium.
-  ///
-  /// In en, this message translates to:
-  /// **'Premium'**
-  String get premium;
 
   /// No description provided for @allLessons.
   ///
@@ -1265,6 +1265,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select This Course'**
   String get selectThisCourse;
+
+  /// No description provided for @filterToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get filterToday;
+
+  /// No description provided for @filterThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get filterThisWeek;
+
+  /// No description provided for @filterThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get filterThisMonth;
+
+  /// No description provided for @filterAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All Time'**
+  String get filterAllTime;
+
+  /// No description provided for @currentCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Course'**
+  String get currentCourse;
+
+  /// No description provided for @selectCourseToSeeProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a course to see progress'**
+  String get selectCourseToSeeProgress;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done!'**
+  String get done;
+
+  /// No description provided for @complete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get complete;
+
+  /// No description provided for @totalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Time'**
+  String get totalTime;
+
+  /// No description provided for @weeklyActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Activity'**
+  String get weeklyActivity;
+
+  /// No description provided for @noActivityThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity this week'**
+  String get noActivityThisWeek;
+
+  /// No description provided for @lessonTypeVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get lessonTypeVideo;
+
+  /// No description provided for @lessonTypeAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get lessonTypeAudio;
+
+  /// No description provided for @lessonTypeText.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get lessonTypeText;
+
+  /// No description provided for @lessonTypeQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get lessonTypeQuiz;
+
+  /// No description provided for @lessonTypeFlashcards.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcards'**
+  String get lessonTypeFlashcards;
+
+  /// No description provided for @byLessonType.
+  ///
+  /// In en, this message translates to:
+  /// **'By Lesson Type'**
+  String get byLessonType;
+
+  /// No description provided for @completeLessonsToSeeBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete lessons to see breakdown'**
+  String get completeLessonsToSeeBreakdown;
+
+  /// No description provided for @courseProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Progress'**
+  String get courseProgress;
+
+  /// No description provided for @quizzesAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Quizzes Accuracy'**
+  String get quizzesAccuracy;
+
+  /// No description provided for @flashcardsAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcards Accuracy'**
+  String get flashcardsAccuracy;
+
+  /// No description provided for @average.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get average;
+
+  /// No description provided for @best.
+  ///
+  /// In en, this message translates to:
+  /// **'Best'**
+  String get best;
+
+  /// No description provided for @completedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed}/{total} completed'**
+  String completedCount(int completed, int total);
 }
 
 class _AppLocalizationsDelegate

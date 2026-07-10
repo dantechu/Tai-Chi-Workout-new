@@ -27,13 +27,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settings => 'Paramètres';
 
   @override
-  String get statisticsTab => 'Statistics';
+  String get premium => 'Premium';
+
+  @override
+  String get statisticsTab => 'Statistiques';
 
   @override
   String get courses => 'Cours';
-
-  @override
-  String get premium => 'Premium';
 
   @override
   String get allLessons => 'Toutes les Leçons';
@@ -633,4 +633,80 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get selectThisCourse => 'Sélectionner Ce Cours';
+
+  @override
+  String get filterToday => 'Aujourd\'hui';
+
+  @override
+  String get filterThisWeek => 'Cette Semaine';
+
+  @override
+  String get filterThisMonth => 'Ce Mois';
+
+  @override
+  String get filterAllTime => 'Tout le Temps';
+
+  @override
+  String get currentCourse => 'Cours Actuel';
+
+  @override
+  String get selectCourseToSeeProgress =>
+      'Sélectionnez un cours pour voir la progression';
+
+  @override
+  String get done => 'Terminé!';
+
+  @override
+  String get complete => 'Terminer';
+
+  @override
+  String get totalTime => 'Temps Total';
+
+  @override
+  String get weeklyActivity => 'Activité Hebdomadaire';
+
+  @override
+  String get noActivityThisWeek => 'Aucune activité cette semaine';
+
+  @override
+  String get lessonTypeVideo => 'Vidéo';
+
+  @override
+  String get lessonTypeAudio => 'Audio';
+
+  @override
+  String get lessonTypeText => 'Texte';
+
+  @override
+  String get lessonTypeQuiz => 'Quiz';
+
+  @override
+  String get lessonTypeFlashcards => 'Cartes Mémoire';
+
+  @override
+  String get byLessonType => 'Par Type de Leçon';
+
+  @override
+  String get completeLessonsToSeeBreakdown =>
+      'Terminez des leçons pour voir la répartition';
+
+  @override
+  String get courseProgress => 'Progression du Cours';
+
+  @override
+  String get quizzesAccuracy => 'Précision des Quiz';
+
+  @override
+  String get flashcardsAccuracy => 'Précision des Cartes Mémoire';
+
+  @override
+  String get average => 'Moyenne';
+
+  @override
+  String get best => 'Meilleur';
+
+  @override
+  String completedCount(int completed, int total) {
+    return '$completed/$total terminés';
+  }
 }

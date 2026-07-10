@@ -27,13 +27,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings => '设置';
 
   @override
-  String get statisticsTab => 'Statistics';
+  String get premium => '高级版';
+
+  @override
+  String get statisticsTab => '统计';
 
   @override
   String get courses => '课程';
-
-  @override
-  String get premium => '高级版';
 
   @override
   String get allLessons => '所有课程';
@@ -614,4 +614,78 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get selectThisCourse => '选择此课程';
+
+  @override
+  String get filterToday => '今天';
+
+  @override
+  String get filterThisWeek => '本周';
+
+  @override
+  String get filterThisMonth => '本月';
+
+  @override
+  String get filterAllTime => '全部时间';
+
+  @override
+  String get currentCourse => '当前课程';
+
+  @override
+  String get selectCourseToSeeProgress => '选择课程以查看进度';
+
+  @override
+  String get done => '完成!';
+
+  @override
+  String get complete => '完成';
+
+  @override
+  String get totalTime => '总时间';
+
+  @override
+  String get weeklyActivity => '每周活动';
+
+  @override
+  String get noActivityThisWeek => '本周无活动';
+
+  @override
+  String get lessonTypeVideo => '视频';
+
+  @override
+  String get lessonTypeAudio => '音频';
+
+  @override
+  String get lessonTypeText => '文本';
+
+  @override
+  String get lessonTypeQuiz => '测验';
+
+  @override
+  String get lessonTypeFlashcards => '闪卡';
+
+  @override
+  String get byLessonType => '按课程类型';
+
+  @override
+  String get completeLessonsToSeeBreakdown => '完成课程以查看分类';
+
+  @override
+  String get courseProgress => '课程进度';
+
+  @override
+  String get quizzesAccuracy => '测验准确率';
+
+  @override
+  String get flashcardsAccuracy => '闪卡准确率';
+
+  @override
+  String get average => '平均';
+
+  @override
+  String get best => '最佳';
+
+  @override
+  String completedCount(int completed, int total) {
+    return '$completed/$total 已完成';
+  }
 }

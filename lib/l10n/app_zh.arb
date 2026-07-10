@@ -263,5 +263,31 @@
     }
   },
   "selected": "已选择",
-  "selectThisCourse": "选择此课程"
+  "selectThisCourse": "选择此课程",
+
+  "statisticsTab": "统计",
+  "filterToday": "今天",
+  "filterThisWeek": "本周",
+  "filterThisMonth": "本月",
+  "filterAllTime": "全部时间",
+  "currentCourse": "当前课程",
+  "selectCourseToSeeProgress": "选择课程以查看进度",
+  "done": "完成!",
+  "complete": "完成",
+  "totalTime": "总时间",
+  "weeklyActivity": "每周活动",
+  "noActivityThisWeek": "本周无活动",
+  "lessonTypeVideo": "视频",
+  "lessonTypeAudio": "音频",
+  "lessonTypeText": "文本",
+  "lessonTypeQuiz": "测验",
+  "lessonTypeFlashcards": "闪卡",
+  "byLessonType": "按课程类型",
+  "completeLessonsToSeeBreakdown": "完成课程以查看分类",
+  "courseProgress": "课程进度",
+  "quizzesAccuracy": "测验准确率",
+  "flashcardsAccuracy": "闪卡准确率",
+  "average": "平均",
+  "best": "最佳",
+  "completedCount": "{completed}/{total} 已完成"
 }

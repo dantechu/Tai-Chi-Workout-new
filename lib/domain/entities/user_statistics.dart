@@ -15,11 +15,13 @@ class UserStatistics extends Equatable {
   /// Total estimated time spent (in seconds)
   final int totalTimeSpentSeconds;
 
-  /// Average quiz/flashcard score (0-100)
-  final double averageScore;
+  /// Quiz scores
+  final double quizAverageScore;
+  final int quizBestScore;
 
-  /// Best quiz/flashcard score (0-100)
-  final int bestScore;
+  /// Flashcard scores
+  final double flashcardAverageScore;
+  final int flashcardBestScore;
 
   /// Course progress data
   final List<CourseProgress> courseProgressList;
@@ -53,8 +55,10 @@ class UserStatistics extends Equatable {
     this.quizCompletions = 0,
     this.flashcardCompletions = 0,
     this.totalTimeSpentSeconds = 0,
-    this.averageScore = 0.0,
-    this.bestScore = 0,
+    this.quizAverageScore = 0.0,
+    this.quizBestScore = 0,
+    this.flashcardAverageScore = 0.0,
+    this.flashcardBestScore = 0,
     this.courseProgressList = const [],
     this.totalCourses = 0,
     this.completedCourses = 0,
@@ -104,8 +108,10 @@ class UserStatistics extends Equatable {
         quizCompletions,
         flashcardCompletions,
         totalTimeSpentSeconds,
-        averageScore,
-        bestScore,
+        quizAverageScore,
+        quizBestScore,
+        flashcardAverageScore,
+        flashcardBestScore,
         courseProgressList,
         totalCourses,
         completedCourses,

@@ -92,8 +92,12 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     int flashcardCompletions = 0;
     int totalTimeSpent = 0;
     int filteredTimeSpent = 0;
-    List<int> scores = [];
-    int bestScore = 0;
+
+    // Separate scores for quiz and flashcard
+    List<int> quizScores = [];
+    int quizBestScore = 0;
+    List<int> flashcardScores = [];
+    int flashcardBestScore = 0;
 
     // Count by type for all completions
     for (final completion in allCompletions) {
@@ -113,18 +117,18 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
         case 'quiz':
           quizCompletions++;
           if (completion.scorePercentage != null) {
-            scores.add(completion.scorePercentage!);
-            if (completion.scorePercentage! > bestScore) {
-              bestScore = completion.scorePercentage!;
+            quizScores.add(completion.scorePercentage!);
+            if (completion.scorePercentage! > quizBestScore) {
+              quizBestScore = completion.scorePercentage!;
             }
           }
           break;
         case 'flashcard':
           flashcardCompletions++;
           if (completion.scorePercentage != null) {
-            scores.add(completion.scorePercentage!);
-            if (completion.scorePercentage! > bestScore) {
-              bestScore = completion.scorePercentage!;
+            flashcardScores.add(completion.scorePercentage!);
+            if (completion.scorePercentage! > flashcardBestScore) {
+              flashcardBestScore = completion.scorePercentage!;
             }
           }
           break;
@@ -136,10 +140,15 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       filteredTimeSpent += completion.durationSeconds ?? 0;
     }
 
-    // Calculate average score
-    double averageScore = 0.0;
-    if (scores.isNotEmpty) {
-      averageScore = scores.reduce((a, b) => a + b) / scores.length;
+    // Calculate separate average scores
+    double quizAverageScore = 0.0;
+    if (quizScores.isNotEmpty) {
+      quizAverageScore = quizScores.reduce((a, b) => a + b) / quizScores.length;
+    }
+
+    double flashcardAverageScore = 0.0;
+    if (flashcardScores.isNotEmpty) {
+      flashcardAverageScore = flashcardScores.reduce((a, b) => a + b) / flashcardScores.length;
     }
 
     // Calculate weekly activity (last 7 days) - use all completions
@@ -163,8 +172,10 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       quizCompletions: quizCompletions,
       flashcardCompletions: flashcardCompletions,
       totalTimeSpentSeconds: totalTimeSpent,
-      averageScore: averageScore,
-      bestScore: bestScore,
+      quizAverageScore: quizAverageScore,
+      quizBestScore: quizBestScore,
+      flashcardAverageScore: flashcardAverageScore,
+      flashcardBestScore: flashcardBestScore,
       courseProgressList: courseProgressList,
       totalCourses: totalCourses,
       completedCourses: completedCourses,

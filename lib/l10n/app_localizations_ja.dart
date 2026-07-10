@@ -27,13 +27,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings => '設定';
 
   @override
-  String get statisticsTab => 'Statistics';
+  String get premium => 'プレミアム';
+
+  @override
+  String get statisticsTab => '統計';
 
   @override
   String get courses => 'コース';
-
-  @override
-  String get premium => 'プレミアム';
 
   @override
   String get allLessons => 'すべてのレッスン';
@@ -617,4 +617,78 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get selectThisCourse => 'このコースを選択';
+
+  @override
+  String get filterToday => '今日';
+
+  @override
+  String get filterThisWeek => '今週';
+
+  @override
+  String get filterThisMonth => '今月';
+
+  @override
+  String get filterAllTime => '全期間';
+
+  @override
+  String get currentCourse => '現在のコース';
+
+  @override
+  String get selectCourseToSeeProgress => '進捗を見るにはコースを選択';
+
+  @override
+  String get done => '完了!';
+
+  @override
+  String get complete => '完了';
+
+  @override
+  String get totalTime => '合計時間';
+
+  @override
+  String get weeklyActivity => '週間アクティビティ';
+
+  @override
+  String get noActivityThisWeek => '今週のアクティビティなし';
+
+  @override
+  String get lessonTypeVideo => 'ビデオ';
+
+  @override
+  String get lessonTypeAudio => 'オーディオ';
+
+  @override
+  String get lessonTypeText => 'テキスト';
+
+  @override
+  String get lessonTypeQuiz => 'クイズ';
+
+  @override
+  String get lessonTypeFlashcards => 'フラッシュカード';
+
+  @override
+  String get byLessonType => 'レッスンタイプ別';
+
+  @override
+  String get completeLessonsToSeeBreakdown => '内訳を見るにはレッスンを完了';
+
+  @override
+  String get courseProgress => 'コース進捗';
+
+  @override
+  String get quizzesAccuracy => 'クイズ正確度';
+
+  @override
+  String get flashcardsAccuracy => 'フラッシュカード正確度';
+
+  @override
+  String get average => '平均';
+
+  @override
+  String get best => '最高';
+
+  @override
+  String completedCount(int completed, int total) {
+    return '$completed/$total 完了';
+  }
 }

@@ -27,13 +27,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settings => '설정';
 
   @override
-  String get statisticsTab => 'Statistics';
+  String get premium => '프리미엄';
+
+  @override
+  String get statisticsTab => '통계';
 
   @override
   String get courses => '코스';
-
-  @override
-  String get premium => '프리미엄';
 
   @override
   String get allLessons => '모든 레슨';
@@ -619,4 +619,78 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get selectThisCourse => '이 코스 선택';
+
+  @override
+  String get filterToday => '오늘';
+
+  @override
+  String get filterThisWeek => '이번 주';
+
+  @override
+  String get filterThisMonth => '이번 달';
+
+  @override
+  String get filterAllTime => '전체 기간';
+
+  @override
+  String get currentCourse => '현재 코스';
+
+  @override
+  String get selectCourseToSeeProgress => '진행 상황을 보려면 코스를 선택하세요';
+
+  @override
+  String get done => '완료!';
+
+  @override
+  String get complete => '완료';
+
+  @override
+  String get totalTime => '총 시간';
+
+  @override
+  String get weeklyActivity => '주간 활동';
+
+  @override
+  String get noActivityThisWeek => '이번 주 활동 없음';
+
+  @override
+  String get lessonTypeVideo => '비디오';
+
+  @override
+  String get lessonTypeAudio => '오디오';
+
+  @override
+  String get lessonTypeText => '텍스트';
+
+  @override
+  String get lessonTypeQuiz => '퀴즈';
+
+  @override
+  String get lessonTypeFlashcards => '플래시카드';
+
+  @override
+  String get byLessonType => '레슨 유형별';
+
+  @override
+  String get completeLessonsToSeeBreakdown => '분석을 보려면 레슨을 완료하세요';
+
+  @override
+  String get courseProgress => '코스 진행';
+
+  @override
+  String get quizzesAccuracy => '퀴즈 정확도';
+
+  @override
+  String get flashcardsAccuracy => '플래시카드 정확도';
+
+  @override
+  String get average => '평균';
+
+  @override
+  String get best => '최고';
+
+  @override
+  String completedCount(int completed, int total) {
+    return '$completed/$total 완료';
+  }
 }

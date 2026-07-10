@@ -263,5 +263,31 @@
     }
   },
   "selected": "選択済み",
-  "selectThisCourse": "このコースを選択"
+  "selectThisCourse": "このコースを選択",
+
+  "statisticsTab": "統計",
+  "filterToday": "今日",
+  "filterThisWeek": "今週",
+  "filterThisMonth": "今月",
+  "filterAllTime": "全期間",
+  "currentCourse": "現在のコース",
+  "selectCourseToSeeProgress": "進捗を見るにはコースを選択",
+  "done": "完了!",
+  "complete": "完了",
+  "totalTime": "合計時間",
+  "weeklyActivity": "週間アクティビティ",
+  "noActivityThisWeek": "今週のアクティビティなし",
+  "lessonTypeVideo": "ビデオ",
+  "lessonTypeAudio": "オーディオ",
+  "lessonTypeText": "テキスト",
+  "lessonTypeQuiz": "クイズ",
+  "lessonTypeFlashcards": "フラッシュカード",
+  "byLessonType": "レッスンタイプ別",
+  "completeLessonsToSeeBreakdown": "内訳を見るにはレッスンを完了",
+  "courseProgress": "コース進捗",
+  "quizzesAccuracy": "クイズ正確度",
+  "flashcardsAccuracy": "フラッシュカード正確度",
+  "average": "平均",
+  "best": "最高",
+  "completedCount": "{completed}/{total} 完了"
 }
