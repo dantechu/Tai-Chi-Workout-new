@@ -113,19 +113,16 @@ class _VideoCardState extends State<VideoCard> {
     final isLocked = video.isPremium && !isPremiumUser;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withValues(alpha: 0.3)
-                : Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.08)
+              : Colors.black.withValues(alpha: 0.06),
+          width: 1,
+        ),
       ),
       child: Material(
         color: Colors.transparent,
@@ -244,16 +241,9 @@ class _VideoCardState extends State<VideoCard> {
                   right: 6,
                   child: Container(
                     padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.green,
                       shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.3),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
                     ),
                     child: const Icon(
                       Icons.check,
