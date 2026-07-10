@@ -117,8 +117,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     final isDark = theme.brightness == Brightness.dark;
 
     return SliverAppBar(
-      floating: true,
-      snap: true,
+      pinned: true,
       backgroundColor: theme.colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
@@ -178,28 +177,28 @@ class _StatisticsPageState extends State<StatisticsPage> {
     };
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<StatisticsTimeFilter>(
           value: currentFilter,
-          icon: Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: theme.colorScheme.onSurface,
-            size: 20,
+          icon: Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: theme.colorScheme.onSurface,
+              size: 20,
+            ),
           ),
           isDense: true,
           style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
           dropdownColor: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           items: filters.entries.map((entry) {
             return DropdownMenuItem<StatisticsTimeFilter>(
               value: entry.key,
@@ -423,10 +422,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
   }
 
   Widget _buildWeeklyActivitySection(ThemeData theme, UserStatistics stats) {
-    final hasData = stats.weeklyActivity.any((a) => a.lessonsCompleted > 0);
-    final maxLessons = stats.weeklyActivity.isEmpty
+    final hasData = stats.weeklyActivity.any((a) => a.timeSpentSeconds > 0);
+    // Convert to minutes for easier display
+    final maxMinutes = stats.weeklyActivity.isEmpty
         ? 1.0
-        : stats.weeklyActivity.map((a) => a.lessonsCompleted).reduce(math.max).toDouble();
+        : stats.weeklyActivity.map((a) => a.timeSpentSeconds / 60.0).reduce(math.max);
+    // Round up to nearest 5 or 10 minutes for cleaner Y-axis
+    final yAxisMax = maxMinutes < 5 ? 5.0 : ((maxMinutes / 5).ceil() * 5.0 + 5);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -440,7 +442,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
         const SizedBox(height: 16),
         Container(
           height: 200,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.only(left: 8, right: 16, top: 16, bottom: 16),
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(16),
@@ -449,7 +451,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ? BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: maxLessons + 1,
+                    maxY: yAxisMax,
                     barTouchData: BarTouchData(
                       enabled: true,
                       touchTooltipData: BarTouchTooltipData(
@@ -458,8 +460,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
                         tooltipMargin: 8,
                         getTooltipItem: (group, groupIndex, rod, rodIndex) {
                           final activity = stats.weeklyActivity[group.x.toInt()];
+                          final minutes = activity.timeSpentSeconds ~/ 60;
+                          final hours = minutes ~/ 60;
+                          final remainingMins = minutes % 60;
+                          final timeStr = hours > 0
+                              ? '${hours}h ${remainingMins}m'
+                              : '${minutes}m';
                           return BarTooltipItem(
-                            '${activity.lessonsCompleted} lessons',
+                            '$timeStr\n${activity.lessonsCompleted} lessons',
                             TextStyle(
                               color: theme.colorScheme.onSurface,
                               fontWeight: FontWeight.bold,
@@ -490,26 +498,68 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           reservedSize: 30,
                         ),
                       ),
-                      leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 40,
+                          interval: yAxisMax / 4,
+                          getTitlesWidget: (value, meta) {
+                            final minutes = value.toInt();
+                            final hours = minutes ~/ 60;
+                            final remainingMins = minutes % 60;
+                            String label;
+                            if (minutes == 0) {
+                              label = '0m';
+                            } else if (hours > 0 && remainingMins == 0) {
+                              label = '${hours}h';
+                            } else if (hours > 0) {
+                              label = '${hours}h${remainingMins}m';
+                            } else {
+                              label = '${minutes}m';
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Text(
+                                label,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                  fontSize: 10,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
-                    gridData: const FlGridData(show: false),
+                    gridData: FlGridData(
+                      show: true,
+                      drawVerticalLine: false,
+                      horizontalInterval: yAxisMax / 4,
+                      getDrawingHorizontalLine: (value) {
+                        return FlLine(
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+                          strokeWidth: 1,
+                        );
+                      },
+                    ),
                     borderData: FlBorderData(show: false),
                     barGroups: stats.weeklyActivity.asMap().entries.map((entry) {
                       final index = entry.key;
                       final activity = entry.value;
                       final isToday = index == stats.weeklyActivity.length - 1;
+                      final minutes = activity.timeSpentSeconds / 60.0;
 
                       return BarChartGroupData(
                         x: index,
                         barRods: [
                           BarChartRodData(
-                            toY: activity.lessonsCompleted.toDouble(),
+                            toY: minutes,
                             color: isToday
                                 ? theme.colorScheme.primary
                                 : theme.colorScheme.primary.withValues(alpha: 0.5),
-                            width: 24,
+                            width: 20,
                             borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
                           ),
                         ],
