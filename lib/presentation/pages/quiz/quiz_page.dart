@@ -7,6 +7,7 @@ import '../../../domain/entities/quiz_question.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../../core/services/interstitial_ad_service.dart';
 import '../../../core/services/next_lesson_service.dart';
+import '../../../core/services/premium_service.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
@@ -158,7 +159,7 @@ class _QuizPageState extends State<QuizPage> {
         title: Text(title),
         elevation: 0,
       ),
-      bottomNavigationBar: _quizCompleted
+      bottomNavigationBar: _quizCompleted && !PremiumService().isPremium
           ? const SafeArea(
               child: BannerAdWidget(),
             )

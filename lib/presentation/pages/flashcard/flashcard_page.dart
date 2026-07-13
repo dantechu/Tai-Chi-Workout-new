@@ -8,6 +8,7 @@ import '../../../domain/entities/flash_card.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../../core/services/interstitial_ad_service.dart';
 import '../../../core/services/next_lesson_service.dart';
+import '../../../core/services/premium_service.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
@@ -168,7 +169,7 @@ class _FlashcardPageState extends State<FlashcardPage>
         title: Text(title),
         elevation: 0,
       ),
-      bottomNavigationBar: _sessionCompleted
+      bottomNavigationBar: _sessionCompleted && !PremiumService().isPremium
           ? const SafeArea(child: BannerAdWidget())
           : null,
       body: _sessionCompleted

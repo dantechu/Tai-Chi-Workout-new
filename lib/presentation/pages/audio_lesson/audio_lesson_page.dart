@@ -479,9 +479,11 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
             ),
         ],
       ),
-      bottomNavigationBar: const SafeArea(
-        child: BannerAdWidget(),
-      ),
+      bottomNavigationBar: PremiumService().isPremium
+          ? null
+          : const SafeArea(
+              child: BannerAdWidget(),
+            ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(

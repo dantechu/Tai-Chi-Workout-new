@@ -165,39 +165,14 @@ class SettingsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                isPremium
-                                    ? (AppLocalizations.of(context)?.premiumStatusTitle ?? 'Premium Member')
-                                    : (AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium'),
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              if (isPremium) ...[
-                                const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.withValues(alpha: 0.15),
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(
-                                      color: Colors.green.withValues(alpha: 0.3),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    AppLocalizations.of(context)?.premiumActive ?? 'Active',
-                                    style: theme.textTheme.labelSmall?.copyWith(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ],
+                          Text(
+                            isPremium
+                                ? (AppLocalizations.of(context)?.premiumStatusTitle ?? 'Premium Member')
+                                : (AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium'),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           Text(

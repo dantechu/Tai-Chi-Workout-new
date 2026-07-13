@@ -6,6 +6,7 @@ import '../../../domain/entities/section.dart';
 import '../../../domain/entities/course.dart';
 import '../../../core/utils/quill_delta_parser.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../core/services/premium_service.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
@@ -52,9 +53,11 @@ class TextLessonPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const SafeArea(
-        child: BannerAdWidget(),
-      ),
+      bottomNavigationBar: PremiumService().isPremium
+          ? null
+          : const SafeArea(
+              child: BannerAdWidget(),
+            ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
