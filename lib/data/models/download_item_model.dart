@@ -13,6 +13,8 @@ class DownloadItemModel {
   final DateTime? startedAt;
   final DateTime? completedAt;
   final DateTime? updatedAt;
+  final String? title;
+  final String? mediaType; // 'video' or 'audio'
 
   const DownloadItemModel({
     required this.id,
@@ -27,6 +29,8 @@ class DownloadItemModel {
     this.startedAt,
     this.completedAt,
     this.updatedAt,
+    this.title,
+    this.mediaType,
   });
 
   factory DownloadItemModel.fromEntity(DownloadItem entity) {
@@ -43,6 +47,8 @@ class DownloadItemModel {
       startedAt: entity.startedAt,
       completedAt: entity.completedAt,
       updatedAt: entity.updatedAt,
+      title: entity.title,
+      mediaType: entity.mediaType,
     );
   }
 
@@ -60,6 +66,8 @@ class DownloadItemModel {
       startedAt: startedAt,
       completedAt: completedAt,
       updatedAt: updatedAt,
+      title: title,
+      mediaType: mediaType,
     );
   }
 
@@ -83,6 +91,8 @@ class DownloadItemModel {
       updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'] as String)
           : null,
+      title: json['title'] as String?,
+      mediaType: json['mediaType'] as String?,
     );
   }
 
@@ -100,6 +110,8 @@ class DownloadItemModel {
       'startedAt': startedAt?.toIso8601String(),
       'completedAt': completedAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
+      'title': title,
+      'mediaType': mediaType,
     };
   }
 
@@ -116,6 +128,8 @@ class DownloadItemModel {
     DateTime? startedAt,
     DateTime? completedAt,
     DateTime? updatedAt,
+    String? title,
+    String? mediaType,
   }) {
     return DownloadItemModel(
       id: id ?? this.id,
@@ -130,6 +144,8 @@ class DownloadItemModel {
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      title: title ?? this.title,
+      mediaType: mediaType ?? this.mediaType,
     );
   }
 

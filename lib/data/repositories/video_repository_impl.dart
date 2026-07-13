@@ -5,6 +5,7 @@ import '../../core/network/network_info.dart';
 import '../../domain/entities/video.dart';
 import '../../domain/entities/lesson.dart';
 import '../../domain/repositories/video_repository.dart';
+import '../../domain/repositories/course_repository.dart';
 import '../datasources/video_remote_datasource.dart';
 import '../datasources/video_local_datasource.dart';
 
@@ -12,12 +13,23 @@ class VideoRepositoryImpl implements VideoRepository {
   final VideoRemoteDataSource remoteDataSource;
   final VideoLocalDataSource localDataSource;
   final NetworkInfo networkInfo;
+  final CourseRepository courseRepository;
 
   VideoRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.networkInfo,
+    required this.courseRepository,
   });
+
+  /// Helper method to get the selected course ID for offline filtering
+  Future<String?> _getSelectedCourseId() async {
+    final courseResult = await courseRepository.getSelectedCourse();
+    return courseResult.fold(
+      (failure) => null,
+      (course) => course.id,
+    );
+  }
 
   @override
   Future<Either<Failure, List<Video>>> getAllVideos() async {
@@ -27,16 +39,20 @@ class VideoRepositoryImpl implements VideoRepository {
         await localDataSource.cacheVideos(remoteVideos);
         return Right(remoteVideos.cast<Video>());
       } else {
-        final localVideos = await localDataSource.getCachedVideos();
+        // When offline, filter cached videos by the selected course
+        final selectedCourseId = await _getSelectedCourseId();
+        final localVideos = await localDataSource.getCachedVideosByCourse(selectedCourseId);
         if (localVideos.isNotEmpty) {
           return Right(localVideos.cast<Video>());
         } else {
-          return Left(NetworkFailure('No internet connection and no cached data'));
+          return Left(NetworkFailure('No internet connection and no cached data for this course'));
         }
       }
     } on ServerException catch (e) {
       try {
-        final localVideos = await localDataSource.getCachedVideos();
+        // On server error, also filter by selected course
+        final selectedCourseId = await _getSelectedCourseId();
+        final localVideos = await localDataSource.getCachedVideosByCourse(selectedCourseId);
         if (localVideos.isNotEmpty) {
           return Right(localVideos.cast<Video>());
         } else {
@@ -60,16 +76,20 @@ class VideoRepositoryImpl implements VideoRepository {
         await localDataSource.cacheLessons(remoteLessons);
         return Right(remoteLessons.cast<Lesson>());
       } else {
-        final localLessons = await localDataSource.getCachedLessons();
+        // When offline, filter cached lessons by the selected course
+        final selectedCourseId = await _getSelectedCourseId();
+        final localLessons = await localDataSource.getCachedLessonsByCourse(selectedCourseId);
         if (localLessons.isNotEmpty) {
           return Right(localLessons.cast<Lesson>());
         } else {
-          return Left(NetworkFailure('No internet connection and no cached data'));
+          return Left(NetworkFailure('No internet connection and no cached data for this course'));
         }
       }
     } on ServerException catch (e) {
       try {
-        final localLessons = await localDataSource.getCachedLessons();
+        // On server error, also filter by selected course
+        final selectedCourseId = await _getSelectedCourseId();
+        final localLessons = await localDataSource.getCachedLessonsByCourse(selectedCourseId);
         if (localLessons.isNotEmpty) {
           return Right(localLessons.cast<Lesson>());
         } else {
@@ -142,11 +162,13 @@ class VideoRepositoryImpl implements VideoRepository {
         final remoteVideos = await remoteDataSource.getVideosByCategory(category);
         return Right(remoteVideos.cast<Video>());
       } else {
-        final localVideos = await localDataSource.getCachedVideos();
+        // When offline, filter by both course and category
+        final selectedCourseId = await _getSelectedCourseId();
+        final localVideos = await localDataSource.getCachedVideosByCourse(selectedCourseId);
         final filteredVideos = localVideos.where(
           (video) => video.category.toLowerCase() == category.toLowerCase()
         ).toList();
-        
+
         if (filteredVideos.isNotEmpty) {
           return Right(filteredVideos.cast<Video>());
         } else {

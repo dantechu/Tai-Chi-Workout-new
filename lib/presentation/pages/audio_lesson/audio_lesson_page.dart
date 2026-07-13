@@ -1,11 +1,17 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/network/network_info.dart';
+import '../../../core/services/premium_service.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/entities/section.dart';
 import '../../../domain/entities/course.dart';
+import '../../../domain/usecases/download_usecases.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../injection_container.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../courses/bloc/courses_bloc.dart';
@@ -46,6 +52,8 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
   String? _error;
   bool _hasMarkedComplete = false;
   bool _hasShownCompletionDialog = false;
+  bool _isPlayingOffline = false;
+  bool _isDownloaded = false;
 
   @override
   void initState() {
@@ -54,16 +62,50 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
   }
 
   Future<void> _initAudio() async {
-    final audioUrl = widget.lesson.audioUrl;
-    if (audioUrl == null || audioUrl.isEmpty) {
-      setState(() {
-        _error = 'No audio URL available';
-        _isLoading = false;
-      });
-      return;
-    }
-
     try {
+      // Check if audio is downloaded locally
+      final getLocalVideoPath = sl<GetLocalVideoPath>();
+      final localPathResult = await getLocalVideoPath(widget.lesson.id);
+      String? localPath;
+      localPathResult.fold(
+        (failure) => localPath = null,
+        (path) => localPath = path,
+      );
+
+      // Check network connectivity
+      final networkInfo = sl<NetworkInfo>();
+      final hasInternet = await networkInfo.isConnected;
+
+      // Determine audio source
+      String? audioSource;
+      bool isLocalFile = false;
+
+      if (localPath != null && await File(localPath!).exists()) {
+        // Use local file for playback
+        _isDownloaded = true;
+        _isPlayingOffline = !hasInternet;
+        audioSource = localPath;
+        isLocalFile = true;
+      } else if (hasInternet) {
+        _isDownloaded = false;
+        final audioUrl = widget.lesson.audioUrl;
+        if (audioUrl == null || audioUrl.isEmpty) {
+          setState(() {
+            _error = 'No audio URL available';
+            _isLoading = false;
+          });
+          return;
+        }
+        audioSource = audioUrl;
+      } else {
+        // Offline and not downloaded
+        setState(() {
+          _error = 'Audio not available offline. Download it first when online.';
+          _isLoading = false;
+        });
+        return;
+      }
+
       // Set up listeners
       _audioPlayer.onDurationChanged.listen((duration) {
         setState(() => _duration = duration);
@@ -94,7 +136,11 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
       });
 
       // Load the audio
-      await _audioPlayer.setSourceUrl(audioUrl);
+      if (isLocalFile) {
+        await _audioPlayer.setSourceDeviceFile(audioSource!);
+      } else {
+        await _audioPlayer.setSourceUrl(audioSource!);
+      }
       setState(() => _isLoading = false);
     } catch (e) {
       setState(() {
@@ -195,6 +241,173 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
+  void _handleMenuAction(String action) {
+    switch (action) {
+      case 'download':
+        _showDownloadDialog();
+        break;
+      case 'delete_download':
+        _showDeleteDownloadDialog();
+        break;
+    }
+  }
+
+  void _showDownloadDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)?.download ?? 'Download Audio'),
+        content: const Text('Download this audio for offline listening?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _startDownload();
+            },
+            child: Text(AppLocalizations.of(context)?.download ?? 'Download'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteDownloadDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)?.delete ?? 'Delete Download'),
+        content: const Text('Are you sure you want to delete this downloaded audio? You will need to download it again to listen offline.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteDownload();
+            },
+            child: Text(AppLocalizations.of(context)?.delete ?? 'Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _startDownload() async {
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Download started...'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      final downloadVideo = sl<DownloadVideo>();
+      final result = await downloadVideo(widget.lesson);
+
+      result.fold(
+        (failure) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Download failed: ${failure.message}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        (downloadItem) {
+          if (mounted) {
+            final langCode = LocalizationHelper.getCurrentLanguageCode(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Downloading ${widget.lesson.getLocalizedTitle(langCode)}...'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Download error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _deleteDownload() async {
+    try {
+      final getDownloadByVideoId = sl<GetDownloadByVideoId>();
+      final result = await getDownloadByVideoId(widget.lesson.id);
+
+      await result.fold(
+        (failure) async {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to find download: ${failure.message}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        (downloadItem) async {
+          if (downloadItem != null) {
+            final deleteDownload = sl<DeleteDownload>();
+            final deleteResult = await deleteDownload(downloadItem.id);
+
+            deleteResult.fold(
+              (failure) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to delete: ${failure.message}'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              (_) {
+                if (mounted) {
+                  setState(() {
+                    _isDownloaded = false;
+                    _isPlayingOffline = false;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Download deleted'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
+              },
+            );
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -215,6 +428,56 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
           ),
         ),
         elevation: 0,
+        actions: [
+          // Offline indicator
+          if (_isPlayingOffline)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              margin: const EdgeInsets.only(right: 8),
+              decoration: BoxDecoration(
+                color: Colors.orange.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.offline_bolt, color: Colors.orange, size: 16),
+                  SizedBox(width: 4),
+                  Text('Offline', style: TextStyle(color: Colors.orange, fontSize: 12)),
+                ],
+              ),
+            ),
+          // Download menu (only for premium users)
+          if (PremiumService().isPremium)
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) => _handleMenuAction(value),
+              itemBuilder: (context) => [
+                if (_isDownloaded)
+                  PopupMenuItem(
+                    value: 'delete_download',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete_outline, color: Colors.red),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.of(context)?.delete ?? 'Delete Download'),
+                      ],
+                    ),
+                  )
+                else
+                  PopupMenuItem(
+                    value: 'download',
+                    child: Row(
+                      children: [
+                        Icon(Icons.download, color: theme.colorScheme.primary),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.of(context)?.download ?? 'Download'),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+        ],
       ),
       bottomNavigationBar: const SafeArea(
         child: BannerAdWidget(),

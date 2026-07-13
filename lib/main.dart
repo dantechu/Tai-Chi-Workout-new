@@ -10,6 +10,7 @@ import 'core/theme/app_theme.dart';
 import 'core/services/interstitial_ad_service.dart';
 import 'core/services/rewarded_ad_service.dart';
 import 'core/services/ad_unlock_service.dart';
+import 'core/services/offline_service.dart';
 import 'injection_container.dart' as di;
 import 'presentation/bloc/locale/locale_bloc.dart';
 import 'presentation/bloc/locale/locale_event.dart';
@@ -60,6 +61,9 @@ void main() async {
 
   // Initialize Ad Unlock Service (loads unlocked lessons from storage)
   await AdUnlockService().initialize();
+
+  // Initialize Offline Service (monitors connectivity)
+  await OfflineService().init();
 
   // Initialize dependency injection
   await di.init();
@@ -139,7 +143,7 @@ class _TaiChiWorkoutAppState extends State<TaiChiWorkoutApp> with WidgetsBinding
           return BlocBuilder<LocaleBloc, LocaleState>(
             builder: (context, localeState) {
               return MaterialApp(
-                onGenerateTitle: (context) => AppLocalizations.of(context)?.appName ?? 'Tai Chi Workout',
+                onGenerateTitle: (context) => AppLocalizations.of(context)?.appName ?? 'Excel Training',
                 debugShowCheckedModeBanner: false,
 
                 // Theme configuration

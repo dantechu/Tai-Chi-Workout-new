@@ -71,18 +71,24 @@ class VideoModel extends Video {
         '${typePrefix}_${map['sectionNumber']}_${map['rowNumber'] ?? map['row']}';
 
     // Parse questions for quiz type
+    // Note: When reading from Hive cache, nested maps are Map<dynamic, dynamic>
+    // so we need to convert them to Map<String, dynamic>
     List<QuizQuestion>? questions;
     if (type == LessonType.quiz && map['questions'] != null) {
       questions = (map['questions'] as List<dynamic>)
-          .map((q) => QuizQuestionModel.fromMap(q as Map<String, dynamic>).toEntity())
+          .map((q) => QuizQuestionModel.fromMap(
+              Map<String, dynamic>.from(q as Map)).toEntity())
           .toList();
     }
 
     // Parse cards for flashcard type
+    // Note: When reading from Hive cache, nested maps are Map<dynamic, dynamic>
+    // so we need to convert them to Map<String, dynamic>
     List<FlashCard>? cards;
     if (type == LessonType.flashcard && map['cards'] != null) {
       cards = (map['cards'] as List<dynamic>)
-          .map((c) => FlashCardModel.fromMap(c as Map<String, dynamic>).toEntity())
+          .map((c) => FlashCardModel.fromMap(
+              Map<String, dynamic>.from(c as Map)).toEntity())
           .toList();
     }
 

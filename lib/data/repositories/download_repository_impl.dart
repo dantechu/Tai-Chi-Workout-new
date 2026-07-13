@@ -19,7 +19,16 @@ class DownloadRepositoryImpl implements DownloadRepository {
       if (url == null || url.isEmpty) {
         return const Left(CacheFailure('This lesson type cannot be downloaded'));
       }
-      final result = await localDataSource.startDownload(video.id, url);
+
+      // Determine media type based on what URL is being used
+      final mediaType = video.videoUrl != null && video.videoUrl!.isNotEmpty ? 'video' : 'audio';
+
+      final result = await localDataSource.startDownload(
+        video.id,
+        url,
+        title: video.title,
+        mediaType: mediaType,
+      );
       return Right(result.toEntity());
     } on CacheException catch (e) {
       return Left(CacheFailure(e.message));

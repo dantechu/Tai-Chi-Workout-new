@@ -22,6 +22,8 @@ class DownloadItem extends Equatable {
   final DateTime? startedAt;
   final DateTime? completedAt;
   final DateTime? updatedAt;
+  final String? title;
+  final String? mediaType; // 'video' or 'audio'
 
   const DownloadItem({
     required this.id,
@@ -36,6 +38,8 @@ class DownloadItem extends Equatable {
     this.startedAt,
     this.completedAt,
     this.updatedAt,
+    this.title,
+    this.mediaType,
   });
 
   bool get isCompleted => status == DownloadStatus.completed;
@@ -101,6 +105,8 @@ class DownloadItem extends Equatable {
     DateTime? startedAt,
     DateTime? completedAt,
     DateTime? updatedAt,
+    String? title,
+    String? mediaType,
   }) {
     return DownloadItem(
       id: id ?? this.id,
@@ -115,6 +121,8 @@ class DownloadItem extends Equatable {
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      title: title ?? this.title,
+      mediaType: mediaType ?? this.mediaType,
     );
   }
 
@@ -132,6 +140,8 @@ class DownloadItem extends Equatable {
         startedAt,
         completedAt,
         updatedAt,
+        title,
+        mediaType,
       ];
 
   @override

@@ -1,5 +1,7 @@
+import 'dart:io';
 import '../../../core/services/premium_service.dart';
 import '../../../core/services/ad_unlock_service.dart';
+import '../../../core/network/network_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:chewie/chewie.dart';
@@ -46,6 +48,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   String? _error;
   bool _hasMarkedComplete = false;
   bool _hasShownCompletionDialog = false;
+  bool _isPlayingOffline = false;
+  bool _isDownloaded = false;
 
   @override
   void initState() {
@@ -70,20 +74,51 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         return;
       }
 
-      // Check if video URL is available
-      final videoUrl = widget.video.videoUrl;
-      if (videoUrl == null || videoUrl.isEmpty) {
+      // Check if video is downloaded locally
+      final getLocalVideoPath = sl<GetLocalVideoPath>();
+      final localPathResult = await getLocalVideoPath(widget.video.id);
+      String? localPath;
+      localPathResult.fold(
+        (failure) => localPath = null,
+        (path) => localPath = path,
+      );
+
+      // Check network connectivity
+      final networkInfo = sl<NetworkInfo>();
+      final hasInternet = await networkInfo.isConnected;
+
+      // Determine video source
+      if (localPath != null && await File(localPath!).exists()) {
+        // Use local file for playback
+        _isDownloaded = true;
+        _isPlayingOffline = !hasInternet;
+        _videoPlayerController = VideoPlayerController.file(
+          File(localPath!),
+        );
+      } else if (hasInternet) {
+        _isDownloaded = false;
+        // Check if video URL is available
+        final videoUrl = widget.video.videoUrl;
+        if (videoUrl == null || videoUrl.isEmpty) {
+          setState(() {
+            _error = 'No video URL available for this lesson';
+            _isLoading = false;
+          });
+          return;
+        }
+
+        // Use network URL for playback
+        _videoPlayerController = VideoPlayerController.networkUrl(
+          Uri.parse(videoUrl),
+        );
+      } else {
+        // Offline and not downloaded
         setState(() {
-          _error = 'No video URL available for this lesson';
+          _error = 'Video not available offline. Download it first when online.';
           _isLoading = false;
         });
         return;
       }
-
-      // Initialize video player controller
-      _videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(videoUrl),
-      );
 
       await _videoPlayerController.initialize();
 
@@ -271,22 +306,52 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               );
             },
           ),
+          // Offline indicator
+          if (_isPlayingOffline)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              margin: const EdgeInsets.only(right: 8),
+              decoration: BoxDecoration(
+                color: Colors.orange.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.offline_bolt, color: Colors.orange, size: 16),
+                  SizedBox(width: 4),
+                  Text('Offline', style: TextStyle(color: Colors.orange, fontSize: 12)),
+                ],
+              ),
+            ),
           if (!widget.video.isPremium ||
               PremiumService().isPremium)
             PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert, color: Colors.white),
               onSelected: (value) => _handleMenuAction(value),
               itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'download',
-                  child: Row(
-                    children: [
-                      Icon(Icons.download, color: Theme.of(context).colorScheme.primary),
-                      SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)?.download ?? 'Download'),
-                    ],
+                if (_isDownloaded)
+                  PopupMenuItem(
+                    value: 'delete_download',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete_outline, color: Colors.red),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.of(context)?.delete ?? 'Delete Download'),
+                      ],
+                    ),
+                  )
+                else
+                  PopupMenuItem(
+                    value: 'download',
+                    child: Row(
+                      children: [
+                        Icon(Icons.download, color: Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.of(context)?.download ?? 'Download'),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
         ],
@@ -521,6 +586,95 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       case 'download':
         _showDownloadDialog();
         break;
+      case 'delete_download':
+        _showDeleteDownloadDialog();
+        break;
+    }
+  }
+
+  void _showDeleteDownloadDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)?.delete ?? 'Delete Download'),
+        content: const Text('Are you sure you want to delete this downloaded video? You will need to download it again to watch offline.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteDownload();
+            },
+            child: Text(AppLocalizations.of(context)?.delete ?? 'Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteDownload() async {
+    try {
+      final getDownloadByVideoId = sl<GetDownloadByVideoId>();
+      final result = await getDownloadByVideoId(widget.video.id);
+
+      await result.fold(
+        (failure) async {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to find download: ${failure.message}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        (downloadItem) async {
+          if (downloadItem != null) {
+            final deleteDownload = sl<DeleteDownload>();
+            final deleteResult = await deleteDownload(downloadItem.id);
+
+            deleteResult.fold(
+              (failure) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to delete: ${failure.message}'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              (_) {
+                if (mounted) {
+                  setState(() {
+                    _isDownloaded = false;
+                    _isPlayingOffline = false;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Download deleted'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
+              },
+            );
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

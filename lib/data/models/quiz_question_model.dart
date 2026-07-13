@@ -90,9 +90,12 @@ class QuizQuestionModel extends QuizQuestion {
       options.map((o) => o is QuizOptionModel ? o : QuizOptionModel.fromEntity(o)).toList();
 
   /// Create from Map (Firestore compatible)
+  /// Note: When reading from Hive cache, nested maps are Map<dynamic, dynamic>
+  /// so we need to convert them to Map<String, dynamic>
   factory QuizQuestionModel.fromMap(Map<String, dynamic> map) {
     final optionsList = (map['options'] as List<dynamic>?)
-            ?.map((o) => QuizOptionModel.fromMap(o as Map<String, dynamic>))
+            ?.map((o) => QuizOptionModel.fromMap(
+                Map<String, dynamic>.from(o as Map)))
             .toList() ??
         [];
 

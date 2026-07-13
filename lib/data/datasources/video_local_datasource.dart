@@ -5,7 +5,9 @@ import '../models/lesson_model.dart';
 
 abstract class VideoLocalDataSource {
   Future<List<VideoModel>> getCachedVideos();
+  Future<List<VideoModel>> getCachedVideosByCourse(String? courseId);
   Future<List<LessonModel>> getCachedLessons();
+  Future<List<LessonModel>> getCachedLessonsByCourse(String? courseId);
   Future<VideoModel?> getCachedVideo(String id);
   Future<LessonModel?> getCachedLesson(String id);
   Future<void> cacheVideos(List<VideoModel> videos);
@@ -23,7 +25,7 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
     try {
       final box = await Hive.openBox<Map>(videoBoxName);
       final videos = <VideoModel>[];
-      
+
       for (final videoMap in box.values) {
         if (videoMap is Map<String, dynamic>) {
           videos.add(VideoModel.fromMap(videoMap));
@@ -31,10 +33,27 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
           videos.add(VideoModel.fromMap(Map<String, dynamic>.from(videoMap)));
         }
       }
-      
+
       return videos;
     } catch (e) {
       throw CacheException('Failed to get cached videos: $e');
+    }
+  }
+
+  @override
+  Future<List<VideoModel>> getCachedVideosByCourse(String? courseId) async {
+    try {
+      final allVideos = await getCachedVideos();
+
+      // If no courseId specified, return all videos
+      if (courseId == null || courseId.isEmpty) {
+        return allVideos;
+      }
+
+      // Filter videos by courseId
+      return allVideos.where((video) => video.courseId == courseId).toList();
+    } catch (e) {
+      throw CacheException('Failed to get cached videos by course: $e');
     }
   }
 
@@ -43,16 +62,39 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
     try {
       final box = await Hive.openBox<Map>(lessonBoxName);
       final lessons = <LessonModel>[];
-      
+
       for (final lessonMap in box.values) {
         if (lessonMap is Map<String, dynamic>) {
           lessons.add(LessonModel.fromJson(lessonMap));
+        } else if (lessonMap is Map) {
+          // Cast Map<dynamic, dynamic> from Hive to Map<String, dynamic>
+          final Map<String, dynamic> jsonData = Map<String, dynamic>.from(lessonMap);
+          lessons.add(LessonModel.fromJson(jsonData));
         }
       }
-      
+
       return lessons;
     } catch (e) {
       throw CacheException('Failed to get cached lessons: $e');
+    }
+  }
+
+  @override
+  Future<List<LessonModel>> getCachedLessonsByCourse(String? courseId) async {
+    try {
+      final allLessons = await getCachedLessons();
+
+      // If no courseId specified, return all lessons
+      if (courseId == null || courseId.isEmpty) {
+        return allLessons;
+      }
+
+      // Filter lessons by checking if any video in the lesson belongs to the course
+      return allLessons.where((lesson) {
+        return lesson.videos.any((video) => video.courseId == courseId);
+      }).toList();
+    } catch (e) {
+      throw CacheException('Failed to get cached lessons by course: $e');
     }
   }
 
@@ -81,11 +123,17 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
     try {
       final box = await Hive.openBox<Map>(lessonBoxName);
       final lessonMap = box.get(id);
-      
-      if (lessonMap != null && lessonMap is Map<String, dynamic>) {
-        return LessonModel.fromJson(lessonMap);
+
+      if (lessonMap != null) {
+        if (lessonMap is Map<String, dynamic>) {
+          return LessonModel.fromJson(lessonMap);
+        } else if (lessonMap is Map) {
+          // Cast Map<dynamic, dynamic> from Hive to Map<String, dynamic>
+          final Map<String, dynamic> jsonData = Map<String, dynamic>.from(lessonMap);
+          return LessonModel.fromJson(jsonData);
+        }
       }
-      
+
       return null;
     } catch (e) {
       throw CacheException('Failed to get cached lesson: $e');

@@ -14,6 +14,7 @@ class AppConstants {
   // URLs
   static const String privacyPolicyUrl = 'https://amazingelearning.com/privacy-policy/';
   static const String termsOfServiceUrl = 'https://www.amazingelearning.com/terms';
+  static const String appStoreDeveloperUrl = 'https://apps.apple.com/developer/dante-chu/id1663119067';
   
   // Premium
   static  String premiumProductId = Platform.isAndroid ? 'com.amazingelearning.taichi.premium' :  'com.amazingelearning.taichi.Premium';
