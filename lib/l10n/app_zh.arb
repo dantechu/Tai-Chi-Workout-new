@@ -358,5 +358,14 @@
     }
   },
   "amazingProgress": "进步惊人！继续学习！",
-  "celebrateCourseComplete": "您已掌握本课程。庆祝您的成就！"
+  "celebrateCourseComplete": "您已掌握本课程。庆祝您的成就！",
+
+  "premiumLesson": "高级课程",
+  "unlockToAccess": "解锁此课程以继续学习",
+  "watchAdToUnlock": "观看广告解锁",
+  "remainingUnlocksToday": "今日剩余{count}次免费解锁",
+  "or": "或",
+  "dailyLimitReached": "已达到每日免费解锁上限。升级到Pro享受无限访问！",
+  "upgradeToPro": "升级到Pro",
+  "adNotReady": "广告未就绪，请重试。"
 }

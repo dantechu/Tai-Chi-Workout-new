@@ -380,5 +380,14 @@
     }
   },
   "amazingProgress": "素晴らしい進歩です！学び続けましょう！",
-  "celebrateCourseComplete": "このコースをマスターしました。あなたの達成を祝いましょう！"
+  "celebrateCourseComplete": "このコースをマスターしました。あなたの達成を祝いましょう！",
+
+  "premiumLesson": "プレミアムレッスン",
+  "unlockToAccess": "このレッスンをロック解除して学習を続けましょう",
+  "watchAdToUnlock": "広告を見てロック解除",
+  "remainingUnlocksToday": "本日の無料ロック解除残り{count}回",
+  "or": "または",
+  "dailyLimitReached": "本日の無料ロック解除上限に達しました。Proにアップグレードして無制限アクセス！",
+  "upgradeToPro": "Proにアップグレード",
+  "adNotReady": "広告の準備ができていません。もう一度お試しください。"
 }

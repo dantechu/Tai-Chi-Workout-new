@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../core/services/ad_unlock_service.dart';
 import '../../core/services/thumbnail_cache_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/localization_helper.dart';
@@ -101,7 +102,8 @@ class _BookmarkCardState extends State<BookmarkCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final isLocked = video.isPremium && !isPremiumUser;
+    final isAdUnlocked = AdUnlockService().isLessonUnlocked(video.id);
+    final isLocked = video.isPremium && !isPremiumUser && !isAdUnlocked;
     final langCode = LocalizationHelper.getCurrentLanguageCode(context);
 
     return SizedBox(

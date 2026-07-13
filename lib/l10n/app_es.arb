@@ -380,5 +380,14 @@
     }
   },
   "amazingProgress": "¡Progreso increíble! ¡Sigue aprendiendo!",
-  "celebrateCourseComplete": "Has dominado este curso. ¡Celebra tu logro!"
+  "celebrateCourseComplete": "Has dominado este curso. ¡Celebra tu logro!",
+
+  "premiumLesson": "Lección Premium",
+  "unlockToAccess": "Desbloquea esta lección para seguir aprendiendo",
+  "watchAdToUnlock": "Ver anuncio para desbloquear",
+  "remainingUnlocksToday": "{count} desbloqueos gratuitos restantes hoy",
+  "or": "o",
+  "dailyLimitReached": "Límite diario de desbloqueos alcanzado. ¡Actualiza a Pro para acceso ilimitado!",
+  "upgradeToPro": "Actualizar a Pro",
+  "adNotReady": "Anuncio no disponible. Inténtalo de nuevo."
 }

@@ -859,4 +859,30 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get celebrateCourseComplete => 'このコースをマスターしました。あなたの達成を祝いましょう！';
+
+  @override
+  String get premiumLesson => 'プレミアムレッスン';
+
+  @override
+  String get unlockToAccess => 'このレッスンをロック解除して学習を続けましょう';
+
+  @override
+  String get watchAdToUnlock => '広告を見てロック解除';
+
+  @override
+  String remainingUnlocksToday(int count) {
+    return '本日の無料ロック解除残り$count回';
+  }
+
+  @override
+  String get or => 'または';
+
+  @override
+  String get dailyLimitReached => '本日の無料ロック解除上限に達しました。Proにアップグレードして無制限アクセス！';
+
+  @override
+  String get upgradeToPro => 'Proにアップグレード';
+
+  @override
+  String get adNotReady => '広告の準備ができていません。もう一度お試しください。';
 }

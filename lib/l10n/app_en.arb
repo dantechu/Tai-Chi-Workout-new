@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
 
-  "appName": "Excel Mastery",
+  "appName": "Tai Chi Workout",
   "@appName": {
     "description": "Application name"
   },
@@ -411,5 +411,19 @@
     }
   },
   "amazingProgress": "Amazing progress! Keep learning!",
-  "celebrateCourseComplete": "You've mastered this course. Celebrate your achievement!"
+  "celebrateCourseComplete": "You've mastered this course. Celebrate your achievement!",
+
+  "premiumLesson": "Premium Lesson",
+  "unlockToAccess": "Unlock this lesson to continue learning",
+  "watchAdToUnlock": "Watch Ad to Unlock",
+  "remainingUnlocksToday": "{count} free unlocks remaining today",
+  "@remainingUnlocksToday": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "or": "or",
+  "dailyLimitReached": "Daily free unlock limit reached. Upgrade to Pro for unlimited access!",
+  "upgradeToPro": "Upgrade to Pro",
+  "adNotReady": "Ad not ready. Please try again."
 }

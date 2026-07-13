@@ -380,5 +380,14 @@
     }
   },
   "amazingProgress": "Toller Fortschritt! Weiter lernen!",
-  "celebrateCourseComplete": "Sie haben diesen Kurs gemeistert. Feiern Sie Ihren Erfolg!"
+  "celebrateCourseComplete": "Sie haben diesen Kurs gemeistert. Feiern Sie Ihren Erfolg!",
+
+  "premiumLesson": "Premium-Lektion",
+  "unlockToAccess": "Schalten Sie diese Lektion frei, um weiterzulernen",
+  "watchAdToUnlock": "Werbung ansehen zum Freischalten",
+  "remainingUnlocksToday": "{count} kostenlose Freischaltungen heute verbleibend",
+  "or": "oder",
+  "dailyLimitReached": "Tägliches Freischaltlimit erreicht. Upgrade auf Pro für unbegrenzten Zugang!",
+  "upgradeToPro": "Auf Pro upgraden",
+  "adNotReady": "Werbung nicht bereit. Bitte erneut versuchen."
 }

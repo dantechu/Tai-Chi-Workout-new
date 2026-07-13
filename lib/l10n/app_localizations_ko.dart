@@ -861,4 +861,31 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get celebrateCourseComplete => '이 코스를 마스터했습니다. 성취를 축하하세요!';
+
+  @override
+  String get premiumLesson => '프리미엄 레슨';
+
+  @override
+  String get unlockToAccess => '이 레슨을 잠금 해제하여 학습을 계속하세요';
+
+  @override
+  String get watchAdToUnlock => '광고 시청 후 잠금 해제';
+
+  @override
+  String remainingUnlocksToday(int count) {
+    return '오늘 남은 무료 잠금 해제 $count회';
+  }
+
+  @override
+  String get or => '또는';
+
+  @override
+  String get dailyLimitReached =>
+      '일일 무료 잠금 해제 한도에 도달했습니다. Pro로 업그레이드하여 무제한 이용!';
+
+  @override
+  String get upgradeToPro => 'Pro로 업그레이드';
+
+  @override
+  String get adNotReady => '광고가 준비되지 않았습니다. 다시 시도해 주세요.';
 }

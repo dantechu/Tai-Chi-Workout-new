@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/services/premium_service.dart';
+import '../../../core/services/ad_unlock_service.dart';
+import '../../widgets/unlock_premium_bottom_sheet.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../domain/entities/section.dart';
@@ -652,10 +654,15 @@ class _HomePageState extends State<HomePage> {
     // Check if lesson is premium and user doesn't have premium access
     // Use singleton service - SINGLE SOURCE OF TRUTH
     final hasPremiumAccess = PremiumService().isPremium;
+    final isAdUnlocked = AdUnlockService().isLessonUnlocked(lesson.id);
 
-    if (lesson.isPremium && !hasPremiumAccess) {
-      // Navigate to premium unlock screen
-      Navigator.of(context).pushNamed('/premium');
+    if (lesson.isPremium && !hasPremiumAccess && !isAdUnlocked) {
+      // Show unlock bottom sheet with options: watch ad or upgrade to pro
+      UnlockPremiumBottomSheet.show(
+        context: context,
+        lesson: lesson,
+        sections: courseSections,
+      );
     } else {
       // Check if lesson can be played
       if (!LessonRouter.canPlayLesson(lesson)) {

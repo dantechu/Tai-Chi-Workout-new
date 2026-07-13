@@ -380,5 +380,14 @@
     }
   },
   "amazingProgress": "Progrès incroyable ! Continuez à apprendre !",
-  "celebrateCourseComplete": "Vous avez maîtrisé ce cours. Célébrez votre réussite !"
+  "celebrateCourseComplete": "Vous avez maîtrisé ce cours. Célébrez votre réussite !",
+
+  "premiumLesson": "Leçon Premium",
+  "unlockToAccess": "Débloquez cette leçon pour continuer à apprendre",
+  "watchAdToUnlock": "Regarder une pub pour débloquer",
+  "remainingUnlocksToday": "{count} déblocages gratuits restants aujourd'hui",
+  "or": "ou",
+  "dailyLimitReached": "Limite quotidienne atteinte. Passez à Pro pour un accès illimité !",
+  "upgradeToPro": "Passer à Pro",
+  "adNotReady": "Publicité non prête. Veuillez réessayer."
 }

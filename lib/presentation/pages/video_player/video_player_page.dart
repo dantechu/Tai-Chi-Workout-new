@@ -1,5 +1,5 @@
-import 'dart:ui';
 import '../../../core/services/premium_service.dart';
+import '../../../core/services/ad_unlock_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:chewie/chewie.dart';
@@ -59,10 +59,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       if (!mounted) return;
       // Use singleton service - SINGLE SOURCE OF TRUTH
       final hasPremiumAccess = PremiumService().isPremium;
+      final isAdUnlocked = AdUnlockService().isLessonUnlocked(widget.video.id);
 
-      if (widget.video.isPremium && !hasPremiumAccess) {
+      if (widget.video.isPremium && !hasPremiumAccess && !isAdUnlocked) {
         setState(() {
-          _error = AppLocalizations.of(context)?.premiumSubscriptionRequired ?? 'Premium subscription required to watch this video';
+          // Use default message - will be localized in build()
+          _error = 'Premium subscription required to watch this video';
           _isLoading = false;
         });
         return;
@@ -310,11 +312,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     _buildVideoInfo(),
                     const SizedBox(height: 24),
                     _buildVideoDescription(),
-                    if (widget.video.isPremium &&
-                        !PremiumService().isPremium) ...[
-                      const SizedBox(height: 24),
-                      _buildPremiumBadge(),
-                    ],
                   ],
                 ),
               ),
@@ -516,74 +513,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildPremiumBadge() {
-    final theme = Theme.of(context);
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                theme.colorScheme.primary.withValues(alpha: 0.12),
-                theme.colorScheme.primary.withValues(alpha: 0.06),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: theme.colorScheme.primary.withValues(alpha: 0.2),
-              width: 1,
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.workspace_premium_rounded,
-                  color: theme.colorScheme.primary,
-                  size: 22,
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)?.premiumContent ?? 'Premium Content',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      AppLocalizations.of(context)?.premiumContentDescription ?? 'This is exclusive premium content for subscribers.',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                        height: 1.4,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 

@@ -1709,6 +1709,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'ve mastered this course. Celebrate your achievement!'**
   String get celebrateCourseComplete;
+
+  /// No description provided for @premiumLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Lesson'**
+  String get premiumLesson;
+
+  /// No description provided for @unlockToAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock this lesson to continue learning'**
+  String get unlockToAccess;
+
+  /// No description provided for @watchAdToUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Ad to Unlock'**
+  String get watchAdToUnlock;
+
+  /// No description provided for @remainingUnlocksToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} free unlocks remaining today'**
+  String remainingUnlocksToday(int count);
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
+  /// No description provided for @dailyLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily free unlock limit reached. Upgrade to Pro for unlimited access!'**
+  String get dailyLimitReached;
+
+  /// No description provided for @upgradeToPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro'**
+  String get upgradeToPro;
+
+  /// No description provided for @adNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad not ready. Please try again.'**
+  String get adNotReady;
 }
 
 class _AppLocalizationsDelegate

@@ -880,4 +880,32 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get celebrateCourseComplete =>
       'Sie haben diesen Kurs gemeistert. Feiern Sie Ihren Erfolg!';
+
+  @override
+  String get premiumLesson => 'Premium-Lektion';
+
+  @override
+  String get unlockToAccess =>
+      'Schalten Sie diese Lektion frei, um weiterzulernen';
+
+  @override
+  String get watchAdToUnlock => 'Werbung ansehen zum Freischalten';
+
+  @override
+  String remainingUnlocksToday(int count) {
+    return '$count kostenlose Freischaltungen heute verbleibend';
+  }
+
+  @override
+  String get or => 'oder';
+
+  @override
+  String get dailyLimitReached =>
+      'Tägliches Freischaltlimit erreicht. Upgrade auf Pro für unbegrenzten Zugang!';
+
+  @override
+  String get upgradeToPro => 'Auf Pro upgraden';
+
+  @override
+  String get adNotReady => 'Werbung nicht bereit. Bitte erneut versuchen.';
 }

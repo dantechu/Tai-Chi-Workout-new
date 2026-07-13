@@ -18,8 +18,19 @@ class AdConstants {
   static const String testAndroidInterstitialId = 'ca-app-pub-3940256099942544/1033173712';
   static const String testIosInterstitialId = 'ca-app-pub-3940256099942544/4411468910';
 
+  // Production Rewarded Ads (replace XXXXXXXX with actual IDs when ready)
+  static const String androidRewardedId = 'ca-app-pub-9740790965972178/XXXXXXXX';
+  static const String iosRewardedId = 'ca-app-pub-9740790965972178/XXXXXXXX';
+
+  // Test Rewarded Ads (AdMob official test IDs)
+  static const String testAndroidRewardedId = 'ca-app-pub-3940256099942544/5224354917';
+  static const String testIosRewardedId = 'ca-app-pub-3940256099942544/1712485313';
+
   /// Cooldown duration between interstitial ads (in minutes)
   static const int interstitialCooldownMinutes = 5;
+
+  /// Maximum number of lessons that can be unlocked via rewarded ads per day
+  static const int maxDailyAdUnlocks = 3;
 
   /// Returns the appropriate banner ad unit ID based on platform and build mode
   /// - Debug/Profile mode: Uses test ad IDs
@@ -64,6 +75,18 @@ class AdConstants {
       return testAndroidInterstitialId;
     } else if (Platform.isIOS) {
       return testIosInterstitialId;
+    }
+    throw UnsupportedError('Unsupported platform');
+  }
+
+  /// Returns the appropriate rewarded ad unit ID based on platform and build mode
+  static String get rewardedAdUnitId {
+    final bool useTestAds = kDebugMode || kProfileMode;
+
+    if (Platform.isIOS) {
+      return useTestAds ? testIosRewardedId : iosRewardedId;
+    } else if (Platform.isAndroid) {
+      return useTestAds ? testAndroidRewardedId : androidRewardedId;
     }
     throw UnsupportedError('Unsupported platform');
   }

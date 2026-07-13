@@ -856,4 +856,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get celebrateCourseComplete => '您已掌握本课程。庆祝您的成就！';
+
+  @override
+  String get premiumLesson => '高级课程';
+
+  @override
+  String get unlockToAccess => '解锁此课程以继续学习';
+
+  @override
+  String get watchAdToUnlock => '观看广告解锁';
+
+  @override
+  String remainingUnlocksToday(int count) {
+    return '今日剩余$count次免费解锁';
+  }
+
+  @override
+  String get or => '或';
+
+  @override
+  String get dailyLimitReached => '已达到每日免费解锁上限。升级到Pro享受无限访问！';
+
+  @override
+  String get upgradeToPro => '升级到Pro';
+
+  @override
+  String get adNotReady => '广告未就绪，请重试。';
 }

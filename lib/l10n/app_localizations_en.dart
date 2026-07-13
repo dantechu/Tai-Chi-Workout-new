@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'Excel Mastery';
+  String get appName => 'Tai Chi Workout';
 
   @override
   String get home => 'Home';
@@ -878,4 +878,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get celebrateCourseComplete =>
       'You\'ve mastered this course. Celebrate your achievement!';
+
+  @override
+  String get premiumLesson => 'Premium Lesson';
+
+  @override
+  String get unlockToAccess => 'Unlock this lesson to continue learning';
+
+  @override
+  String get watchAdToUnlock => 'Watch Ad to Unlock';
+
+  @override
+  String remainingUnlocksToday(int count) {
+    return '$count free unlocks remaining today';
+  }
+
+  @override
+  String get or => 'or';
+
+  @override
+  String get dailyLimitReached =>
+      'Daily free unlock limit reached. Upgrade to Pro for unlimited access!';
+
+  @override
+  String get upgradeToPro => 'Upgrade to Pro';
+
+  @override
+  String get adNotReady => 'Ad not ready. Please try again.';
 }
