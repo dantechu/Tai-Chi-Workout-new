@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/services/interstitial_ad_service.dart';
+import '../../core/services/premium_service.dart';
 import '../courses/bloc/courses_bloc.dart';
 import '../courses/bloc/courses_state.dart';
 import '../../core/services/next_lesson_service.dart';
@@ -97,7 +98,13 @@ class LessonCompletionDialog extends StatelessWidget {
       );
     }
 
+    // Check if user can access the next lesson (free lesson or premium user)
+    final nextLesson = nextLessonResult?.nextLesson;
+    final canAccessNextLesson = nextLesson != null &&
+        (!nextLesson.isPremium || PremiumService().isPremium);
+
     final hasNextLesson = nextLessonResult?.hasNextLesson ?? false;
+    final showNextLessonButton = hasNextLesson && canAccessNextLesson;
     final isCourseComplete = nextLessonResult?.isCourseComplete ?? false;
 
     // If course is complete, show the course complete dialog
@@ -163,7 +170,7 @@ class LessonCompletionDialog extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Buttons
-            if (hasNextLesson) ...[
+            if (showNextLessonButton) ...[
               // Next Lesson button (primary)
               SizedBox(
                 width: double.infinity,
