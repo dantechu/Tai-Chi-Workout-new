@@ -330,5 +330,21 @@
   "studyAgain": "다시 학습",
   "xCorrectYWrong": "{correct}개 정답, {wrong}개 오답",
   "lifetimeAccess": "평생 이용권",
-  "oneTimePayment": "일회성 결제"
+  "oneTimePayment": "일회성 결제",
+
+  "lessonCompleted": "레슨 완료!",
+  "wouldYouLikeToContinue": "다음 레슨으로 계속하시겠습니까?",
+  "nextLesson": "다음 레슨",
+  "courseCompleted": "코스 완료!",
+  "youHaveCompletedCourse": "이 코스의 모든 레슨을 완료했습니다.",
+  "backToHome": "홈으로 돌아가기",
+  "continueToNextLesson": "다음 레슨으로 계속하기",
+  "youCompletedLesson": "완료: {lessonTitle}",
+  "@youCompletedLesson": {
+    "placeholders": {
+      "lessonTitle": {"type": "String"}
+    }
+  },
+  "amazingProgress": "놀라운 진전! 계속 배우세요!",
+  "celebrateCourseComplete": "이 코스를 마스터했습니다. 성취를 축하하세요!"
 }

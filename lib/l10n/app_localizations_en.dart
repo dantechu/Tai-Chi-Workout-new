@@ -843,4 +843,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get oneTimePayment => 'One-time payment';
+
+  @override
+  String get lessonCompleted => 'Lesson Completed!';
+
+  @override
+  String get wouldYouLikeToContinue =>
+      'Would you like to continue to the next lesson?';
+
+  @override
+  String get nextLesson => 'Next Lesson';
+
+  @override
+  String get courseCompleted => 'Course Completed!';
+
+  @override
+  String get youHaveCompletedCourse =>
+      'You have completed all lessons in this course.';
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get continueToNextLesson => 'Continue to Next Lesson';
+
+  @override
+  String youCompletedLesson(String lessonTitle) {
+    return 'You completed: $lessonTitle';
+  }
+
+  @override
+  String get amazingProgress => 'Amazing progress! Keep learning!';
+
+  @override
+  String get celebrateCourseComplete =>
+      'You\'ve mastered this course. Celebrate your achievement!';
 }

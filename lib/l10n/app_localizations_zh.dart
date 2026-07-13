@@ -824,4 +824,36 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get oneTimePayment => '一次性付款';
+
+  @override
+  String get lessonCompleted => '课程完成！';
+
+  @override
+  String get wouldYouLikeToContinue => '您想继续下一课吗？';
+
+  @override
+  String get nextLesson => '下一课';
+
+  @override
+  String get courseCompleted => '课程完成！';
+
+  @override
+  String get youHaveCompletedCourse => '您已完成本课程的所有课程。';
+
+  @override
+  String get backToHome => '返回首页';
+
+  @override
+  String get continueToNextLesson => '继续下一课';
+
+  @override
+  String youCompletedLesson(String lessonTitle) {
+    return '已完成：$lessonTitle';
+  }
+
+  @override
+  String get amazingProgress => '进步惊人！继续学习！';
+
+  @override
+  String get celebrateCourseComplete => '您已掌握本课程。庆祝您的成就！';
 }

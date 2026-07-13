@@ -364,5 +364,21 @@
     }
   },
   "lifetimeAccess": "Lebenslanger Zugang",
-  "oneTimePayment": "Einmalzahlung"
+  "oneTimePayment": "Einmalzahlung",
+
+  "lessonCompleted": "Lektion abgeschlossen!",
+  "wouldYouLikeToContinue": "Möchten Sie mit der nächsten Lektion fortfahren?",
+  "nextLesson": "Nächste Lektion",
+  "courseCompleted": "Kurs abgeschlossen!",
+  "youHaveCompletedCourse": "Sie haben alle Lektionen in diesem Kurs abgeschlossen.",
+  "backToHome": "Zurück zur Startseite",
+  "continueToNextLesson": "Weiter zur nächsten Lektion",
+  "youCompletedLesson": "Sie haben abgeschlossen: {lessonTitle}",
+  "@youCompletedLesson": {
+    "placeholders": {
+      "lessonTitle": {"type": "String"}
+    }
+  },
+  "amazingProgress": "Toller Fortschritt! Weiter lernen!",
+  "celebrateCourseComplete": "Sie haben diesen Kurs gemeistert. Feiern Sie Ihren Erfolg!"
 }

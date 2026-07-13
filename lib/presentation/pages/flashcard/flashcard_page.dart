@@ -2,12 +2,19 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
+import '../../../domain/entities/section.dart';
+import '../../../domain/entities/course.dart';
 import '../../../domain/entities/flash_card.dart';
 import '../../../core/utils/localization_helper.dart';
+import '../../../core/services/interstitial_ad_service.dart';
+import '../../../core/services/next_lesson_service.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
+import '../../courses/bloc/courses_bloc.dart';
+import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
+import '../lessons/lesson_router.dart';
 
 /// Page for flashcard study sessions with spaced repetition-style rating.
 ///
@@ -17,12 +24,15 @@ import '../../widgets/banner_ad_widget.dart';
 /// - Progress tracking with correct/wrong counts
 /// - Results screen with score
 /// - Support for multilingual content
+/// - Next lesson navigation when passed
 class FlashcardPage extends StatefulWidget {
   final Video lesson;
+  final List<Section>? sections;
 
   const FlashcardPage({
     super.key,
     required this.lesson,
+    this.sections,
   });
 
   @override
@@ -114,7 +124,7 @@ class _FlashcardPageState extends State<FlashcardPage>
           courseId: widget.lesson.courseId,
           lessonType: 'flashcard',
           scorePercentage: scorePercentage.toInt(),
-          durationSeconds: widget.lesson.duration?.inSeconds,
+          durationSeconds: widget.lesson.duration.inSeconds,
         ),
       );
     }
@@ -527,28 +537,76 @@ class _FlashcardPageState extends State<FlashcardPage>
             ),
             const SizedBox(height: 48),
 
-            // Action buttons
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: _restartSession,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+            // Action buttons - show Next Lesson as primary if passed
+            if (passed) ...[
+              // Next Lesson button (primary)
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: () => _onNextLessonPressed(context),
+                  icon: const Icon(Icons.arrow_forward_rounded),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
-                ),
-                child: Text(
-                  l10n?.studyAgain ?? 'Study Again',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                  label: Text(
+                    l10n?.nextLesson ?? 'Next Lesson',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-            ),
+              const SizedBox(height: 16),
+              // Study Again button (secondary)
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: OutlinedButton(
+                  onPressed: _restartSession,
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    l10n?.studyAgain ?? 'Study Again',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ] else ...[
+              // Study Again button (primary) when failed
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: _restartSession,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    l10n?.studyAgain ?? 'Study Again',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
@@ -562,7 +620,7 @@ class _FlashcardPageState extends State<FlashcardPage>
                 ),
                 child: Text(
                   l10n?.backToLessons ?? 'Back to Lessons',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -572,6 +630,62 @@ class _FlashcardPageState extends State<FlashcardPage>
           ],
         ),
       ),
+    );
+  }
+
+  void _onNextLessonPressed(BuildContext context) {
+    // Get the current course from CoursesBloc
+    Course? currentCourse;
+    try {
+      final coursesState = context.read<CoursesBloc>().state;
+      if (coursesState is CoursesLoaded) {
+        // First try selectedCourse, then find by courseId
+        currentCourse = coursesState.selectedCourse;
+        if (currentCourse == null && widget.lesson.courseId != null) {
+          currentCourse = coursesState.courses.where(
+            (c) => c.id == widget.lesson.courseId,
+          ).firstOrNull;
+        }
+      } else if (coursesState is SelectedCourseLoaded) {
+        currentCourse = coursesState.course;
+      } else if (coursesState is CourseSelected) {
+        currentCourse = coursesState.course;
+      }
+    } catch (_) {
+      // CoursesBloc not available
+    }
+
+    if (currentCourse == null) {
+      // No course available, just go back
+      Navigator.pop(context);
+      return;
+    }
+
+    // Find next lesson
+    final nextLessonResult = NextLessonService.findNextLesson(
+      currentLesson: widget.lesson,
+      course: currentCourse,
+    );
+
+    if (!nextLessonResult.hasNextLesson) {
+      // Course complete - go back to home
+      Navigator.pop(context);
+      return;
+    }
+
+    // Get all sections for navigation
+    final allSections = widget.sections ?? currentCourse.sections;
+
+    // Show interstitial ad if applicable, then navigate
+    InterstitialAdService().showAdIfReady(
+      onAdDismissed: () {
+        // Use replaceWithLesson so we don't stack lesson pages
+        LessonRouter.replaceWithLesson(
+          context,
+          nextLessonResult.nextLesson!,
+          sections: allSections,
+        );
+      },
     );
   }
 }

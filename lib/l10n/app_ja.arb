@@ -364,5 +364,21 @@
     }
   },
   "lifetimeAccess": "永久アクセス",
-  "oneTimePayment": "一回限りのお支払い"
+  "oneTimePayment": "一回限りのお支払い",
+
+  "lessonCompleted": "レッスン完了！",
+  "wouldYouLikeToContinue": "次のレッスンに進みますか？",
+  "nextLesson": "次のレッスン",
+  "courseCompleted": "コース完了！",
+  "youHaveCompletedCourse": "このコースのすべてのレッスンを完了しました。",
+  "backToHome": "ホームに戻る",
+  "continueToNextLesson": "次のレッスンに進む",
+  "youCompletedLesson": "完了しました：{lessonTitle}",
+  "@youCompletedLesson": {
+    "placeholders": {
+      "lessonTitle": {"type": "String"}
+    }
+  },
+  "amazingProgress": "素晴らしい進歩です！学び続けましょう！",
+  "celebrateCourseComplete": "このコースをマスターしました。あなたの達成を祝いましょう！"
 }

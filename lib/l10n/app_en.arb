@@ -395,5 +395,21 @@
     }
   },
   "lifetimeAccess": "Lifetime Access",
-  "oneTimePayment": "One-time payment"
+  "oneTimePayment": "One-time payment",
+
+  "lessonCompleted": "Lesson Completed!",
+  "wouldYouLikeToContinue": "Would you like to continue to the next lesson?",
+  "nextLesson": "Next Lesson",
+  "courseCompleted": "Course Completed!",
+  "youHaveCompletedCourse": "You have completed all lessons in this course.",
+  "backToHome": "Back to Home",
+  "continueToNextLesson": "Continue to Next Lesson",
+  "youCompletedLesson": "You completed: {lessonTitle}",
+  "@youCompletedLesson": {
+    "placeholders": {
+      "lessonTitle": {"type": "String"}
+    }
+  },
+  "amazingProgress": "Amazing progress! Keep learning!",
+  "celebrateCourseComplete": "You've mastered this course. Celebrate your achievement!"
 }

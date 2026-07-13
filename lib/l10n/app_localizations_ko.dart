@@ -829,4 +829,36 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get oneTimePayment => '일회성 결제';
+
+  @override
+  String get lessonCompleted => '레슨 완료!';
+
+  @override
+  String get wouldYouLikeToContinue => '다음 레슨으로 계속하시겠습니까?';
+
+  @override
+  String get nextLesson => '다음 레슨';
+
+  @override
+  String get courseCompleted => '코스 완료!';
+
+  @override
+  String get youHaveCompletedCourse => '이 코스의 모든 레슨을 완료했습니다.';
+
+  @override
+  String get backToHome => '홈으로 돌아가기';
+
+  @override
+  String get continueToNextLesson => '다음 레슨으로 계속하기';
+
+  @override
+  String youCompletedLesson(String lessonTitle) {
+    return '완료: $lessonTitle';
+  }
+
+  @override
+  String get amazingProgress => '놀라운 진전! 계속 배우세요!';
+
+  @override
+  String get celebrateCourseComplete => '이 코스를 마스터했습니다. 성취를 축하하세요!';
 }

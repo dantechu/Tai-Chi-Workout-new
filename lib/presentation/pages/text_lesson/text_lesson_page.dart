@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
+import '../../../domain/entities/section.dart';
+import '../../../domain/entities/course.dart';
 import '../../../core/utils/quill_delta_parser.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../bloc/lesson_completion/lesson_completion_state.dart';
+import '../../courses/bloc/courses_bloc.dart';
+import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
+import '../../widgets/lesson_completion_dialog.dart';
 
 /// Page for displaying text/article lessons.
 ///
@@ -17,12 +22,15 @@ import '../../widgets/banner_ad_widget.dart';
 /// - Rich text content rendered from Quill Delta JSON
 /// - Estimated read time display
 /// - Support for multilingual content
+/// - Lesson completion dialog with next lesson navigation
 class TextLessonPage extends StatelessWidget {
   final Video lesson;
+  final List<Section>? sections;
 
   const TextLessonPage({
     super.key,
     required this.lesson,
+    this.sections,
   });
 
   @override
@@ -133,7 +141,7 @@ class TextLessonPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.check_circle,
                   color: Colors.green,
                   size: 24,
@@ -141,7 +149,7 @@ class TextLessonPage extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   l10n?.completed ?? 'Completed',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -156,27 +164,11 @@ class TextLessonPage extends StatelessWidget {
           width: double.infinity,
           height: 56,
           child: ElevatedButton.icon(
-            onPressed: () {
-              context.read<LessonCompletionBloc>().add(
-                MarkLessonCompleted(
-                  lesson.id,
-                  courseId: lesson.courseId,
-                  lessonType: 'text',
-                  durationSeconds: lesson.duration?.inSeconds,
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n?.lessonMarkedComplete ?? 'Lesson marked as complete!'),
-                  backgroundColor: Colors.green,
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
+            onPressed: () => _onMarkComplete(context),
             icon: const Icon(Icons.check_circle_outline),
             label: Text(
               l10n?.markAsComplete ?? 'Mark as Complete',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -191,6 +183,47 @@ class TextLessonPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void _onMarkComplete(BuildContext context) {
+    // Mark the lesson as completed
+    context.read<LessonCompletionBloc>().add(
+      MarkLessonCompleted(
+        lesson.id,
+        courseId: lesson.courseId,
+        lessonType: 'text',
+        durationSeconds: lesson.duration.inSeconds,
+      ),
+    );
+
+    // Get the current course from CoursesBloc
+    Course? currentCourse;
+    try {
+      final coursesState = context.read<CoursesBloc>().state;
+      if (coursesState is CoursesLoaded) {
+        // First try selectedCourse, then find by courseId
+        currentCourse = coursesState.selectedCourse;
+        if (currentCourse == null && lesson.courseId != null) {
+          currentCourse = coursesState.courses.where(
+            (c) => c.id == lesson.courseId,
+          ).firstOrNull;
+        }
+      } else if (coursesState is SelectedCourseLoaded) {
+        currentCourse = coursesState.course;
+      } else if (coursesState is CourseSelected) {
+        currentCourse = coursesState.course;
+      }
+    } catch (_) {
+      // CoursesBloc not available
+    }
+
+    // Show the completion dialog
+    LessonCompletionDialog.show(
+      context: context,
+      completedLesson: lesson,
+      course: currentCourse,
+      sections: sections ?? currentCourse?.sections,
     );
   }
 

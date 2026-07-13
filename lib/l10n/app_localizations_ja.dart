@@ -827,4 +827,36 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get oneTimePayment => '一回限りのお支払い';
+
+  @override
+  String get lessonCompleted => 'レッスン完了！';
+
+  @override
+  String get wouldYouLikeToContinue => '次のレッスンに進みますか？';
+
+  @override
+  String get nextLesson => '次のレッスン';
+
+  @override
+  String get courseCompleted => 'コース完了！';
+
+  @override
+  String get youHaveCompletedCourse => 'このコースのすべてのレッスンを完了しました。';
+
+  @override
+  String get backToHome => 'ホームに戻る';
+
+  @override
+  String get continueToNextLesson => '次のレッスンに進む';
+
+  @override
+  String youCompletedLesson(String lessonTitle) {
+    return '完了しました：$lessonTitle';
+  }
+
+  @override
+  String get amazingProgress => '素晴らしい進歩です！学び続けましょう！';
+
+  @override
+  String get celebrateCourseComplete => 'このコースをマスターしました。あなたの達成を祝いましょう！';
 }

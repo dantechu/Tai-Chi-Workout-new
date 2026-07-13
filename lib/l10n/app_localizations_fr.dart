@@ -845,4 +845,39 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get oneTimePayment => 'Paiement unique';
+
+  @override
+  String get lessonCompleted => 'Leçon terminée !';
+
+  @override
+  String get wouldYouLikeToContinue =>
+      'Voulez-vous continuer avec la prochaine leçon ?';
+
+  @override
+  String get nextLesson => 'Leçon suivante';
+
+  @override
+  String get courseCompleted => 'Cours terminé !';
+
+  @override
+  String get youHaveCompletedCourse =>
+      'Vous avez terminé toutes les leçons de ce cours.';
+
+  @override
+  String get backToHome => 'Retour à l\'accueil';
+
+  @override
+  String get continueToNextLesson => 'Continuer vers la prochaine leçon';
+
+  @override
+  String youCompletedLesson(String lessonTitle) {
+    return 'Vous avez terminé : $lessonTitle';
+  }
+
+  @override
+  String get amazingProgress => 'Progrès incroyable ! Continuez à apprendre !';
+
+  @override
+  String get celebrateCourseComplete =>
+      'Vous avez maîtrisé ce cours. Célébrez votre réussite !';
 }

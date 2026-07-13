@@ -1649,6 +1649,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'One-time payment'**
   String get oneTimePayment;
+
+  /// No description provided for @lessonCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Completed!'**
+  String get lessonCompleted;
+
+  /// No description provided for @wouldYouLikeToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to continue to the next lesson?'**
+  String get wouldYouLikeToContinue;
+
+  /// No description provided for @nextLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Lesson'**
+  String get nextLesson;
+
+  /// No description provided for @courseCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Completed!'**
+  String get courseCompleted;
+
+  /// No description provided for @youHaveCompletedCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'You have completed all lessons in this course.'**
+  String get youHaveCompletedCourse;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHome;
+
+  /// No description provided for @continueToNextLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Next Lesson'**
+  String get continueToNextLesson;
+
+  /// No description provided for @youCompletedLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'You completed: {lessonTitle}'**
+  String youCompletedLesson(String lessonTitle);
+
+  /// No description provided for @amazingProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Amazing progress! Keep learning!'**
+  String get amazingProgress;
+
+  /// No description provided for @celebrateCourseComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve mastered this course. Celebrate your achievement!'**
+  String get celebrateCourseComplete;
 }
 
 class _AppLocalizationsDelegate

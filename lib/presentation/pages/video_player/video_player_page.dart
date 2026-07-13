@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/localization_helper.dart';
 import '../../../domain/entities/section.dart';
+import '../../../domain/entities/course.dart';
 import '../../../domain/entities/video.dart';
 import '../../../domain/usecases/download_usecases.dart';
 import '../../../injection_container.dart';
@@ -19,7 +20,10 @@ import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
 import '../../bloc/premium/premium_bloc.dart';
 import '../../bloc/premium/premium_state.dart';
+import '../../courses/bloc/courses_bloc.dart';
+import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
+import '../../widgets/lesson_completion_dialog.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final Video video;
@@ -41,6 +45,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   bool _isLoading = true;
   String? _error;
   bool _hasMarkedComplete = false;
+  bool _hasShownCompletionDialog = false;
 
   @override
   void initState() {
@@ -149,8 +154,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   void _checkVideoProgress() {
-    if (_hasMarkedComplete) return;
-
     final position = _videoPlayerController.value.position;
     final duration = _videoPlayerController.value.duration;
 
@@ -158,18 +161,58 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
     final progress = position.inMilliseconds / duration.inMilliseconds;
 
-    // Mark as complete if progress is 90% or more
-    if (progress >= 0.9) {
+    // Mark as complete if progress is 90% or more (background tracking)
+    if (!_hasMarkedComplete && progress >= 0.9) {
       _hasMarkedComplete = true;
       context.read<LessonCompletionBloc>().add(
         MarkLessonCompleted(
           widget.video.id,
           courseId: widget.video.courseId,
           lessonType: 'video',
-          durationSeconds: widget.video.duration?.inSeconds,
+          durationSeconds: widget.video.duration.inSeconds,
         ),
       );
     }
+
+    // Show completion dialog at 100% (or when video ends)
+    if (!_hasShownCompletionDialog && progress >= 0.99) {
+      _hasShownCompletionDialog = true;
+      _showCompletionDialog();
+    }
+  }
+
+  void _showCompletionDialog() {
+    // Get the current course from CoursesBloc
+    Course? currentCourse;
+    try {
+      final coursesState = context.read<CoursesBloc>().state;
+      if (coursesState is CoursesLoaded) {
+        // First try selectedCourse, then find by courseId
+        currentCourse = coursesState.selectedCourse;
+        if (currentCourse == null && widget.video.courseId != null) {
+          currentCourse = coursesState.courses.where(
+            (c) => c.id == widget.video.courseId,
+          ).firstOrNull;
+        }
+      } else if (coursesState is SelectedCourseLoaded) {
+        currentCourse = coursesState.course;
+      } else if (coursesState is CourseSelected) {
+        currentCourse = coursesState.course;
+      }
+    } catch (_) {
+      // CoursesBloc not available
+    }
+
+    // Pause the video before showing dialog
+    _videoPlayerController.pause();
+
+    // Show the completion dialog
+    LessonCompletionDialog.show(
+      context: context,
+      completedLesson: widget.video,
+      course: currentCourse,
+      sections: widget.sections ?? currentCourse?.sections,
+    );
   }
 
   @override

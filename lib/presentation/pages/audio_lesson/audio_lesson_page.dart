@@ -3,10 +3,15 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/video.dart';
+import '../../../domain/entities/section.dart';
+import '../../../domain/entities/course.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
+import '../../courses/bloc/courses_bloc.dart';
+import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
+import '../../widgets/lesson_completion_dialog.dart';
 
 /// Page for playing audio lessons (podcasts, guided meditations, etc.)
 ///
@@ -17,12 +22,15 @@ import '../../widgets/banner_ad_widget.dart';
 /// - Title and description below controls
 /// - Scrollable content
 /// - Banner ad at bottom
+/// - Lesson completion dialog with next lesson navigation
 class AudioLessonPage extends StatefulWidget {
   final Video lesson;
+  final List<Section>? sections;
 
   const AudioLessonPage({
     super.key,
     required this.lesson,
+    this.sections,
   });
 
   @override
@@ -37,6 +45,7 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
   bool _isLoading = true;
   String? _error;
   bool _hasMarkedComplete = false;
+  bool _hasShownCompletionDialog = false;
 
   @override
   void initState() {
@@ -77,6 +86,11 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
           _position = Duration.zero;
           _isPlaying = false;
         });
+        // Show completion dialog when audio finishes
+        if (!_hasShownCompletionDialog) {
+          _hasShownCompletionDialog = true;
+          _showCompletionDialog();
+        }
       });
 
       // Load the audio
@@ -104,7 +118,7 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
           widget.lesson.id,
           courseId: widget.lesson.courseId,
           lessonType: 'audio',
-          durationSeconds: widget.lesson.duration?.inSeconds,
+          durationSeconds: widget.lesson.duration.inSeconds,
         ),
       );
     }
@@ -114,6 +128,37 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
   void dispose() {
     _audioPlayer.dispose();
     super.dispose();
+  }
+
+  void _showCompletionDialog() {
+    // Get the current course from CoursesBloc
+    Course? currentCourse;
+    try {
+      final coursesState = context.read<CoursesBloc>().state;
+      if (coursesState is CoursesLoaded) {
+        // First try selectedCourse, then find by courseId
+        currentCourse = coursesState.selectedCourse;
+        if (currentCourse == null && widget.lesson.courseId != null) {
+          currentCourse = coursesState.courses.where(
+            (c) => c.id == widget.lesson.courseId,
+          ).firstOrNull;
+        }
+      } else if (coursesState is SelectedCourseLoaded) {
+        currentCourse = coursesState.course;
+      } else if (coursesState is CourseSelected) {
+        currentCourse = coursesState.course;
+      }
+    } catch (_) {
+      // CoursesBloc not available
+    }
+
+    // Show the completion dialog
+    LessonCompletionDialog.show(
+      context: context,
+      completedLesson: widget.lesson,
+      course: currentCourse,
+      sections: widget.sections ?? currentCourse?.sections,
+    );
   }
 
   Future<void> _playPause() async {

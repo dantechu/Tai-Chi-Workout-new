@@ -62,16 +62,28 @@ class LessonRouter {
         );
 
       case LessonType.audio:
-        return AudioLessonPage(lesson: lesson);
+        return AudioLessonPage(
+          lesson: lesson,
+          sections: sections,
+        );
 
       case LessonType.text:
-        return TextLessonPage(lesson: lesson);
+        return TextLessonPage(
+          lesson: lesson,
+          sections: sections,
+        );
 
       case LessonType.quiz:
-        return QuizPage(lesson: lesson);
+        return QuizPage(
+          lesson: lesson,
+          sections: sections,
+        );
 
       case LessonType.flashcard:
-        return FlashcardPage(lesson: lesson);
+        return FlashcardPage(
+          lesson: lesson,
+          sections: sections,
+        );
     }
   }
 
