@@ -1,7 +1,10 @@
+import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -74,7 +77,50 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(const TaiChiWorkoutApp());
+  // ScreenUtilInit MUST be at the very top of the widget tree
+  // Platform-specific design sizes for pixel-perfect rendering on flagship devices:
+  // - iOS: iPhone 16 Pro Max (440x956) - iOS flagship baseline
+  // - Android: Pixel 9 Pro (412x915) - Android flagship baseline
+  //
+  // ADAPTIVE SCALING STRATEGY:
+  // - Phones smaller than design size: Scale DOWN proportionally
+  // - Phones at design size: Perfect 1:1 ratio
+  // - Tablets/larger devices: Use actual screen size as design size (NO scaling up)
+  runApp(
+    ScreenUtilInit(
+      designSize: Platform.isIOS
+          ? const Size(440, 956) // iPhone 16 Pro Max
+          : const Size(412, 915), // Pixel 9 Pro
+      minTextAdapt: false,
+      splitScreenMode: true,
+      builder: (context, child) {
+        // Get actual screen dimensions in logical pixels (dp)
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+
+        // ROBUST TABLET DETECTION using industry-standard 600dp breakpoint
+        // Standard breakpoints:
+        // - Phones: < 600dp shortest side
+        // - Tablets: >= 600dp shortest side
+        final shortestSide = min(screenWidth, screenHeight);
+        final isTablet = shortestSide >= 600;
+
+        // Re-initialize ScreenUtil with adaptive design size for tablets
+        if (isTablet) {
+          // For tablets: Use actual screen size as design size
+          // This creates a 1:1 ratio (NO scaling for fonts, spacing, icons, etc.)
+          ScreenUtil.init(
+            context,
+            designSize: Size(screenWidth, screenHeight),
+            minTextAdapt: false,
+            splitScreenMode: true,
+          );
+        }
+
+        return const TaiChiWorkoutApp();
+      },
+    ),
+  );
 }
 
 class TaiChiWorkoutApp extends StatefulWidget {

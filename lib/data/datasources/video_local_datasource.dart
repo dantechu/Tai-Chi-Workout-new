@@ -34,6 +34,13 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
         }
       }
 
+      // Sort videos by sectionNumber first, then by rowNumber to preserve server order
+      videos.sort((a, b) {
+        final sectionCompare = a.sectionNumber.compareTo(b.sectionNumber);
+        if (sectionCompare != 0) return sectionCompare;
+        return a.rowNumber.compareTo(b.rowNumber);
+      });
+
       return videos;
     } catch (e) {
       throw CacheException('Failed to get cached videos: $e');
@@ -72,6 +79,13 @@ class VideoLocalDataSourceImpl implements VideoLocalDataSource {
           lessons.add(LessonModel.fromJson(jsonData));
         }
       }
+
+      // Sort lessons by sectionNumber first, then by order to preserve server order
+      lessons.sort((a, b) {
+        final sectionCompare = a.sectionNumber.compareTo(b.sectionNumber);
+        if (sectionCompare != 0) return sectionCompare;
+        return a.order.compareTo(b.order);
+      });
 
       return lessons;
     } catch (e) {
