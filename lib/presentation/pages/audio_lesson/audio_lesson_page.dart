@@ -18,6 +18,8 @@ import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
 import '../../widgets/lesson_completion_dialog.dart';
+import '../../widgets/section_completion_dialog.dart';
+import '../../bloc/lesson_completion/lesson_completion_state.dart';
 
 /// Page for playing audio lessons (podcasts, guided meditations, etc.)
 ///
@@ -176,7 +178,10 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
     super.dispose();
   }
 
-  void _showCompletionDialog() {
+  void _showCompletionDialog() async {
+    // Get the completion state before showing dialog
+    final completionState = context.read<LessonCompletionBloc>().state;
+
     // Get the current course from CoursesBloc
     Course? currentCourse;
     try {
@@ -198,13 +203,39 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
       // CoursesBloc not available
     }
 
+    final availableSections = widget.sections ?? currentCourse?.sections;
+
     // Show the completion dialog
-    LessonCompletionDialog.show(
+    await LessonCompletionDialog.show(
       context: context,
       completedLesson: widget.lesson,
       course: currentCourse,
-      sections: widget.sections ?? currentCourse?.sections,
+      sections: availableSections,
     );
+
+    // Check for section completion after lesson dialog is dismissed
+    if (completionState is LessonCompletionLoaded && availableSections != null) {
+      // Find the section containing this lesson
+      for (final section in availableSections) {
+        final lessonInSection = section.lessons.any((l) => l.id == widget.lesson.id);
+        if (lessonInSection) {
+          // Check if all lessons in this section are now completed
+          final isSectionComplete = SectionCompletionDialog.isSectionCompleted(
+            section: section,
+            currentLesson: widget.lesson,
+            completionState: completionState,
+          );
+
+          if (isSectionComplete && mounted) {
+            await SectionCompletionDialog.show(
+              context: context,
+              completedSection: section,
+            );
+          }
+          break;
+        }
+      }
+    }
   }
 
   Future<void> _playPause() async {

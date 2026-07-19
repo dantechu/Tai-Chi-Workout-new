@@ -1877,6 +1877,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Slowing'**
   String get slowing;
+
+  /// No description provided for @sectionCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Section Completed!'**
+  String get sectionCompleted;
+
+  /// No description provided for @sectionCompletedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Great job! You\'ve completed all lessons in this section.'**
+  String get sectionCompletedMessage;
+
+  /// No description provided for @continueText.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueText;
 }
 
 class _AppLocalizationsDelegate

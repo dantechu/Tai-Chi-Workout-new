@@ -11,9 +11,11 @@ import '../../../core/services/premium_service.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../bloc/lesson_completion/lesson_completion_bloc.dart';
 import '../../bloc/lesson_completion/lesson_completion_event.dart';
+import '../../bloc/lesson_completion/lesson_completion_state.dart';
 import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
+import '../../widgets/section_completion_dialog.dart';
 import '../lessons/lesson_router.dart';
 
 /// Page for interactive quiz lessons.
@@ -524,7 +526,10 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  void _onNextLessonPressed(BuildContext context) {
+  void _onNextLessonPressed(BuildContext context) async {
+    // Get the completion state before navigating
+    final completionState = context.read<LessonCompletionBloc>().state;
+
     // Get the current course from CoursesBloc
     Course? currentCourse;
     try {
@@ -552,6 +557,35 @@ class _QuizPageState extends State<QuizPage> {
       return;
     }
 
+    // Get all sections for navigation
+    final allSections = widget.sections ?? currentCourse.sections;
+
+    // Check for section completion before navigating
+    if (completionState is LessonCompletionLoaded && allSections != null) {
+      // Find the section containing this lesson
+      for (final section in allSections) {
+        final lessonInSection = section.lessons.any((l) => l.id == widget.lesson.id);
+        if (lessonInSection) {
+          // Check if all lessons in this section are now completed
+          final isSectionComplete = SectionCompletionDialog.isSectionCompleted(
+            section: section,
+            currentLesson: widget.lesson,
+            completionState: completionState,
+          );
+
+          if (isSectionComplete && mounted) {
+            await SectionCompletionDialog.show(
+              context: context,
+              completedSection: section,
+            );
+          }
+          break;
+        }
+      }
+    }
+
+    if (!mounted) return;
+
     // Find next lesson
     final nextLessonResult = NextLessonService.findNextLesson(
       currentLesson: widget.lesson,
@@ -563,9 +597,6 @@ class _QuizPageState extends State<QuizPage> {
       Navigator.pop(context);
       return;
     }
-
-    // Get all sections for navigation
-    final allSections = widget.sections ?? currentCourse.sections;
 
     // Show interstitial ad if applicable, then navigate
     InterstitialAdService().showAdIfReady(

@@ -417,5 +417,9 @@
   },
   "accelerating": "加速中",
   "steady": "安定",
-  "slowing": "減速中"
+  "slowing": "減速中",
+
+  "sectionCompleted": "セクション完了！",
+  "sectionCompletedMessage": "お疲れ様です！このセクションのすべてのレッスンを完了しました。",
+  "continueText": "続ける"
 }

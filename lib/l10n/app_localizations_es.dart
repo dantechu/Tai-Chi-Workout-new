@@ -977,4 +977,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get slowing => 'Ralentizando';
+
+  @override
+  String get sectionCompleted => '¡Sección completada!';
+
+  @override
+  String get sectionCompletedMessage =>
+      '¡Buen trabajo! Has completado todas las lecciones de esta sección.';
+
+  @override
+  String get continueText => 'Continuar';
 }

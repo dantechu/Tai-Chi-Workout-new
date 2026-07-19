@@ -976,4 +976,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get slowing => 'En ralentissement';
+
+  @override
+  String get sectionCompleted => 'Section terminée !';
+
+  @override
+  String get sectionCompletedMessage =>
+      'Excellent travail ! Vous avez terminé toutes les leçons de cette section.';
+
+  @override
+  String get continueText => 'Continuer';
 }

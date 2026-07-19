@@ -15,6 +15,7 @@ import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
 import '../../widgets/lesson_completion_dialog.dart';
+import '../../widgets/section_completion_dialog.dart';
 
 /// Page for displaying text/article lessons.
 ///
@@ -189,7 +190,10 @@ class TextLessonPage extends StatelessWidget {
     );
   }
 
-  void _onMarkComplete(BuildContext context) {
+  void _onMarkComplete(BuildContext context) async {
+    // Get the completion state before marking complete
+    final completionState = context.read<LessonCompletionBloc>().state;
+
     // Mark the lesson as completed
     context.read<LessonCompletionBloc>().add(
       MarkLessonCompleted(
@@ -221,13 +225,39 @@ class TextLessonPage extends StatelessWidget {
       // CoursesBloc not available
     }
 
+    final availableSections = sections ?? currentCourse?.sections;
+
     // Show the completion dialog
-    LessonCompletionDialog.show(
+    await LessonCompletionDialog.show(
       context: context,
       completedLesson: lesson,
       course: currentCourse,
-      sections: sections ?? currentCourse?.sections,
+      sections: availableSections,
     );
+
+    // Check for section completion after lesson dialog is dismissed
+    if (completionState is LessonCompletionLoaded && availableSections != null) {
+      // Find the section containing this lesson
+      for (final section in availableSections) {
+        final lessonInSection = section.lessons.any((l) => l.id == lesson.id);
+        if (lessonInSection) {
+          // Check if all lessons in this section are now completed
+          final isSectionComplete = SectionCompletionDialog.isSectionCompleted(
+            section: section,
+            currentLesson: lesson,
+            completionState: completionState,
+          );
+
+          if (isSectionComplete && context.mounted) {
+            await SectionCompletionDialog.show(
+              context: context,
+              completedSection: section,
+            );
+          }
+          break;
+        }
+      }
+    }
   }
 
   Widget _buildBannerImage(String url) {

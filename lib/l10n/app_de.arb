@@ -417,5 +417,9 @@
   },
   "accelerating": "Beschleunigend",
   "steady": "Stabil",
-  "slowing": "Verlangsamend"
+  "slowing": "Verlangsamend",
+
+  "sectionCompleted": "Abschnitt abgeschlossen!",
+  "sectionCompletedMessage": "Toll gemacht! Du hast alle Lektionen in diesem Abschnitt abgeschlossen.",
+  "continueText": "Weiter"
 }

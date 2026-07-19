@@ -953,4 +953,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get slowing => '減速中';
+
+  @override
+  String get sectionCompleted => 'セクション完了！';
+
+  @override
+  String get sectionCompletedMessage => 'お疲れ様です！このセクションのすべてのレッスンを完了しました。';
+
+  @override
+  String get continueText => '続ける';
 }

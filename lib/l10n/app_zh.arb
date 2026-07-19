@@ -395,5 +395,9 @@
   },
   "accelerating": "加速中",
   "steady": "稳定",
-  "slowing": "放缓中"
+  "slowing": "放缓中",
+
+  "sectionCompleted": "章节完成！",
+  "sectionCompletedMessage": "做得好！您已完成本章节的所有课程。",
+  "continueText": "继续"
 }

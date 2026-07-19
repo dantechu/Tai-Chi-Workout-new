@@ -453,5 +453,9 @@
   },
   "accelerating": "Accelerating",
   "steady": "Steady",
-  "slowing": "Slowing"
+  "slowing": "Slowing",
+
+  "sectionCompleted": "Section Completed!",
+  "sectionCompletedMessage": "Great job! You've completed all lessons in this section.",
+  "continueText": "Continue"
 }

@@ -26,6 +26,8 @@ import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
 import '../../widgets/lesson_completion_dialog.dart';
+import '../../widgets/section_completion_dialog.dart';
+import '../../bloc/lesson_completion/lesson_completion_state.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final Video video;
@@ -218,7 +220,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     }
   }
 
-  void _showCompletionDialog() {
+  void _showCompletionDialog() async {
+    // Get the completion state before showing dialog
+    final completionState = context.read<LessonCompletionBloc>().state;
+
     // Get the current course from CoursesBloc
     Course? currentCourse;
     try {
@@ -243,13 +248,39 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     // Pause the video before showing dialog
     _videoPlayerController.pause();
 
+    final availableSections = widget.sections ?? currentCourse?.sections;
+
     // Show the completion dialog
-    LessonCompletionDialog.show(
+    await LessonCompletionDialog.show(
       context: context,
       completedLesson: widget.video,
       course: currentCourse,
-      sections: widget.sections ?? currentCourse?.sections,
+      sections: availableSections,
     );
+
+    // Check for section completion after lesson dialog is dismissed
+    if (completionState is LessonCompletionLoaded && availableSections != null) {
+      // Find the section containing this lesson
+      for (final section in availableSections) {
+        final lessonInSection = section.lessons.any((l) => l.id == widget.video.id);
+        if (lessonInSection) {
+          // Check if all lessons in this section are now completed
+          final isSectionComplete = SectionCompletionDialog.isSectionCompleted(
+            section: section,
+            currentLesson: widget.video,
+            completionState: completionState,
+          );
+
+          if (isSectionComplete && mounted) {
+            await SectionCompletionDialog.show(
+              context: context,
+              completedSection: section,
+            );
+          }
+          break;
+        }
+      }
+    }
   }
 
   @override

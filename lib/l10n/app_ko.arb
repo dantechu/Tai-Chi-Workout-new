@@ -383,5 +383,9 @@
   },
   "accelerating": "가속 중",
   "steady": "안정",
-  "slowing": "감속 중"
+  "slowing": "감속 중",
+
+  "sectionCompleted": "섹션 완료!",
+  "sectionCompletedMessage": "잘하셨어요! 이 섹션의 모든 레슨을 완료했습니다.",
+  "continueText": "계속"
 }

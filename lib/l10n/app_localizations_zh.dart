@@ -950,4 +950,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get slowing => '放缓中';
+
+  @override
+  String get sectionCompleted => '章节完成！';
+
+  @override
+  String get sectionCompletedMessage => '做得好！您已完成本章节的所有课程。';
+
+  @override
+  String get continueText => '继续';
 }

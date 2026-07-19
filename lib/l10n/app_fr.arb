@@ -417,5 +417,9 @@
   },
   "accelerating": "En accélération",
   "steady": "Stable",
-  "slowing": "En ralentissement"
+  "slowing": "En ralentissement",
+
+  "sectionCompleted": "Section terminée !",
+  "sectionCompletedMessage": "Excellent travail ! Vous avez terminé toutes les leçons de cette section.",
+  "continueText": "Continuer"
 }

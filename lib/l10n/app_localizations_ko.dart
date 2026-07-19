@@ -956,4 +956,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get slowing => '감속 중';
+
+  @override
+  String get sectionCompleted => '섹션 완료!';
+
+  @override
+  String get sectionCompletedMessage => '잘하셨어요! 이 섹션의 모든 레슨을 완료했습니다.';
+
+  @override
+  String get continueText => '계속';
 }
