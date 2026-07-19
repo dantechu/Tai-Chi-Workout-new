@@ -40,7 +40,8 @@ class SectionModel {
 
   /// Create from Map (Firestore compatible)
   /// Tries 'lessons' array first, falls back to 'videos' for backward compatibility
-  factory SectionModel.fromMap(Map<String, dynamic> map) {
+  /// [courseId] is injected into each lesson for proper tracking
+  factory SectionModel.fromMap(Map<String, dynamic> map, {String? courseId}) {
     // Generate ID from section number if not provided
     final id = map['id'] as String? ?? 'section_${map['sectionNumber']}';
 
@@ -49,7 +50,14 @@ class SectionModel {
     lessonsData ??= map['videos'] as List<dynamic>?;
 
     final videos = lessonsData
-            ?.map((v) => VideoModel.fromMap(v as Map<String, dynamic>))
+            ?.map((v) {
+              final lessonMap = Map<String, dynamic>.from(v as Map<String, dynamic>);
+              // Inject courseId into lesson if not already present
+              if (courseId != null && lessonMap['courseId'] == null) {
+                lessonMap['courseId'] = courseId;
+              }
+              return VideoModel.fromMap(lessonMap);
+            })
             .toList() ??
         [];
 

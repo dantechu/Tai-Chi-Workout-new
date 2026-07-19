@@ -166,7 +166,7 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     // Calculate weekly activity (last 7 days) - use all completions
     final weeklyActivity = _calculateWeeklyActivity(allCompletions);
 
-    // Calculate course progress - use all completions so all courses show their progress
+    // Calculate course progress
     final courseProgressResult = await _calculateCourseProgress(allCompletions);
     final courseProgressList = courseProgressResult.courseProgressList;
     final totalCourses = courseProgressResult.totalCourses;
@@ -431,8 +431,6 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
           totalCourses = courses.length;
 
           for (final course in courses) {
-            // Use course.totalVideos which counts ALL lessons from sections
-            // (despite the name, it counts all lesson types not just videos)
             final totalLessons = course.totalVideos;
             totalLessonsAvailable += totalLessons;
 

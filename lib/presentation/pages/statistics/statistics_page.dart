@@ -268,10 +268,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
           if (stats.courseProgressList.isNotEmpty)
             _buildCourseProgressSection(theme, l10n, stats),
 
-          // Score section (if quiz/flashcard completed)
-          if (stats.quizCompletions > 0 || stats.flashcardCompletions > 0) ...[
+          // Quiz accuracy section (only if quiz completed)
+          if (stats.quizCompletions > 0) ...[
             const SizedBox(height: 24),
-            _buildScoreSection(theme, l10n, stats),
+            _buildQuizAccuracySection(theme, l10n, stats),
           ],
 
           const SizedBox(height: 32),
@@ -855,11 +855,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildScoreSection(ThemeData theme, AppLocalizations? l10n, UserStatistics stats) {
+  Widget _buildQuizAccuracySection(ThemeData theme, AppLocalizations? l10n, UserStatistics stats) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Quiz Accuracy Section
         Text(
           l10n?.quizzesAccuracy ?? 'Quizzes Accuracy',
           style: theme.textTheme.titleMedium?.copyWith(
@@ -888,40 +887,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 label: l10n?.best ?? 'Best',
                 score: stats.quizBestScore.toDouble(),
                 completions: stats.quizCompletions,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 24),
-        // Flashcard Accuracy Section
-        Text(
-          l10n?.flashcardsAccuracy ?? 'Flashcards Accuracy',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildScoreCard(
-                theme,
-                icon: Icons.trending_up_rounded,
-                iconColor: Colors.pink,
-                label: l10n?.average ?? 'Average',
-                score: stats.flashcardAverageScore,
-                completions: stats.flashcardCompletions,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildScoreCard(
-                theme,
-                icon: Icons.emoji_events_rounded,
-                iconColor: Colors.amber,
-                label: l10n?.best ?? 'Best',
-                score: stats.flashcardBestScore.toDouble(),
-                completions: stats.flashcardCompletions,
               ),
             ),
           ],

@@ -85,6 +85,7 @@ class CourseModel {
   }
 
   /// Create from Map
+  /// [id] is the course document ID, passed to sections for lesson tracking
   factory CourseModel.fromMap(Map<String, dynamic> map, String id) {
     return CourseModel(
       id: id,
@@ -95,8 +96,9 @@ class CourseModel {
       isFree: map['isFree'] as bool? ?? false,
       order: map['order'] as int? ?? 0,
       thumbnailUrl: map['thumbnailUrl'] as String?,
+      // Pass courseId to sections so it propagates to each lesson
       sections: (map['sections'] as List<dynamic>?)
-              ?.map((s) => SectionModel.fromMap(s as Map<String, dynamic>))
+              ?.map((s) => SectionModel.fromMap(s as Map<String, dynamic>, courseId: id))
               .toList() ??
           [],
       metadata: map['metadata'] != null
