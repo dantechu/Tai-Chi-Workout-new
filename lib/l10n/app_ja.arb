@@ -271,11 +271,13 @@
   "filterThisMonth": "今月",
   "filterAllTime": "全期間",
   "currentCourse": "現在のコース",
+  "currentCourseProgress": "現在のコース進捗",
   "selectCourseToSeeProgress": "進捗を見るにはコースを選択",
   "done": "完了!",
   "complete": "完了",
   "totalTime": "合計時間",
   "weeklyActivity": "週間アクティビティ",
+  "last7Days": "過去7日間",
   "noActivityThisWeek": "今週のアクティビティなし",
   "lessonTypeVideo": "ビデオ",
   "lessonTypeAudio": "オーディオ",
@@ -283,8 +285,11 @@
   "lessonTypeQuiz": "クイズ",
   "lessonTypeFlashcards": "フラッシュカード",
   "byLessonType": "レッスンタイプ別",
+  "lessonBreakdown": "レッスン内訳",
   "completeLessonsToSeeBreakdown": "内訳を見るにはレッスンを完了",
   "courseProgress": "コース進捗",
+  "yourCourses": "あなたのコース",
+  "allCourses": "全コース",
   "quizzesAccuracy": "クイズ正確度",
   "flashcardsAccuracy": "フラッシュカード正確度",
   "average": "平均",
@@ -389,5 +394,28 @@
   "or": "または",
   "dailyLimitReached": "本日の無料ロック解除上限に達しました。Proにアップグレードして無制限アクセス！",
   "upgradeToPro": "Proにアップグレード",
-  "adNotReady": "広告の準備ができていません。もう一度お試しください。"
+  "adNotReady": "広告の準備ができていません。もう一度お試しください。",
+
+  "streak": "連続記録",
+  "day": "日",
+  "days": "日",
+  "streakAtRisk": "今日レッスンを完了しましょう！",
+  "pace": "ペース",
+  "lessonPerDay": "レッスン/日",
+  "lessonsPerDay": "レッスン/日",
+  "allTime": "全期間",
+  "noDataYet": "データがまだありません",
+  "averageTimePerType": "タイプ別平均時間",
+  "timePerLesson": "レッスン時間",
+  "nLessons": "{count, plural, =1{1レッスン} other{{count}レッスン}}",
+  "@nLessons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accelerating": "加速中",
+  "steady": "安定",
+  "slowing": "減速中"
 }

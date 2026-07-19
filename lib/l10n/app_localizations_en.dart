@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'Tai Chi Workout';
+  String get appName => 'Excel Mastery';
 
   @override
   String get home => 'Home';
@@ -649,6 +649,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currentCourse => 'Current Course';
 
   @override
+  String get currentCourseProgress => 'Current Course Progress';
+
+  @override
   String get selectCourseToSeeProgress => 'Select a course to see progress';
 
   @override
@@ -662,6 +665,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weeklyActivity => 'Weekly Activity';
+
+  @override
+  String get last7Days => 'Last 7 Days';
 
   @override
   String get noActivityThisWeek => 'No activity this week';
@@ -685,11 +691,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get byLessonType => 'By Lesson Type';
 
   @override
+  String get lessonBreakdown => 'Lesson Breakdown';
+
+  @override
   String get completeLessonsToSeeBreakdown =>
       'Complete lessons to see breakdown';
 
   @override
   String get courseProgress => 'Course Progress';
+
+  @override
+  String get yourCourses => 'Your Courses';
+
+  @override
+  String get allCourses => 'All Courses';
 
   @override
   String get quizzesAccuracy => 'Quizzes Accuracy';
@@ -905,4 +920,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adNotReady => 'Ad not ready. Please try again.';
+
+  @override
+  String get streak => 'Streak';
+
+  @override
+  String get day => 'day';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String get streakAtRisk => 'Complete a lesson today!';
+
+  @override
+  String get pace => 'Pace';
+
+  @override
+  String get lessonPerDay => 'lesson/day';
+
+  @override
+  String get lessonsPerDay => 'lessons/day';
+
+  @override
+  String get allTime => 'All time';
+
+  @override
+  String get noDataYet => 'No data yet';
+
+  @override
+  String get averageTimePerType => 'Average Time Per Type';
+
+  @override
+  String get timePerLesson => 'Time per Lesson';
+
+  @override
+  String nLessons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lessons',
+      one: '1 lesson',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accelerating => 'Accelerating';
+
+  @override
+  String get steady => 'Steady';
+
+  @override
+  String get slowing => 'Slowing';
 }

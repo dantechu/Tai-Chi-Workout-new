@@ -271,11 +271,13 @@
   "filterThisMonth": "Este Mes",
   "filterAllTime": "Todo el Tiempo",
   "currentCourse": "Curso Actual",
+  "currentCourseProgress": "Progreso del Curso Actual",
   "selectCourseToSeeProgress": "Selecciona un curso para ver el progreso",
   "done": "¡Hecho!",
   "complete": "Completar",
   "totalTime": "Tiempo Total",
   "weeklyActivity": "Actividad Semanal",
+  "last7Days": "Últimos 7 Días",
   "noActivityThisWeek": "Sin actividad esta semana",
   "lessonTypeVideo": "Video",
   "lessonTypeAudio": "Audio",
@@ -283,8 +285,11 @@
   "lessonTypeQuiz": "Cuestionario",
   "lessonTypeFlashcards": "Tarjetas",
   "byLessonType": "Por Tipo de Lección",
+  "lessonBreakdown": "Desglose de Lecciones",
   "completeLessonsToSeeBreakdown": "Completa lecciones para ver el desglose",
   "courseProgress": "Progreso del Curso",
+  "yourCourses": "Tus Cursos",
+  "allCourses": "Todos los Cursos",
   "quizzesAccuracy": "Precisión de Cuestionarios",
   "flashcardsAccuracy": "Precisión de Tarjetas",
   "average": "Promedio",
@@ -389,5 +394,28 @@
   "or": "o",
   "dailyLimitReached": "Límite diario de desbloqueos alcanzado. ¡Actualiza a Pro para acceso ilimitado!",
   "upgradeToPro": "Actualizar a Pro",
-  "adNotReady": "Anuncio no disponible. Inténtalo de nuevo."
+  "adNotReady": "Anuncio no disponible. Inténtalo de nuevo.",
+
+  "streak": "Racha",
+  "day": "día",
+  "days": "días",
+  "streakAtRisk": "¡Completa una lección hoy!",
+  "pace": "Ritmo",
+  "lessonPerDay": "lección/día",
+  "lessonsPerDay": "lecciones/día",
+  "allTime": "Todo el tiempo",
+  "noDataYet": "Sin datos aún",
+  "averageTimePerType": "Tiempo Promedio por Tipo",
+  "timePerLesson": "Tiempo por Lección",
+  "nLessons": "{count, plural, =1{1 lección} other{{count} lecciones}}",
+  "@nLessons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accelerating": "Acelerando",
+  "steady": "Estable",
+  "slowing": "Ralentizando"
 }

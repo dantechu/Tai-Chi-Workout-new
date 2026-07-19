@@ -47,6 +47,48 @@ class UserStatistics extends Equatable {
   /// Total lessons available across all courses
   final int totalLessonsAvailable;
 
+  // ============ STREAK DATA ============
+  /// Current consecutive days with at least 1 lesson completed
+  final int currentStreak;
+
+  /// Longest streak ever achieved
+  final int longestStreak;
+
+  /// Last date when user completed a lesson (for streak calculation)
+  final DateTime? lastActivityDate;
+
+  /// Whether the streak is at risk (last activity was yesterday)
+  final bool streakAtRisk;
+
+  // ============ LEARNING PACE DATA ============
+  /// Average lessons completed per day (all time)
+  final double averageLessonsPerDay;
+
+  /// Average lessons completed per day (this week)
+  final double weeklyAverageLessonsPerDay;
+
+  /// Days since first lesson completion
+  final int daysSinceFirstLesson;
+
+  /// Learning pace trend: 1 = accelerating, 0 = steady, -1 = slowing
+  final int paceTrend;
+
+  // ============ TIME EFFICIENCY DATA ============
+  /// Average time spent per video lesson (in seconds)
+  final int avgTimePerVideo;
+
+  /// Average time spent per audio lesson (in seconds)
+  final int avgTimePerAudio;
+
+  /// Average time spent per text lesson (in seconds)
+  final int avgTimePerText;
+
+  /// Average time spent per quiz (in seconds)
+  final int avgTimePerQuiz;
+
+  /// Average time spent per flashcard session (in seconds)
+  final int avgTimePerFlashcard;
+
   const UserStatistics({
     this.totalCompletions = 0,
     this.videoCompletions = 0,
@@ -67,6 +109,22 @@ class UserStatistics extends Equatable {
     this.filteredCompletions = 0,
     this.filteredTimeSpentSeconds = 0,
     this.totalLessonsAvailable = 0,
+    // Streak data
+    this.currentStreak = 0,
+    this.longestStreak = 0,
+    this.lastActivityDate,
+    this.streakAtRisk = false,
+    // Learning pace data
+    this.averageLessonsPerDay = 0.0,
+    this.weeklyAverageLessonsPerDay = 0.0,
+    this.daysSinceFirstLesson = 0,
+    this.paceTrend = 0,
+    // Time efficiency data
+    this.avgTimePerVideo = 0,
+    this.avgTimePerAudio = 0,
+    this.avgTimePerText = 0,
+    this.avgTimePerQuiz = 0,
+    this.avgTimePerFlashcard = 0,
   });
 
   /// Get formatted time spent string (e.g., "2h 30m")
@@ -99,6 +157,33 @@ class UserStatistics extends Equatable {
     return '${minutes}m';
   }
 
+  /// Get formatted average time string for a lesson type
+  String formatAvgTime(int seconds) => _formatDuration(seconds);
+
+  /// Get pace trend description
+  String get paceTrendDescription {
+    switch (paceTrend) {
+      case 1:
+        return 'Accelerating';
+      case -1:
+        return 'Slowing';
+      default:
+        return 'Steady';
+    }
+  }
+
+  /// Get pace trend icon
+  String get paceTrendIcon {
+    switch (paceTrend) {
+      case 1:
+        return '↑';
+      case -1:
+        return '↓';
+      default:
+        return '→';
+    }
+  }
+
   @override
   List<Object?> get props => [
         totalCompletions,
@@ -120,6 +205,22 @@ class UserStatistics extends Equatable {
         filteredCompletions,
         filteredTimeSpentSeconds,
         totalLessonsAvailable,
+        // Streak data
+        currentStreak,
+        longestStreak,
+        lastActivityDate,
+        streakAtRisk,
+        // Learning pace data
+        averageLessonsPerDay,
+        weeklyAverageLessonsPerDay,
+        daysSinceFirstLesson,
+        paceTrend,
+        // Time efficiency data
+        avgTimePerVideo,
+        avgTimePerAudio,
+        avgTimePerText,
+        avgTimePerQuiz,
+        avgTimePerFlashcard,
       ];
 }
 

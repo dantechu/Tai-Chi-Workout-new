@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
 
-  "appName": "Tai Chi Workout",
+  "appName": "Excel Mastery",
   "@appName": {
     "description": "Application name"
   },
@@ -278,11 +278,13 @@
   "filterThisMonth": "This Month",
   "filterAllTime": "All Time",
   "currentCourse": "Current Course",
+  "currentCourseProgress": "Current Course Progress",
   "selectCourseToSeeProgress": "Select a course to see progress",
   "done": "Done!",
   "complete": "Complete",
   "totalTime": "Total Time",
   "weeklyActivity": "Weekly Activity",
+  "last7Days": "Last 7 Days",
   "noActivityThisWeek": "No activity this week",
   "lessonTypeVideo": "Video",
   "lessonTypeAudio": "Audio",
@@ -290,8 +292,11 @@
   "lessonTypeQuiz": "Quiz",
   "lessonTypeFlashcards": "Flashcards",
   "byLessonType": "By Lesson Type",
+  "lessonBreakdown": "Lesson Breakdown",
   "completeLessonsToSeeBreakdown": "Complete lessons to see breakdown",
   "courseProgress": "Course Progress",
+  "yourCourses": "Your Courses",
+  "allCourses": "All Courses",
   "quizzesAccuracy": "Quizzes Accuracy",
   "flashcardsAccuracy": "Flashcards Accuracy",
   "average": "Average",
@@ -425,5 +430,28 @@
   "or": "or",
   "dailyLimitReached": "Daily free unlock limit reached. Upgrade to Pro for unlimited access!",
   "upgradeToPro": "Upgrade to Pro",
-  "adNotReady": "Ad not ready. Please try again."
+  "adNotReady": "Ad not ready. Please try again.",
+
+  "streak": "Streak",
+  "day": "day",
+  "days": "days",
+  "streakAtRisk": "Complete a lesson today!",
+  "pace": "Pace",
+  "lessonPerDay": "lesson/day",
+  "lessonsPerDay": "lessons/day",
+  "allTime": "All time",
+  "noDataYet": "No data yet",
+  "averageTimePerType": "Average Time Per Type",
+  "timePerLesson": "Time per Lesson",
+  "nLessons": "{count, plural, =1{1 lesson} other{{count} lessons}}",
+  "@nLessons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accelerating": "Accelerating",
+  "steady": "Steady",
+  "slowing": "Slowing"
 }

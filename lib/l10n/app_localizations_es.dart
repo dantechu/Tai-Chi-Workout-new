@@ -650,6 +650,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get currentCourse => 'Curso Actual';
 
   @override
+  String get currentCourseProgress => 'Progreso del Curso Actual';
+
+  @override
   String get selectCourseToSeeProgress =>
       'Selecciona un curso para ver el progreso';
 
@@ -664,6 +667,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get weeklyActivity => 'Actividad Semanal';
+
+  @override
+  String get last7Days => 'Últimos 7 Días';
 
   @override
   String get noActivityThisWeek => 'Sin actividad esta semana';
@@ -687,11 +693,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get byLessonType => 'Por Tipo de Lección';
 
   @override
+  String get lessonBreakdown => 'Desglose de Lecciones';
+
+  @override
   String get completeLessonsToSeeBreakdown =>
       'Completa lecciones para ver el desglose';
 
   @override
   String get courseProgress => 'Progreso del Curso';
+
+  @override
+  String get yourCourses => 'Tus Cursos';
+
+  @override
+  String get allCourses => 'Todos los Cursos';
 
   @override
   String get quizzesAccuracy => 'Precisión de Cuestionarios';
@@ -909,4 +924,57 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get adNotReady => 'Anuncio no disponible. Inténtalo de nuevo.';
+
+  @override
+  String get streak => 'Racha';
+
+  @override
+  String get day => 'día';
+
+  @override
+  String get days => 'días';
+
+  @override
+  String get streakAtRisk => '¡Completa una lección hoy!';
+
+  @override
+  String get pace => 'Ritmo';
+
+  @override
+  String get lessonPerDay => 'lección/día';
+
+  @override
+  String get lessonsPerDay => 'lecciones/día';
+
+  @override
+  String get allTime => 'Todo el tiempo';
+
+  @override
+  String get noDataYet => 'Sin datos aún';
+
+  @override
+  String get averageTimePerType => 'Tiempo Promedio por Tipo';
+
+  @override
+  String get timePerLesson => 'Tiempo por Lección';
+
+  @override
+  String nLessons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lecciones',
+      one: '1 lección',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accelerating => 'Acelerando';
+
+  @override
+  String get steady => 'Estable';
+
+  @override
+  String get slowing => 'Ralentizando';
 }

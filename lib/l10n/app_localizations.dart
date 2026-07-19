@@ -111,7 +111,7 @@ abstract class AppLocalizations {
   /// Application name
   ///
   /// In en, this message translates to:
-  /// **'Tai Chi Workout'**
+  /// **'Excel Mastery'**
   String get appName;
 
   /// No description provided for @home.
@@ -1296,6 +1296,12 @@ abstract class AppLocalizations {
   /// **'Current Course'**
   String get currentCourse;
 
+  /// No description provided for @currentCourseProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Course Progress'**
+  String get currentCourseProgress;
+
   /// No description provided for @selectCourseToSeeProgress.
   ///
   /// In en, this message translates to:
@@ -1325,6 +1331,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Weekly Activity'**
   String get weeklyActivity;
+
+  /// No description provided for @last7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get last7Days;
 
   /// No description provided for @noActivityThisWeek.
   ///
@@ -1368,6 +1380,12 @@ abstract class AppLocalizations {
   /// **'By Lesson Type'**
   String get byLessonType;
 
+  /// No description provided for @lessonBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Breakdown'**
+  String get lessonBreakdown;
+
   /// No description provided for @completeLessonsToSeeBreakdown.
   ///
   /// In en, this message translates to:
@@ -1379,6 +1397,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Course Progress'**
   String get courseProgress;
+
+  /// No description provided for @yourCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Courses'**
+  String get yourCourses;
+
+  /// No description provided for @allCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'All Courses'**
+  String get allCourses;
 
   /// No description provided for @quizzesAccuracy.
   ///
@@ -1757,6 +1787,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ad not ready. Please try again.'**
   String get adNotReady;
+
+  /// No description provided for @streak.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak'**
+  String get streak;
+
+  /// No description provided for @day.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get day;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @streakAtRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a lesson today!'**
+  String get streakAtRisk;
+
+  /// No description provided for @pace.
+  ///
+  /// In en, this message translates to:
+  /// **'Pace'**
+  String get pace;
+
+  /// No description provided for @lessonPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'lesson/day'**
+  String get lessonPerDay;
+
+  /// No description provided for @lessonsPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'lessons/day'**
+  String get lessonsPerDay;
+
+  /// No description provided for @allTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get allTime;
+
+  /// No description provided for @noDataYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No data yet'**
+  String get noDataYet;
+
+  /// No description provided for @averageTimePerType.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Time Per Type'**
+  String get averageTimePerType;
+
+  /// No description provided for @timePerLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Time per Lesson'**
+  String get timePerLesson;
+
+  /// No description provided for @nLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 lesson} other{{count} lessons}}'**
+  String nLessons(int count);
+
+  /// No description provided for @accelerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Accelerating'**
+  String get accelerating;
+
+  /// No description provided for @steady.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady'**
+  String get steady;
+
+  /// No description provided for @slowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Slowing'**
+  String get slowing;
 }
 
 class _AppLocalizationsDelegate

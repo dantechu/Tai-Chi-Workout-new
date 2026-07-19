@@ -235,9 +235,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Current Course section
+          // Current Course Progress section (at top)
           Text(
-            l10n?.currentCourse ?? 'Current Course',
+            l10n?.currentCourseProgress ?? 'Current Course Progress',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -246,9 +246,19 @@ class _StatisticsPageState extends State<StatisticsPage> {
           _buildCurrentCourseProgressCard(theme, l10n, selectedCourse, stats),
           const SizedBox(height: 24),
 
+          // Streak & Pace Section
+          _buildStreakAndPaceSection(theme, l10n, stats),
+          const SizedBox(height: 24),
+
           // Weekly activity chart
           _buildWeeklyActivitySection(theme, l10n, Localizations.localeOf(context).languageCode, stats),
           const SizedBox(height: 24),
+
+          // Time Efficiency Section (NEW)
+          if (stats.totalCompletions > 0)
+            _buildTimeEfficiencySection(theme, l10n, stats),
+          if (stats.totalCompletions > 0)
+            const SizedBox(height: 24),
 
           // Lesson type breakdown with pie chart
           _buildLessonTypeSection(theme, l10n, stats),
@@ -435,7 +445,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          l10n?.weeklyActivity ?? 'Weekly Activity',
+          l10n?.last7Days ?? 'Last 7 Days',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -613,7 +623,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          l10n?.byLessonType ?? 'By Lesson Type',
+          l10n?.lessonBreakdown ?? 'Lesson Breakdown',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -722,112 +732,126 @@ class _StatisticsPageState extends State<StatisticsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              l10n?.courseProgress ?? 'Course Progress',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                l10n?.completedCount(stats.completedCourses, stats.totalCourses) ?? '${stats.completedCourses}/${stats.totalCourses} completed',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
+        Text(
+          l10n?.allCourses ?? 'All Courses',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 12),
-        ...stats.courseProgressList.map((course) => _buildCourseProgressTile(theme, course)),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            children: [
+              ...stats.courseProgressList.asMap().entries.map((entry) {
+                final isLast = entry.key == stats.courseProgressList.length - 1;
+                return _buildCourseProgressTile(theme, l10n, entry.value, entry.key + 1, isLast);
+              }),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildCourseProgressTile(ThemeData theme, CourseProgress course) {
+  Widget _buildCourseProgressTile(ThemeData theme, AppLocalizations? l10n, CourseProgress course, int index, bool isLast) {
     final progress = course.progressPercentage / 100;
     final isCompleted = course.isCompleted;
+    final progressColor = isCompleted ? Colors.green : theme.colorScheme.primary;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: isCompleted
-            ? Border.all(color: Colors.green.withValues(alpha: 0.3), width: 1)
-            : null,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
             children: [
-              if (isCompleted)
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const Icon(Icons.check, color: Colors.green, size: 14),
-                ),
-              Expanded(
-                child: Text(
-                  course.courseName,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Text(
-                '${course.completedLessons}/${course.totalLessons}',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Stack(
-            children: [
+              // Index number
               Container(
-                height: 6,
+                width: 28,
+                height: 28,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(3),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '$index',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
               ),
-              FractionallySizedBox(
-                widthFactor: progress.clamp(0.0, 1.0),
-                child: Container(
-                  height: 6,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isCompleted
-                          ? [Colors.green, Colors.green.shade400]
-                          : [theme.colorScheme.primary, theme.colorScheme.primary.withValues(alpha: 0.7)],
+              const SizedBox(width: 12),
+              // Course info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      course.courseName,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${course.completedLessons}/${course.totalLessons} ${l10n?.lessons ?? 'lessons'}',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Circular progress with percentage
+              SizedBox(
+                width: 44,
+                height: 44,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      value: progress,
+                      strokeWidth: 3,
+                      backgroundColor: theme.colorScheme.outline.withValues(alpha: 0.2),
+                      valueColor: AlwaysStoppedAnimation<Color>(progressColor),
+                    ),
+                    if (isCompleted)
+                      Icon(
+                        Icons.check_rounded,
+                        size: 18,
+                        color: progressColor,
+                      )
+                    else
+                      Text(
+                        '${course.progressPercentage.toInt()}%',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: progressColor,
+                          fontSize: 10,
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+        if (!isLast)
+          Divider(
+            height: 2,
+            thickness: 2,
+            color: theme.colorScheme.outline.withValues(alpha: 0.1),
+          ),
+      ],
     );
   }
 
@@ -961,6 +985,344 @@ class _StatisticsPageState extends State<StatisticsPage> {
       ),
     );
   }
+
+  Widget _buildStreakAndPaceSection(ThemeData theme, AppLocalizations? l10n, UserStatistics stats) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Streak Card
+          Expanded(
+            child: _buildStreakCard(theme, l10n, stats),
+          ),
+          const SizedBox(width: 12),
+          // Pace Card
+          Expanded(
+            child: _buildPaceCard(theme, l10n, stats),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStreakCard(ThemeData theme, AppLocalizations? l10n, UserStatistics stats) {
+    final hasStreak = stats.currentStreak > 0;
+    final isAtRisk = stats.streakAtRisk;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                hasStreak ? Icons.local_fire_department_rounded : Icons.local_fire_department_outlined,
+                size: 28,
+                color: hasStreak ? Colors.orange : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n?.streak ?? 'Streak',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '${stats.currentStreak}',
+            style: theme.textTheme.headlineLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: hasStreak ? Colors.orange : theme.colorScheme.onSurface,
+            ),
+          ),
+          Text(
+            stats.currentStreak == 1 ? (l10n?.day ?? 'day') : (l10n?.days ?? 'days'),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
+          ),
+          if (stats.longestStreak > stats.currentStreak) ...[
+            const SizedBox(height: 8),
+            Text(
+              '${l10n?.best ?? 'Best'}: ${stats.longestStreak} ${l10n?.days ?? 'days'}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+          if (isAtRisk) ...[
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.orange.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                l10n?.streakAtRisk ?? 'Complete a lesson today!',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: Colors.orange.shade700,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaceCard(ThemeData theme, AppLocalizations? l10n, UserStatistics stats) {
+    final hasData = stats.totalCompletions > 0;
+    final weeklyAvg = stats.weeklyAverageLessonsPerDay;
+    final allTimeAvg = stats.averageLessonsPerDay;
+
+    // Determine trend color
+    Color trendColor;
+    IconData trendIcon;
+    switch (stats.paceTrend) {
+      case 1:
+        trendColor = Colors.green;
+        trendIcon = Icons.trending_up_rounded;
+        break;
+      case -1:
+        trendColor = Colors.red;
+        trendIcon = Icons.trending_down_rounded;
+        break;
+      default:
+        trendColor = Colors.blue;
+        trendIcon = Icons.trending_flat_rounded;
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.speed_rounded,
+                size: 24,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n?.pace ?? 'Pace',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (hasData) ...[
+            Text(
+              '${weeklyAvg.ceil()}',
+              style: theme.textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+            Text(
+              weeklyAvg.ceil() == 1 ? (l10n?.lessonPerDay ?? 'lesson/day') : (l10n?.lessonsPerDay ?? 'lessons/day'),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+            ),
+            if (stats.daysSinceFirstLesson >= 7) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(trendIcon, size: 16, color: trendColor),
+                  const SizedBox(width: 4),
+                  Text(
+                    _getLocalizedPaceTrend(l10n, stats.paceTrend),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: trendColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            if (allTimeAvg.ceil() != weeklyAvg.ceil() && stats.daysSinceFirstLesson >= 7) ...[
+              const SizedBox(height: 4),
+              Text(
+                '${l10n?.allTime ?? 'All time'}: ${allTimeAvg.ceil()}/${l10n?.day ?? 'day'}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+          ] else ...[
+            Text(
+              '-',
+              style: theme.textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+              ),
+            ),
+            Text(
+              l10n?.noDataYet ?? 'No data yet',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimeEfficiencySection(ThemeData theme, AppLocalizations? l10n, UserStatistics stats) {
+    // Only show types that have been completed
+    final efficiencyData = <_TimeEfficiencyData>[];
+
+    if (stats.videoCompletions > 0) {
+      efficiencyData.add(_TimeEfficiencyData(
+        Icons.play_circle_rounded,
+        Colors.blue,
+        l10n?.lessonTypeVideo ?? 'Video',
+        stats.avgTimePerVideo,
+        stats.videoCompletions,
+      ));
+    }
+    if (stats.audioCompletions > 0) {
+      efficiencyData.add(_TimeEfficiencyData(
+        Icons.headphones_rounded,
+        Colors.purple,
+        l10n?.lessonTypeAudio ?? 'Audio',
+        stats.avgTimePerAudio,
+        stats.audioCompletions,
+      ));
+    }
+    if (stats.textCompletions > 0) {
+      efficiencyData.add(_TimeEfficiencyData(
+        Icons.article_rounded,
+        Colors.teal,
+        l10n?.lessonTypeText ?? 'Text',
+        stats.avgTimePerText,
+        stats.textCompletions,
+      ));
+    }
+    if (stats.quizCompletions > 0) {
+      efficiencyData.add(_TimeEfficiencyData(
+        Icons.quiz_rounded,
+        Colors.orange,
+        l10n?.lessonTypeQuiz ?? 'Quiz',
+        stats.avgTimePerQuiz,
+        stats.quizCompletions,
+      ));
+    }
+    if (stats.flashcardCompletions > 0) {
+      efficiencyData.add(_TimeEfficiencyData(
+        Icons.style_rounded,
+        Colors.pink,
+        l10n?.lessonTypeFlashcards ?? 'Flashcards',
+        stats.avgTimePerFlashcard,
+        stats.flashcardCompletions,
+      ));
+    }
+
+    if (efficiencyData.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n?.timePerLesson ?? 'Time per Lesson',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            children: efficiencyData.map((data) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: data.color.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(data.icon, color: data.color, size: 20),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data.label,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            l10n?.nLessons(data.count) ?? '${data.count} lessons',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      stats.formatAvgTime(data.avgTimeSeconds),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: data.color,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _getLocalizedPaceTrend(AppLocalizations? l10n, int paceTrend) {
+    switch (paceTrend) {
+      case 1:
+        return l10n?.accelerating ?? 'Accelerating';
+      case -1:
+        return l10n?.slowing ?? 'Slowing';
+      default:
+        return l10n?.steady ?? 'Steady';
+    }
+  }
 }
 
 class _LessonTypeData {
@@ -970,4 +1332,14 @@ class _LessonTypeData {
   final int count;
 
   _LessonTypeData(this.icon, this.color, this.label, this.count);
+}
+
+class _TimeEfficiencyData {
+  final IconData icon;
+  final Color color;
+  final String label;
+  final int avgTimeSeconds;
+  final int count;
+
+  _TimeEfficiencyData(this.icon, this.color, this.label, this.avgTimeSeconds, this.count);
 }

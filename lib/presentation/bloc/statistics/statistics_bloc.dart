@@ -93,6 +93,13 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     int totalTimeSpent = 0;
     int filteredTimeSpent = 0;
 
+    // Time tracking per lesson type for efficiency calculation
+    int totalVideoTime = 0;
+    int totalAudioTime = 0;
+    int totalTextTime = 0;
+    int totalQuizTime = 0;
+    int totalFlashcardTime = 0;
+
     // Separate scores for quiz and flashcard
     List<int> quizScores = [];
     int quizBestScore = 0;
@@ -107,15 +114,19 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       switch (completion.lessonType) {
         case 'video':
           videoCompletions++;
+          totalVideoTime += duration;
           break;
         case 'audio':
           audioCompletions++;
+          totalAudioTime += duration;
           break;
         case 'text':
           textCompletions++;
+          totalTextTime += duration;
           break;
         case 'quiz':
           quizCompletions++;
+          totalQuizTime += duration;
           if (completion.scorePercentage != null) {
             quizScores.add(completion.scorePercentage!);
             if (completion.scorePercentage! > quizBestScore) {
@@ -125,6 +136,7 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
           break;
         case 'flashcard':
           flashcardCompletions++;
+          totalFlashcardTime += duration;
           if (completion.scorePercentage != null) {
             flashcardScores.add(completion.scorePercentage!);
             if (completion.scorePercentage! > flashcardBestScore) {
@@ -164,6 +176,19 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     // Get recent completions (last 5)
     final recentCompletions = _getRecentCompletions(allCompletions, 5);
 
+    // ============ CALCULATE STREAK DATA ============
+    final streakData = _calculateStreak(allCompletions);
+
+    // ============ CALCULATE LEARNING PACE DATA ============
+    final paceData = _calculateLearningPace(allCompletions, weeklyActivity);
+
+    // ============ CALCULATE TIME EFFICIENCY DATA ============
+    final avgTimePerVideo = videoCompletions > 0 ? totalVideoTime ~/ videoCompletions : 0;
+    final avgTimePerAudio = audioCompletions > 0 ? totalAudioTime ~/ audioCompletions : 0;
+    final avgTimePerText = textCompletions > 0 ? totalTextTime ~/ textCompletions : 0;
+    final avgTimePerQuiz = quizCompletions > 0 ? totalQuizTime ~/ quizCompletions : 0;
+    final avgTimePerFlashcard = flashcardCompletions > 0 ? totalFlashcardTime ~/ flashcardCompletions : 0;
+
     return UserStatistics(
       totalCompletions: allCompletions.length,
       videoCompletions: videoCompletions,
@@ -184,6 +209,168 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       filteredCompletions: filteredCompletions.length,
       filteredTimeSpentSeconds: filteredTimeSpent,
       totalLessonsAvailable: totalLessonsAvailable,
+      // Streak data
+      currentStreak: streakData.currentStreak,
+      longestStreak: streakData.longestStreak,
+      lastActivityDate: streakData.lastActivityDate,
+      streakAtRisk: streakData.streakAtRisk,
+      // Learning pace data
+      averageLessonsPerDay: paceData.averageLessonsPerDay,
+      weeklyAverageLessonsPerDay: paceData.weeklyAverageLessonsPerDay,
+      daysSinceFirstLesson: paceData.daysSinceFirstLesson,
+      paceTrend: paceData.paceTrend,
+      // Time efficiency data
+      avgTimePerVideo: avgTimePerVideo,
+      avgTimePerAudio: avgTimePerAudio,
+      avgTimePerText: avgTimePerText,
+      avgTimePerQuiz: avgTimePerQuiz,
+      avgTimePerFlashcard: avgTimePerFlashcard,
+    );
+  }
+
+  /// Calculate streak data from completions
+  _StreakData _calculateStreak(List<LessonCompletion> completions) {
+    if (completions.isEmpty) {
+      return _StreakData(
+        currentStreak: 0,
+        longestStreak: 0,
+        lastActivityDate: null,
+        streakAtRisk: false,
+      );
+    }
+
+    // Get unique completion dates (normalized to day only)
+    final uniqueDates = <DateTime>{};
+    for (final completion in completions) {
+      final date = DateTime(
+        completion.completedAt.year,
+        completion.completedAt.month,
+        completion.completedAt.day,
+      );
+      uniqueDates.add(date);
+    }
+
+    // Sort dates in descending order (most recent first)
+    final sortedDates = uniqueDates.toList()..sort((a, b) => b.compareTo(a));
+
+    final today = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    // Get last activity date
+    final lastActivityDate = sortedDates.first;
+
+    // Calculate current streak
+    int currentStreak = 0;
+    DateTime checkDate = today;
+
+    // If last activity was today, start counting from today
+    // If last activity was yesterday, start counting from yesterday (streak at risk)
+    // If last activity was before yesterday, current streak is 0
+    if (lastActivityDate == today || lastActivityDate == yesterday) {
+      checkDate = lastActivityDate;
+
+      while (uniqueDates.contains(checkDate)) {
+        currentStreak++;
+        checkDate = checkDate.subtract(const Duration(days: 1));
+      }
+    }
+
+    // Calculate longest streak (by iterating through all dates)
+    int longestStreak = 0;
+    int tempStreak = 0;
+    DateTime? prevDate;
+
+    // Sort dates in ascending order for longest streak calculation
+    final ascendingDates = uniqueDates.toList()..sort((a, b) => a.compareTo(b));
+
+    for (final date in ascendingDates) {
+      if (prevDate == null) {
+        tempStreak = 1;
+      } else {
+        final daysDiff = date.difference(prevDate).inDays;
+        if (daysDiff == 1) {
+          tempStreak++;
+        } else {
+          tempStreak = 1;
+        }
+      }
+
+      if (tempStreak > longestStreak) {
+        longestStreak = tempStreak;
+      }
+
+      prevDate = date;
+    }
+
+    // Streak is at risk if last activity was yesterday (not today)
+    final streakAtRisk = lastActivityDate == yesterday && currentStreak > 0;
+
+    return _StreakData(
+      currentStreak: currentStreak,
+      longestStreak: longestStreak,
+      lastActivityDate: lastActivityDate,
+      streakAtRisk: streakAtRisk,
+    );
+  }
+
+  /// Calculate learning pace data from completions
+  _PaceData _calculateLearningPace(
+    List<LessonCompletion> completions,
+    List<DailyActivity> weeklyActivity,
+  ) {
+    if (completions.isEmpty) {
+      return _PaceData(
+        averageLessonsPerDay: 0.0,
+        weeklyAverageLessonsPerDay: 0.0,
+        daysSinceFirstLesson: 0,
+        paceTrend: 0,
+      );
+    }
+
+    // Sort completions by date
+    final sortedCompletions = List<LessonCompletion>.from(completions)
+      ..sort((a, b) => a.completedAt.compareTo(b.completedAt));
+
+    // Get first and last completion dates
+    final firstCompletion = sortedCompletions.first.completedAt;
+    final today = DateTime.now();
+
+    // Calculate days since first lesson (at least 1)
+    final daysSinceFirst = today.difference(firstCompletion).inDays + 1;
+
+    // Calculate all-time average lessons per day
+    final averageLessonsPerDay = completions.length / daysSinceFirst;
+
+    // Calculate weekly average (sum of weekly activity divided by 7)
+    final weeklyLessons = weeklyActivity.fold<int>(
+      0,
+      (sum, activity) => sum + activity.lessonsCompleted,
+    );
+    final weeklyAverageLessonsPerDay = weeklyLessons / 7.0;
+
+    // Calculate pace trend by comparing this week to previous week
+    // If weekly average > all-time average by 20%+, accelerating
+    // If weekly average < all-time average by 20%+, slowing
+    // Otherwise, steady
+    int paceTrend = 0;
+    if (daysSinceFirst >= 7 && averageLessonsPerDay > 0) {
+      final ratio = weeklyAverageLessonsPerDay / averageLessonsPerDay;
+      if (ratio >= 1.2) {
+        paceTrend = 1; // Accelerating
+      } else if (ratio <= 0.8) {
+        paceTrend = -1; // Slowing
+      }
+    }
+
+    return _PaceData(
+      averageLessonsPerDay: averageLessonsPerDay,
+      weeklyAverageLessonsPerDay: weeklyAverageLessonsPerDay,
+      daysSinceFirstLesson: daysSinceFirst,
+      paceTrend: paceTrend,
     );
   }
 
@@ -317,5 +504,33 @@ class _CourseProgressResult {
     required this.totalCourses,
     required this.completedCourses,
     required this.totalLessonsAvailable,
+  });
+}
+
+class _StreakData {
+  final int currentStreak;
+  final int longestStreak;
+  final DateTime? lastActivityDate;
+  final bool streakAtRisk;
+
+  _StreakData({
+    required this.currentStreak,
+    required this.longestStreak,
+    required this.lastActivityDate,
+    required this.streakAtRisk,
+  });
+}
+
+class _PaceData {
+  final double averageLessonsPerDay;
+  final double weeklyAverageLessonsPerDay;
+  final int daysSinceFirstLesson;
+  final int paceTrend;
+
+  _PaceData({
+    required this.averageLessonsPerDay,
+    required this.weeklyAverageLessonsPerDay,
+    required this.daysSinceFirstLesson,
+    required this.paceTrend,
   });
 }

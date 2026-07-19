@@ -636,6 +636,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get currentCourse => '현재 코스';
 
   @override
+  String get currentCourseProgress => '현재 코스 진행';
+
+  @override
   String get selectCourseToSeeProgress => '진행 상황을 보려면 코스를 선택하세요';
 
   @override
@@ -649,6 +652,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get weeklyActivity => '주간 활동';
+
+  @override
+  String get last7Days => '지난 7일';
 
   @override
   String get noActivityThisWeek => '이번 주 활동 없음';
@@ -672,10 +678,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get byLessonType => '레슨 유형별';
 
   @override
+  String get lessonBreakdown => '레슨 분석';
+
+  @override
   String get completeLessonsToSeeBreakdown => '분석을 보려면 레슨을 완료하세요';
 
   @override
   String get courseProgress => '코스 진행';
+
+  @override
+  String get yourCourses => '내 코스';
+
+  @override
+  String get allCourses => '전체 코스';
 
   @override
   String get quizzesAccuracy => '퀴즈 정확도';
@@ -888,4 +903,57 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get adNotReady => '광고가 준비되지 않았습니다. 다시 시도해 주세요.';
+
+  @override
+  String get streak => '연속 기록';
+
+  @override
+  String get day => '일';
+
+  @override
+  String get days => '일';
+
+  @override
+  String get streakAtRisk => '오늘 레슨을 완료하세요!';
+
+  @override
+  String get pace => '속도';
+
+  @override
+  String get lessonPerDay => '레슨/일';
+
+  @override
+  String get lessonsPerDay => '레슨/일';
+
+  @override
+  String get allTime => '전체 기간';
+
+  @override
+  String get noDataYet => '아직 데이터 없음';
+
+  @override
+  String get averageTimePerType => '유형별 평균 시간';
+
+  @override
+  String get timePerLesson => '레슨당 시간';
+
+  @override
+  String nLessons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '레슨 $count개',
+      one: '레슨 1개',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accelerating => '가속 중';
+
+  @override
+  String get steady => '안정';
+
+  @override
+  String get slowing => '감속 중';
 }

@@ -631,6 +631,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get currentCourse => '当前课程';
 
   @override
+  String get currentCourseProgress => '当前课程进度';
+
+  @override
   String get selectCourseToSeeProgress => '选择课程以查看进度';
 
   @override
@@ -644,6 +647,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get weeklyActivity => '每周活动';
+
+  @override
+  String get last7Days => '过去7天';
 
   @override
   String get noActivityThisWeek => '本周无活动';
@@ -667,10 +673,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get byLessonType => '按课程类型';
 
   @override
+  String get lessonBreakdown => '课程分类';
+
+  @override
   String get completeLessonsToSeeBreakdown => '完成课程以查看分类';
 
   @override
   String get courseProgress => '课程进度';
+
+  @override
+  String get yourCourses => '我的课程';
+
+  @override
+  String get allCourses => '全部课程';
 
   @override
   String get quizzesAccuracy => '测验准确率';
@@ -882,4 +897,57 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adNotReady => '广告未就绪，请重试。';
+
+  @override
+  String get streak => '连续记录';
+
+  @override
+  String get day => '天';
+
+  @override
+  String get days => '天';
+
+  @override
+  String get streakAtRisk => '今天完成一节课程吧！';
+
+  @override
+  String get pace => '学习节奏';
+
+  @override
+  String get lessonPerDay => '课程/天';
+
+  @override
+  String get lessonsPerDay => '课程/天';
+
+  @override
+  String get allTime => '全部时间';
+
+  @override
+  String get noDataYet => '暂无数据';
+
+  @override
+  String get averageTimePerType => '各类型平均时间';
+
+  @override
+  String get timePerLesson => '每课时长';
+
+  @override
+  String nLessons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count节课程',
+      one: '1节课程',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accelerating => '加速中';
+
+  @override
+  String get steady => '稳定';
+
+  @override
+  String get slowing => '放缓中';
 }

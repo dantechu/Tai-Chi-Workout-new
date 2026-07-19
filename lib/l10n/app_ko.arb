@@ -271,11 +271,13 @@
   "filterThisMonth": "이번 달",
   "filterAllTime": "전체 기간",
   "currentCourse": "현재 코스",
+  "currentCourseProgress": "현재 코스 진행",
   "selectCourseToSeeProgress": "진행 상황을 보려면 코스를 선택하세요",
   "done": "완료!",
   "complete": "완료",
   "totalTime": "총 시간",
   "weeklyActivity": "주간 활동",
+  "last7Days": "지난 7일",
   "noActivityThisWeek": "이번 주 활동 없음",
   "lessonTypeVideo": "비디오",
   "lessonTypeAudio": "오디오",
@@ -283,8 +285,11 @@
   "lessonTypeQuiz": "퀴즈",
   "lessonTypeFlashcards": "플래시카드",
   "byLessonType": "레슨 유형별",
+  "lessonBreakdown": "레슨 분석",
   "completeLessonsToSeeBreakdown": "분석을 보려면 레슨을 완료하세요",
   "courseProgress": "코스 진행",
+  "yourCourses": "내 코스",
+  "allCourses": "전체 코스",
   "quizzesAccuracy": "퀴즈 정확도",
   "flashcardsAccuracy": "플래시카드 정확도",
   "average": "평균",
@@ -355,5 +360,28 @@
   "or": "또는",
   "dailyLimitReached": "일일 무료 잠금 해제 한도에 도달했습니다. Pro로 업그레이드하여 무제한 이용!",
   "upgradeToPro": "Pro로 업그레이드",
-  "adNotReady": "광고가 준비되지 않았습니다. 다시 시도해 주세요."
+  "adNotReady": "광고가 준비되지 않았습니다. 다시 시도해 주세요.",
+
+  "streak": "연속 기록",
+  "day": "일",
+  "days": "일",
+  "streakAtRisk": "오늘 레슨을 완료하세요!",
+  "pace": "속도",
+  "lessonPerDay": "레슨/일",
+  "lessonsPerDay": "레슨/일",
+  "allTime": "전체 기간",
+  "noDataYet": "아직 데이터 없음",
+  "averageTimePerType": "유형별 평균 시간",
+  "timePerLesson": "레슨당 시간",
+  "nLessons": "{count, plural, =1{레슨 1개} other{레슨 {count}개}}",
+  "@nLessons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accelerating": "가속 중",
+  "steady": "안정",
+  "slowing": "감속 중"
 }

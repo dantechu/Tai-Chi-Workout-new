@@ -634,6 +634,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get currentCourse => '現在のコース';
 
   @override
+  String get currentCourseProgress => '現在のコース進捗';
+
+  @override
   String get selectCourseToSeeProgress => '進捗を見るにはコースを選択';
 
   @override
@@ -647,6 +650,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get weeklyActivity => '週間アクティビティ';
+
+  @override
+  String get last7Days => '過去7日間';
 
   @override
   String get noActivityThisWeek => '今週のアクティビティなし';
@@ -670,10 +676,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get byLessonType => 'レッスンタイプ別';
 
   @override
+  String get lessonBreakdown => 'レッスン内訳';
+
+  @override
   String get completeLessonsToSeeBreakdown => '内訳を見るにはレッスンを完了';
 
   @override
   String get courseProgress => 'コース進捗';
+
+  @override
+  String get yourCourses => 'あなたのコース';
+
+  @override
+  String get allCourses => '全コース';
 
   @override
   String get quizzesAccuracy => 'クイズ正確度';
@@ -885,4 +900,57 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get adNotReady => '広告の準備ができていません。もう一度お試しください。';
+
+  @override
+  String get streak => '連続記録';
+
+  @override
+  String get day => '日';
+
+  @override
+  String get days => '日';
+
+  @override
+  String get streakAtRisk => '今日レッスンを完了しましょう！';
+
+  @override
+  String get pace => 'ペース';
+
+  @override
+  String get lessonPerDay => 'レッスン/日';
+
+  @override
+  String get lessonsPerDay => 'レッスン/日';
+
+  @override
+  String get allTime => '全期間';
+
+  @override
+  String get noDataYet => 'データがまだありません';
+
+  @override
+  String get averageTimePerType => 'タイプ別平均時間';
+
+  @override
+  String get timePerLesson => 'レッスン時間';
+
+  @override
+  String nLessons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countレッスン',
+      one: '1レッスン',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accelerating => '加速中';
+
+  @override
+  String get steady => '安定';
+
+  @override
+  String get slowing => '減速中';
 }
