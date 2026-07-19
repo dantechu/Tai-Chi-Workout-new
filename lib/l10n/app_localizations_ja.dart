@@ -962,4 +962,70 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get continueText => '続ける';
+
+  @override
+  String get getCertificate => '証明書を取得';
+
+  @override
+  String get certificate => '証明書';
+
+  @override
+  String get certificates => '証明書';
+
+  @override
+  String get enterYourName => 'お名前を入力';
+
+  @override
+  String get nameWillAppearOnCertificate => 'この名前が証明書に表示されます';
+
+  @override
+  String get nameCannotBeChanged => '名前を正しく入力してください。間違った名前は後で変更できません。';
+
+  @override
+  String get fullName => 'フルネーム';
+
+  @override
+  String get enterFullName => 'フルネームを入力してください';
+
+  @override
+  String get pleaseEnterName => '名前を入力してください';
+
+  @override
+  String get nameTooShort => '名前が短すぎます';
+
+  @override
+  String get generateCertificate => '証明書を生成';
+
+  @override
+  String get downloadCertificate => '証明書をダウンロード';
+
+  @override
+  String get certificateSaved => '証明書がギャラリーに保存されました！';
+
+  @override
+  String get errorSavingCertificate => '証明書の保存エラー';
+
+  @override
+  String get errorGeneratingCertificate => '証明書の生成エラー';
+
+  @override
+  String get storagePermissionRequired => '証明書を保存するにはストレージ権限が必要です';
+
+  @override
+  String get certificateNotAvailable => '証明書は利用できません';
+
+  @override
+  String get certificateAvailable => '証明書が利用可能です！';
+
+  @override
+  String get saving => '保存中...';
+
+  @override
+  String get noCertificatesYet => 'まだ証明書がありません';
+
+  @override
+  String get completeCourseForCertificate => '証明書付きのコースを完了してここに表示';
+
+  @override
+  String get viewYourCertificates => '証明書を表示';
 }

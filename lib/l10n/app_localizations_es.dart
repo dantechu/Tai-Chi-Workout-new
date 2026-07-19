@@ -987,4 +987,74 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get continueText => 'Continuar';
+
+  @override
+  String get getCertificate => 'Obtener certificado';
+
+  @override
+  String get certificate => 'Certificado';
+
+  @override
+  String get certificates => 'Certificados';
+
+  @override
+  String get enterYourName => 'Ingresa tu nombre';
+
+  @override
+  String get nameWillAppearOnCertificate =>
+      'Este nombre aparecerá en tu certificado';
+
+  @override
+  String get nameCannotBeChanged =>
+      'Asegúrate de ingresar tu nombre correctamente. Un nombre incorrecto no se puede cambiar después.';
+
+  @override
+  String get fullName => 'Nombre completo';
+
+  @override
+  String get enterFullName => 'Ingresa tu nombre completo';
+
+  @override
+  String get pleaseEnterName => 'Por favor ingresa tu nombre';
+
+  @override
+  String get nameTooShort => 'El nombre es muy corto';
+
+  @override
+  String get generateCertificate => 'Generar certificado';
+
+  @override
+  String get downloadCertificate => 'Descargar certificado';
+
+  @override
+  String get certificateSaved => '¡Certificado guardado en la galería!';
+
+  @override
+  String get errorSavingCertificate => 'Error al guardar el certificado';
+
+  @override
+  String get errorGeneratingCertificate => 'Error al generar el certificado';
+
+  @override
+  String get storagePermissionRequired =>
+      'Se requiere permiso de almacenamiento para guardar el certificado';
+
+  @override
+  String get certificateNotAvailable => 'Certificado no disponible';
+
+  @override
+  String get certificateAvailable => '¡Certificado disponible!';
+
+  @override
+  String get saving => 'Guardando...';
+
+  @override
+  String get noCertificatesYet => 'Aún no hay certificados';
+
+  @override
+  String get completeCourseForCertificate =>
+      'Completa un curso con certificado para verlo aquí';
+
+  @override
+  String get viewYourCertificates => 'Ver tus certificados';
 }

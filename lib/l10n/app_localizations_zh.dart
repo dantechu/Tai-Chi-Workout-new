@@ -959,4 +959,70 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get continueText => '继续';
+
+  @override
+  String get getCertificate => '获取证书';
+
+  @override
+  String get certificate => '证书';
+
+  @override
+  String get certificates => '证书';
+
+  @override
+  String get enterYourName => '输入您的姓名';
+
+  @override
+  String get nameWillAppearOnCertificate => '此姓名将显示在您的证书上';
+
+  @override
+  String get nameCannotBeChanged => '请确保正确输入您的姓名。错误的姓名以后无法更改。';
+
+  @override
+  String get fullName => '全名';
+
+  @override
+  String get enterFullName => '输入您的全名';
+
+  @override
+  String get pleaseEnterName => '请输入您的姓名';
+
+  @override
+  String get nameTooShort => '姓名太短';
+
+  @override
+  String get generateCertificate => '生成证书';
+
+  @override
+  String get downloadCertificate => '下载证书';
+
+  @override
+  String get certificateSaved => '证书已保存到相册！';
+
+  @override
+  String get errorSavingCertificate => '保存证书时出错';
+
+  @override
+  String get errorGeneratingCertificate => '生成证书时出错';
+
+  @override
+  String get storagePermissionRequired => '需要存储权限才能保存证书';
+
+  @override
+  String get certificateNotAvailable => '证书不可用';
+
+  @override
+  String get certificateAvailable => '证书可用！';
+
+  @override
+  String get saving => '保存中...';
+
+  @override
+  String get noCertificatesYet => '暂无证书';
+
+  @override
+  String get completeCourseForCertificate => '完成带证书的课程后即可在此查看';
+
+  @override
+  String get viewYourCertificates => '查看您的证书';
 }

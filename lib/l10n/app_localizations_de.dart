@@ -986,4 +986,75 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get continueText => 'Weiter';
+
+  @override
+  String get getCertificate => 'Zertifikat erhalten';
+
+  @override
+  String get certificate => 'Zertifikat';
+
+  @override
+  String get certificates => 'Zertifikate';
+
+  @override
+  String get enterYourName => 'Geben Sie Ihren Namen ein';
+
+  @override
+  String get nameWillAppearOnCertificate =>
+      'Dieser Name erscheint auf Ihrem Zertifikat';
+
+  @override
+  String get nameCannotBeChanged =>
+      'Stellen Sie sicher, dass Sie Ihren Namen korrekt eingeben. Ein falscher Name kann später nicht geändert werden.';
+
+  @override
+  String get fullName => 'Vollständiger Name';
+
+  @override
+  String get enterFullName => 'Geben Sie Ihren vollständigen Namen ein';
+
+  @override
+  String get pleaseEnterName => 'Bitte geben Sie Ihren Namen ein';
+
+  @override
+  String get nameTooShort => 'Name ist zu kurz';
+
+  @override
+  String get generateCertificate => 'Zertifikat erstellen';
+
+  @override
+  String get downloadCertificate => 'Zertifikat herunterladen';
+
+  @override
+  String get certificateSaved => 'Zertifikat in der Galerie gespeichert!';
+
+  @override
+  String get errorSavingCertificate => 'Fehler beim Speichern des Zertifikats';
+
+  @override
+  String get errorGeneratingCertificate =>
+      'Fehler beim Erstellen des Zertifikats';
+
+  @override
+  String get storagePermissionRequired =>
+      'Speicherberechtigung ist erforderlich, um das Zertifikat zu speichern';
+
+  @override
+  String get certificateNotAvailable => 'Zertifikat nicht verfügbar';
+
+  @override
+  String get certificateAvailable => 'Zertifikat verfügbar!';
+
+  @override
+  String get saving => 'Wird gespeichert...';
+
+  @override
+  String get noCertificatesYet => 'Noch keine Zertifikate';
+
+  @override
+  String get completeCourseForCertificate =>
+      'Schließen Sie einen Kurs mit Zertifikat ab, um es hier zu sehen';
+
+  @override
+  String get viewYourCertificates => 'Ihre Zertifikate anzeigen';
 }

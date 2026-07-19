@@ -421,5 +421,28 @@
 
   "sectionCompleted": "セクション完了！",
   "sectionCompletedMessage": "お疲れ様です！このセクションのすべてのレッスンを完了しました。",
-  "continueText": "続ける"
+  "continueText": "続ける",
+
+  "getCertificate": "証明書を取得",
+  "certificate": "証明書",
+  "certificates": "証明書",
+  "enterYourName": "お名前を入力",
+  "nameWillAppearOnCertificate": "この名前が証明書に表示されます",
+  "nameCannotBeChanged": "名前を正しく入力してください。間違った名前は後で変更できません。",
+  "fullName": "フルネーム",
+  "enterFullName": "フルネームを入力してください",
+  "pleaseEnterName": "名前を入力してください",
+  "nameTooShort": "名前が短すぎます",
+  "generateCertificate": "証明書を生成",
+  "downloadCertificate": "証明書をダウンロード",
+  "certificateSaved": "証明書がギャラリーに保存されました！",
+  "errorSavingCertificate": "証明書の保存エラー",
+  "errorGeneratingCertificate": "証明書の生成エラー",
+  "storagePermissionRequired": "証明書を保存するにはストレージ権限が必要です",
+  "certificateNotAvailable": "証明書は利用できません",
+  "certificateAvailable": "証明書が利用可能です！",
+  "saving": "保存中...",
+  "noCertificatesYet": "まだ証明書がありません",
+  "completeCourseForCertificate": "証明書付きのコースを完了してここに表示",
+  "viewYourCertificates": "証明書を表示"
 }

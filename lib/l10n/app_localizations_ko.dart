@@ -965,4 +965,71 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get continueText => '계속';
+
+  @override
+  String get getCertificate => '수료증 받기';
+
+  @override
+  String get certificate => '수료증';
+
+  @override
+  String get certificates => '수료증';
+
+  @override
+  String get enterYourName => '이름 입력';
+
+  @override
+  String get nameWillAppearOnCertificate => '이 이름이 수료증에 표시됩니다';
+
+  @override
+  String get nameCannotBeChanged =>
+      '이름을 올바르게 입력했는지 확인하세요. 잘못된 이름은 나중에 변경할 수 없습니다.';
+
+  @override
+  String get fullName => '성명';
+
+  @override
+  String get enterFullName => '성명을 입력하세요';
+
+  @override
+  String get pleaseEnterName => '이름을 입력해 주세요';
+
+  @override
+  String get nameTooShort => '이름이 너무 짧습니다';
+
+  @override
+  String get generateCertificate => '수료증 생성';
+
+  @override
+  String get downloadCertificate => '수료증 다운로드';
+
+  @override
+  String get certificateSaved => '수료증이 갤러리에 저장되었습니다!';
+
+  @override
+  String get errorSavingCertificate => '수료증 저장 오류';
+
+  @override
+  String get errorGeneratingCertificate => '수료증 생성 오류';
+
+  @override
+  String get storagePermissionRequired => '수료증을 저장하려면 저장소 권한이 필요합니다';
+
+  @override
+  String get certificateNotAvailable => '수료증을 사용할 수 없습니다';
+
+  @override
+  String get certificateAvailable => '수료증 사용 가능!';
+
+  @override
+  String get saving => '저장 중...';
+
+  @override
+  String get noCertificatesYet => '아직 수료증이 없습니다';
+
+  @override
+  String get completeCourseForCertificate => '수료증이 있는 코스를 완료하면 여기에 표시됩니다';
+
+  @override
+  String get viewYourCertificates => '수료증 보기';
 }

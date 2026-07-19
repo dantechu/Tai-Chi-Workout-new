@@ -31,6 +31,16 @@ class CourseModel {
   final String? nameZh;
   final String? descriptionZh;
 
+  // Certificate support
+  final String? certificateImageUrl;
+  final String? certificateDescription;
+  final String? certificateDescriptionDe;
+  final String? certificateDescriptionEs;
+  final String? certificateDescriptionFr;
+  final String? certificateDescriptionJa;
+  final String? certificateDescriptionKo;
+  final String? certificateDescriptionZh;
+
   const CourseModel({
     required this.id,
     required this.name,
@@ -57,6 +67,15 @@ class CourseModel {
     this.descriptionKo,
     this.nameZh,
     this.descriptionZh,
+    // Certificate support
+    this.certificateImageUrl,
+    this.certificateDescription,
+    this.certificateDescriptionDe,
+    this.certificateDescriptionEs,
+    this.certificateDescriptionFr,
+    this.certificateDescriptionJa,
+    this.certificateDescriptionKo,
+    this.certificateDescriptionZh,
   });
 
   /// Create from Firestore DocumentSnapshot
@@ -104,6 +123,15 @@ class CourseModel {
       descriptionKo: map['description_ko'] as String?,
       nameZh: map['name_zh'] as String?,
       descriptionZh: map['description_zh'] as String?,
+      // Certificate support
+      certificateImageUrl: map['certificate_image_url'] as String?,
+      certificateDescription: map['certificate_description'] as String?,
+      certificateDescriptionDe: map['certificate_description_de'] as String?,
+      certificateDescriptionEs: map['certificate_description_es'] as String?,
+      certificateDescriptionFr: map['certificate_description_fr'] as String?,
+      certificateDescriptionJa: map['certificate_description_ja'] as String?,
+      certificateDescriptionKo: map['certificate_description_ko'] as String?,
+      certificateDescriptionZh: map['certificate_description_zh'] as String?,
     );
   }
 
@@ -153,6 +181,15 @@ class CourseModel {
       'description_ko': descriptionKo,
       'name_zh': nameZh,
       'description_zh': descriptionZh,
+      // Certificate support
+      'certificate_image_url': certificateImageUrl,
+      'certificate_description': certificateDescription,
+      'certificate_description_de': certificateDescriptionDe,
+      'certificate_description_es': certificateDescriptionEs,
+      'certificate_description_fr': certificateDescriptionFr,
+      'certificate_description_ja': certificateDescriptionJa,
+      'certificate_description_ko': certificateDescriptionKo,
+      'certificate_description_zh': certificateDescriptionZh,
     };
   }
 
@@ -183,6 +220,15 @@ class CourseModel {
       'description_ko': descriptionKo,
       'name_zh': nameZh,
       'description_zh': descriptionZh,
+      // Certificate support
+      'certificate_image_url': certificateImageUrl,
+      'certificate_description': certificateDescription,
+      'certificate_description_de': certificateDescriptionDe,
+      'certificate_description_es': certificateDescriptionEs,
+      'certificate_description_fr': certificateDescriptionFr,
+      'certificate_description_ja': certificateDescriptionJa,
+      'certificate_description_ko': certificateDescriptionKo,
+      'certificate_description_zh': certificateDescriptionZh,
     };
   }
 
@@ -214,6 +260,15 @@ class CourseModel {
       descriptionKo: descriptionKo,
       nameZh: nameZh,
       descriptionZh: descriptionZh,
+      // Certificate support
+      certificateImageUrl: certificateImageUrl,
+      certificateDescription: certificateDescription,
+      certificateDescriptionDe: certificateDescriptionDe,
+      certificateDescriptionEs: certificateDescriptionEs,
+      certificateDescriptionFr: certificateDescriptionFr,
+      certificateDescriptionJa: certificateDescriptionJa,
+      certificateDescriptionKo: certificateDescriptionKo,
+      certificateDescriptionZh: certificateDescriptionZh,
     );
   }
 
@@ -247,6 +302,15 @@ class CourseModel {
       descriptionKo: course.descriptionKo,
       nameZh: course.nameZh,
       descriptionZh: course.descriptionZh,
+      // Certificate support
+      certificateImageUrl: course.certificateImageUrl,
+      certificateDescription: course.certificateDescription,
+      certificateDescriptionDe: course.certificateDescriptionDe,
+      certificateDescriptionEs: course.certificateDescriptionEs,
+      certificateDescriptionFr: course.certificateDescriptionFr,
+      certificateDescriptionJa: course.certificateDescriptionJa,
+      certificateDescriptionKo: course.certificateDescriptionKo,
+      certificateDescriptionZh: course.certificateDescriptionZh,
     );
   }
 }

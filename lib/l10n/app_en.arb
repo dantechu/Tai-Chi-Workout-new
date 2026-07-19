@@ -457,5 +457,28 @@
 
   "sectionCompleted": "Section Completed!",
   "sectionCompletedMessage": "Great job! You've completed all lessons in this section.",
-  "continueText": "Continue"
+  "continueText": "Continue",
+
+  "getCertificate": "Get Certificate",
+  "certificate": "Certificate",
+  "certificates": "Certificates",
+  "enterYourName": "Enter Your Name",
+  "nameWillAppearOnCertificate": "This name will appear on your certificate",
+  "nameCannotBeChanged": "Make sure you enter your name correctly. Wrong name cannot be changed later.",
+  "fullName": "Full Name",
+  "enterFullName": "Enter your full name",
+  "pleaseEnterName": "Please enter your name",
+  "nameTooShort": "Name is too short",
+  "generateCertificate": "Generate Certificate",
+  "downloadCertificate": "Download Certificate",
+  "certificateSaved": "Certificate saved to gallery!",
+  "errorSavingCertificate": "Error saving certificate",
+  "errorGeneratingCertificate": "Error generating certificate",
+  "storagePermissionRequired": "Storage permission is required to save the certificate",
+  "certificateNotAvailable": "Certificate not available",
+  "certificateAvailable": "Certificate available!",
+  "saving": "Saving...",
+  "noCertificatesYet": "No certificates yet",
+  "completeCourseForCertificate": "Complete a course with certificate to see it here",
+  "viewYourCertificates": "View your certificates"
 }

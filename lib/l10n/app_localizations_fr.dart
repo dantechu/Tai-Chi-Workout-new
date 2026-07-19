@@ -986,4 +986,76 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get continueText => 'Continuer';
+
+  @override
+  String get getCertificate => 'Obtenir le certificat';
+
+  @override
+  String get certificate => 'Certificat';
+
+  @override
+  String get certificates => 'Certificats';
+
+  @override
+  String get enterYourName => 'Entrez votre nom';
+
+  @override
+  String get nameWillAppearOnCertificate =>
+      'Ce nom apparaîtra sur votre certificat';
+
+  @override
+  String get nameCannotBeChanged =>
+      'Assurez-vous d\'entrer correctement votre nom. Un nom incorrect ne peut pas être modifié ultérieurement.';
+
+  @override
+  String get fullName => 'Nom complet';
+
+  @override
+  String get enterFullName => 'Entrez votre nom complet';
+
+  @override
+  String get pleaseEnterName => 'Veuillez entrer votre nom';
+
+  @override
+  String get nameTooShort => 'Le nom est trop court';
+
+  @override
+  String get generateCertificate => 'Générer le certificat';
+
+  @override
+  String get downloadCertificate => 'Télécharger le certificat';
+
+  @override
+  String get certificateSaved => 'Certificat enregistré dans la galerie !';
+
+  @override
+  String get errorSavingCertificate =>
+      'Erreur lors de l\'enregistrement du certificat';
+
+  @override
+  String get errorGeneratingCertificate =>
+      'Erreur lors de la génération du certificat';
+
+  @override
+  String get storagePermissionRequired =>
+      'L\'autorisation de stockage est requise pour enregistrer le certificat';
+
+  @override
+  String get certificateNotAvailable => 'Certificat non disponible';
+
+  @override
+  String get certificateAvailable => 'Certificat disponible !';
+
+  @override
+  String get saving => 'Enregistrement...';
+
+  @override
+  String get noCertificatesYet => 'Pas encore de certificats';
+
+  @override
+  String get completeCourseForCertificate =>
+      'Terminez un cours avec certificat pour le voir ici';
+
+  @override
+  String get viewYourCertificates => 'Voir vos certificats';
 }

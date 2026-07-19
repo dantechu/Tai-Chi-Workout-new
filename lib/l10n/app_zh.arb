@@ -399,5 +399,28 @@
 
   "sectionCompleted": "章节完成！",
   "sectionCompletedMessage": "做得好！您已完成本章节的所有课程。",
-  "continueText": "继续"
+  "continueText": "继续",
+
+  "getCertificate": "获取证书",
+  "certificate": "证书",
+  "certificates": "证书",
+  "enterYourName": "输入您的姓名",
+  "nameWillAppearOnCertificate": "此姓名将显示在您的证书上",
+  "nameCannotBeChanged": "请确保正确输入您的姓名。错误的姓名以后无法更改。",
+  "fullName": "全名",
+  "enterFullName": "输入您的全名",
+  "pleaseEnterName": "请输入您的姓名",
+  "nameTooShort": "姓名太短",
+  "generateCertificate": "生成证书",
+  "downloadCertificate": "下载证书",
+  "certificateSaved": "证书已保存到相册！",
+  "errorSavingCertificate": "保存证书时出错",
+  "errorGeneratingCertificate": "生成证书时出错",
+  "storagePermissionRequired": "需要存储权限才能保存证书",
+  "certificateNotAvailable": "证书不可用",
+  "certificateAvailable": "证书可用！",
+  "saving": "保存中...",
+  "noCertificatesYet": "暂无证书",
+  "completeCourseForCertificate": "完成带证书的课程后即可在此查看",
+  "viewYourCertificates": "查看您的证书"
 }

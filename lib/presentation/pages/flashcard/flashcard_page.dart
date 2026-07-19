@@ -16,7 +16,9 @@ import '../../bloc/lesson_completion/lesson_completion_state.dart';
 import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
+import '../../../core/services/certificate_service.dart';
 import '../../widgets/section_completion_dialog.dart';
+import '../../widgets/course_completion_dialog.dart';
 import '../lessons/lesson_router.dart';
 
 /// Page for flashcard study sessions with spaced repetition-style rating.
@@ -669,6 +671,29 @@ class _FlashcardPageState extends State<FlashcardPage>
 
     // Get all sections for navigation
     final allSections = widget.sections ?? currentCourse.sections;
+
+    // Check for COURSE completion first (takes priority over section completion)
+    if (completionState is LessonCompletionLoaded && currentCourse != null) {
+      final isCourseComplete = CourseCompletionDialog.isCourseCompleted(
+        course: currentCourse,
+        completionState: completionState,
+        currentLessonId: widget.lesson.id,
+      );
+
+      if (isCourseComplete && mounted) {
+        // Mark course as completed for certificate purposes
+        await CertificateService().markCourseCompleted(currentCourse.id);
+
+        // Show course completion dialog and skip section dialog
+        await CourseCompletionDialog.show(
+          context: context,
+          course: currentCourse,
+        );
+        // After course completion, just go back
+        if (mounted) Navigator.pop(context);
+        return;
+      }
+    }
 
     // Check for section completion before navigating
     if (completionState is LessonCompletionLoaded && allSections != null) {

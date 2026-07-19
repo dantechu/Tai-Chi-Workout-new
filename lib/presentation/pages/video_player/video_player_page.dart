@@ -25,8 +25,10 @@ import '../../bloc/premium/premium_state.dart';
 import '../../courses/bloc/courses_bloc.dart';
 import '../../courses/bloc/courses_state.dart' show CoursesLoaded, SelectedCourseLoaded, CourseSelected;
 import '../../widgets/banner_ad_widget.dart';
+import '../../../core/services/certificate_service.dart';
 import '../../widgets/lesson_completion_dialog.dart';
 import '../../widgets/section_completion_dialog.dart';
+import '../../widgets/course_completion_dialog.dart';
 import '../../bloc/lesson_completion/lesson_completion_state.dart';
 
 class VideoPlayerPage extends StatefulWidget {
@@ -250,13 +252,34 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
     final availableSections = widget.sections ?? currentCourse?.sections;
 
-    // Show the completion dialog
+    // Show the lesson completion dialog
     await LessonCompletionDialog.show(
       context: context,
       completedLesson: widget.video,
       course: currentCourse,
       sections: availableSections,
     );
+
+    // Check for COURSE completion first (takes priority over section completion)
+    if (completionState is LessonCompletionLoaded && currentCourse != null) {
+      final isCourseComplete = CourseCompletionDialog.isCourseCompleted(
+        course: currentCourse,
+        completionState: completionState,
+        currentLessonId: widget.video.id,
+      );
+
+      if (isCourseComplete && mounted) {
+        // Mark course as completed for certificate purposes
+        await CertificateService().markCourseCompleted(currentCourse.id);
+
+        // Show course completion dialog and skip section dialog
+        await CourseCompletionDialog.show(
+          context: context,
+          course: currentCourse,
+        );
+        return; // Don't show section dialog
+      }
+    }
 
     // Check for section completion after lesson dialog is dismissed
     if (completionState is LessonCompletionLoaded && availableSections != null) {

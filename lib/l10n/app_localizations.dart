@@ -1895,6 +1895,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get continueText;
+
+  /// No description provided for @getCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Certificate'**
+  String get getCertificate;
+
+  /// No description provided for @certificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate'**
+  String get certificate;
+
+  /// No description provided for @certificates.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificates'**
+  String get certificates;
+
+  /// No description provided for @enterYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your Name'**
+  String get enterYourName;
+
+  /// No description provided for @nameWillAppearOnCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'This name will appear on your certificate'**
+  String get nameWillAppearOnCertificate;
+
+  /// No description provided for @nameCannotBeChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure you enter your name correctly. Wrong name cannot be changed later.'**
+  String get nameCannotBeChanged;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @enterFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your full name'**
+  String get enterFullName;
+
+  /// No description provided for @pleaseEnterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get pleaseEnterName;
+
+  /// No description provided for @nameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is too short'**
+  String get nameTooShort;
+
+  /// No description provided for @generateCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Certificate'**
+  String get generateCertificate;
+
+  /// No description provided for @downloadCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Certificate'**
+  String get downloadCertificate;
+
+  /// No description provided for @certificateSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate saved to gallery!'**
+  String get certificateSaved;
+
+  /// No description provided for @errorSavingCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving certificate'**
+  String get errorSavingCertificate;
+
+  /// No description provided for @errorGeneratingCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating certificate'**
+  String get errorGeneratingCertificate;
+
+  /// No description provided for @storagePermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage permission is required to save the certificate'**
+  String get storagePermissionRequired;
+
+  /// No description provided for @certificateNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate not available'**
+  String get certificateNotAvailable;
+
+  /// No description provided for @certificateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate available!'**
+  String get certificateAvailable;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// No description provided for @noCertificatesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No certificates yet'**
+  String get noCertificatesYet;
+
+  /// No description provided for @completeCourseForCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a course with certificate to see it here'**
+  String get completeCourseForCertificate;
+
+  /// No description provided for @viewYourCertificates.
+  ///
+  /// In en, this message translates to:
+  /// **'View your certificates'**
+  String get viewYourCertificates;
 }
 
 class _AppLocalizationsDelegate

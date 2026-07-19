@@ -30,6 +30,16 @@ class Course extends Equatable {
   final String? nameZh;
   final String? descriptionZh;
 
+  // Certificate support
+  final String? certificateImageUrl;
+  final String? certificateDescription;
+  final String? certificateDescriptionDe;
+  final String? certificateDescriptionEs;
+  final String? certificateDescriptionFr;
+  final String? certificateDescriptionJa;
+  final String? certificateDescriptionKo;
+  final String? certificateDescriptionZh;
+
   const Course({
     required this.id,
     required this.name,
@@ -56,7 +66,40 @@ class Course extends Equatable {
     this.descriptionKo,
     this.nameZh,
     this.descriptionZh,
+    // Certificate support
+    this.certificateImageUrl,
+    this.certificateDescription,
+    this.certificateDescriptionDe,
+    this.certificateDescriptionEs,
+    this.certificateDescriptionFr,
+    this.certificateDescriptionJa,
+    this.certificateDescriptionKo,
+    this.certificateDescriptionZh,
   });
+
+  /// Check if course has a certificate
+  bool get hasCertificate =>
+      certificateImageUrl != null && certificateImageUrl!.isNotEmpty;
+
+  /// Get localized certificate description based on language code
+  String? getLocalizedCertificateDescription(String languageCode) {
+    switch (languageCode) {
+      case 'de':
+        return certificateDescriptionDe ?? certificateDescription;
+      case 'es':
+        return certificateDescriptionEs ?? certificateDescription;
+      case 'fr':
+        return certificateDescriptionFr ?? certificateDescription;
+      case 'ja':
+        return certificateDescriptionJa ?? certificateDescription;
+      case 'ko':
+        return certificateDescriptionKo ?? certificateDescription;
+      case 'zh':
+        return certificateDescriptionZh ?? certificateDescription;
+      default:
+        return certificateDescription;
+    }
+  }
 
   /// Get localized name based on language code
   String getLocalizedName(String languageCode) {
@@ -153,6 +196,14 @@ class Course extends Equatable {
     String? descriptionKo,
     String? nameZh,
     String? descriptionZh,
+    String? certificateImageUrl,
+    String? certificateDescription,
+    String? certificateDescriptionDe,
+    String? certificateDescriptionEs,
+    String? certificateDescriptionFr,
+    String? certificateDescriptionJa,
+    String? certificateDescriptionKo,
+    String? certificateDescriptionZh,
   }) {
     return Course(
       id: id ?? this.id,
@@ -179,6 +230,14 @@ class Course extends Equatable {
       descriptionKo: descriptionKo ?? this.descriptionKo,
       nameZh: nameZh ?? this.nameZh,
       descriptionZh: descriptionZh ?? this.descriptionZh,
+      certificateImageUrl: certificateImageUrl ?? this.certificateImageUrl,
+      certificateDescription: certificateDescription ?? this.certificateDescription,
+      certificateDescriptionDe: certificateDescriptionDe ?? this.certificateDescriptionDe,
+      certificateDescriptionEs: certificateDescriptionEs ?? this.certificateDescriptionEs,
+      certificateDescriptionFr: certificateDescriptionFr ?? this.certificateDescriptionFr,
+      certificateDescriptionJa: certificateDescriptionJa ?? this.certificateDescriptionJa,
+      certificateDescriptionKo: certificateDescriptionKo ?? this.certificateDescriptionKo,
+      certificateDescriptionZh: certificateDescriptionZh ?? this.certificateDescriptionZh,
     );
   }
 
@@ -208,6 +267,14 @@ class Course extends Equatable {
         descriptionKo,
         nameZh,
         descriptionZh,
+        certificateImageUrl,
+        certificateDescription,
+        certificateDescriptionDe,
+        certificateDescriptionEs,
+        certificateDescriptionFr,
+        certificateDescriptionJa,
+        certificateDescriptionKo,
+        certificateDescriptionZh,
       ];
 
   @override
