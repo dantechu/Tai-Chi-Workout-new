@@ -14,6 +14,7 @@ import 'core/services/interstitial_ad_service.dart';
 import 'core/services/rewarded_ad_service.dart';
 import 'core/services/ad_unlock_service.dart';
 import 'core/services/offline_service.dart';
+import 'core/services/notification_service.dart';
 import 'injection_container.dart' as di;
 import 'presentation/bloc/locale/locale_bloc.dart';
 import 'presentation/bloc/locale/locale_event.dart';
@@ -67,6 +68,9 @@ void main() async {
 
   // Initialize Offline Service (monitors connectivity)
   await OfflineService().init();
+
+  // Initialize Notification Service (for reminder notifications)
+  await NotificationService().init();
 
   // Initialize dependency injection
   await di.init();
@@ -149,14 +153,28 @@ class _TaiChiWorkoutAppState extends State<TaiChiWorkoutApp> with WidgetsBinding
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    // Refresh premium status when app resumes
+    // Handle app resume - cancel notifications and refresh status
     if (state == AppLifecycleState.resumed) {
+      // Cancel all pending reminder notifications
+      NotificationService().cancelAllNotifications();
+
       // Get the premium bloc and refresh status
       try {
         final premiumBloc = di.sl<PremiumBloc>();
         premiumBloc.add(const CheckPremiumStatus());
       } catch (e) {
         debugPrint('Error refreshing premium status on resume: $e');
+      }
+    }
+
+    // Handle app pause/detach - schedule reminder notifications
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+      try {
+        final localeBloc = di.sl<LocaleBloc>();
+        final languageCode = localeBloc.state.locale?.languageCode ?? 'en';
+        NotificationService().scheduleReminderNotifications(languageCode);
+      } catch (e) {
+        debugPrint('Error scheduling reminder notifications: $e');
       }
     }
   }
