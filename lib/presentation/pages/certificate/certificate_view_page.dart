@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:saver_gallery/saver_gallery.dart';
 import '../../../core/utils/localization_helper.dart';
 import '../../../domain/entities/course.dart';
@@ -40,33 +39,17 @@ class _CertificateViewPageState extends State<CertificateViewPage> {
     setState(() => _isDownloading = true);
 
     try {
-      // Request storage permission
-      final status = await Permission.photos.request();
-      if (!status.isGranted) {
-        // Try storage permission for older Android
-        final storageStatus = await Permission.storage.request();
-        if (!storageStatus.isGranted) {
-          if (mounted) {
-            _showSnackBar(
-              AppLocalizations.of(context)?.storagePermissionRequired ??
-                  'Storage permission is required to save the certificate',
-              isError: true,
-            );
-          }
-          setState(() => _isDownloading = false);
-          return;
-        }
-      }
-
       // Capture the certificate widget as image
       final boundary = _certificateKey.currentContext?.findRenderObject()
           as RenderRepaintBoundary?;
       if (boundary == null) {
-        _showSnackBar(
-          AppLocalizations.of(context)?.errorGeneratingCertificate ??
-              'Error generating certificate',
-          isError: true,
-        );
+        if (mounted) {
+          _showSnackBar(
+            AppLocalizations.of(context)?.errorGeneratingCertificate ??
+                'Error generating certificate',
+            isError: true,
+          );
+        }
         setState(() => _isDownloading = false);
         return;
       }
@@ -75,18 +58,21 @@ class _CertificateViewPageState extends State<CertificateViewPage> {
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) {
-        _showSnackBar(
-          AppLocalizations.of(context)?.errorGeneratingCertificate ??
-              'Error generating certificate',
-          isError: true,
-        );
+        if (mounted) {
+          _showSnackBar(
+            AppLocalizations.of(context)?.errorGeneratingCertificate ??
+                'Error generating certificate',
+            isError: true,
+          );
+        }
         setState(() => _isDownloading = false);
         return;
       }
 
       final pngBytes = byteData.buffer.asUint8List();
 
-      // Save to gallery
+      // Save to gallery using MediaStore (Android 10+) / Photos framework (iOS)
+      // No permissions required for scoped storage
       final result = await SaverGallery.saveImage(
         pngBytes,
         quality: 100,
@@ -112,7 +98,7 @@ class _CertificateViewPageState extends State<CertificateViewPage> {
     } catch (e) {
       if (mounted) {
         _showSnackBar(
-          '${AppLocalizations.of(context)?.error ?? 'Error'}: $e',
+          AppLocalizations.of(context)?.errorSavingCertificate ?? 'Error saving certificate',
           isError: true,
         );
       }
@@ -143,24 +129,15 @@ class _CertificateViewPageState extends State<CertificateViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n?.certificate ?? 'Certificate'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
       ),
       body: Column(
         children: [
           // Certificate preview
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: RepaintBoundary(
-                  key: _certificateKey,
-                  child: _buildCertificate(theme, courseName),
-                ),
+              child: RepaintBoundary(
+                key: _certificateKey,
+                child: _buildCertificate(theme, courseName),
               ),
             ),
           ),
@@ -218,23 +195,7 @@ class _CertificateViewPageState extends State<CertificateViewPage> {
       return _buildErrorState(theme);
     }
 
-    return Container(
-      constraints: const BoxConstraints(
-        maxWidth: 600,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Stack(
+    return Stack(
           children: [
             // Certificate background image
             CachedNetworkImage(
@@ -268,26 +229,21 @@ class _CertificateViewPageState extends State<CertificateViewPage> {
             // Name overlay - positioned in center
             Positioned.fill(
               child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    widget.userName,
-                    style: GoogleFonts.greatVibes(
-                      fontSize: 42,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                      letterSpacing: 2,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                child: Text(
+                  widget.userName,
+                  style: GoogleFonts.greatVibes(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                    letterSpacing: 2,
                   ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ],
-        ),
-      ),
     );
   }
 
