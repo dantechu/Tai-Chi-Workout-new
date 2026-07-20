@@ -26,6 +26,7 @@ class CourseRemoteDataSourceImpl implements CourseRemoteDataSource {
       final snapshot = await firestore
           .collection('courses')
           .where('isActive', isEqualTo: true)
+          .where('tags', arrayContains: 'taichi')
           .orderBy('order')
           .get();
 
@@ -46,6 +47,12 @@ class CourseRemoteDataSourceImpl implements CourseRemoteDataSource {
         throw Exception('Course not found: $courseId');
       }
 
+      final data = doc.data();
+      final tags = data?['tags'] as List<dynamic>?;
+      if (tags == null || !tags.contains('taichi')) {
+        throw Exception('Course not found: $courseId');
+      }
+
       return CourseModel.fromFirestore(doc);
     } catch (e) {
       throw Exception('Failed to fetch course: $e');
@@ -59,6 +66,7 @@ class CourseRemoteDataSourceImpl implements CourseRemoteDataSource {
           .collection('courses')
           .where('isDefault', isEqualTo: true)
           .where('isActive', isEqualTo: true)
+          .where('tags', arrayContains: 'taichi')
           .limit(1)
           .get();
 
@@ -77,6 +85,7 @@ class CourseRemoteDataSourceImpl implements CourseRemoteDataSource {
     return firestore
         .collection('courses')
         .where('isActive', isEqualTo: true)
+        .where('tags', arrayContains: 'taichi')
         .orderBy('order')
         .snapshots()
         .map((snapshot) => snapshot.docs
