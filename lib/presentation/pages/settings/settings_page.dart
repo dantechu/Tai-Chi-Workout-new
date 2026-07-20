@@ -106,96 +106,76 @@ class SettingsPage extends StatelessWidget {
               Navigator.of(context).pushNamed('/premium');
             }
           },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: isPremium
-                        ? [
-                            Colors.amber.withValues(alpha: isDark ? 0.2 : 0.15),
-                            Colors.orange.withValues(alpha: isDark ? 0.1 : 0.08),
-                          ]
-                        : [
-                            theme.colorScheme.primary.withValues(alpha: isDark ? 0.2 : 0.12),
-                            theme.colorScheme.primary.withValues(alpha: isDark ? 0.1 : 0.06),
-                          ],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isPremium
-                        ? Colors.amber.withValues(alpha: 0.3)
-                        : theme.colorScheme.primary.withValues(alpha: 0.25),
-                    width: 1.5,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: isPremium
-                              ? [Colors.amber, Colors.orange]
-                              : [theme.colorScheme.primary, theme.colorScheme.primary.withValues(alpha: 0.7)],
-                        ),
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: (isPremium ? Colors.amber : theme.colorScheme.primary).withValues(alpha: 0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        isPremium ? Icons.workspace_premium_rounded : Icons.diamond_rounded,
-                        color: Colors.white,
-                        size: 26,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            isPremium
-                                ? (AppLocalizations.of(context)?.premiumStatusTitle ?? 'Premium Member')
-                                : (AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium'),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            isPremium
-                                ? (AppLocalizations.of(context)?.premiumStatusSubtitle ?? 'Unlimited access to all features')
-                                : (AppLocalizations.of(context)?.premiumSubtitle ?? 'Get unlimited access'),
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 16,
-                      color: isPremium ? Colors.amber : theme.colorScheme.primary,
-                    ),
-                  ],
-                ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isPremium
+                    ? [
+                        Colors.amber.withValues(alpha: isDark ? 0.2 : 0.15),
+                        Colors.orange.withValues(alpha: isDark ? 0.1 : 0.08),
+                      ]
+                    : [
+                        theme.colorScheme.primary,
+                        theme.colorScheme.primary.withValues(alpha: 0.8),
+                      ],
               ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: isPremium
+                        ? Colors.amber
+                        : Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Icon(
+                    isPremium ? Icons.workspace_premium_rounded : Icons.diamond_rounded,
+                    color: isPremium ? Colors.white : Colors.white,
+                    size: 26,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isPremium
+                            ? (AppLocalizations.of(context)?.premiumStatusTitle ?? 'Premium Member')
+                            : (AppLocalizations.of(context)?.premiumTitle ?? 'Unlock Premium'),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: isPremium ? null : Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        isPremium
+                            ? (AppLocalizations.of(context)?.premiumStatusSubtitle ?? 'Unlimited access to all features')
+                            : (AppLocalizations.of(context)?.premiumSubtitle ?? 'Get unlimited access'),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: isPremium
+                              ? theme.colorScheme.onSurface.withValues(alpha: 0.6)
+                              : Colors.white70,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: isPremium ? Colors.amber : Colors.white,
+                ),
+              ],
             ),
           ),
         );
