@@ -205,12 +205,15 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     // Mark as complete if progress is 90% or more (background tracking)
     if (!_hasMarkedComplete && progress >= 0.9) {
       _hasMarkedComplete = true;
+      // Use actual video duration from player, not metadata
+      // This ensures accurate time tracking in statistics
+      final actualDurationSeconds = duration.inSeconds;
       context.read<LessonCompletionBloc>().add(
         MarkLessonCompleted(
           widget.video.id,
           courseId: widget.video.courseId,
           lessonType: 'video',
-          durationSeconds: widget.video.duration.inSeconds,
+          durationSeconds: actualDurationSeconds,
         ),
       );
     }

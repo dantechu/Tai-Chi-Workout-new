@@ -68,46 +68,38 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
   }
 
   Future<UserStatistics> _calculateStatistics() async {
+    // Get ALL completions from local storage
     final allCompletionModels = await completionDataSource.getAllCompletions();
+    final allCompletions = allCompletionModels.map((m) => m.toEntity()).toList();
 
-    // Convert all completions to entities
-    List<LessonCompletion> allCompletions = allCompletionModels
-        .map((m) => m.toEntity())
-        .toList();
-
-    // Filter by time for display metrics
+    // Apply time filter for display metrics
     final filterStartDate = _currentFilter.startDate;
     List<LessonCompletion> filteredCompletions = allCompletions;
     if (filterStartDate != null) {
       filteredCompletions = allCompletions
-          .where((c) => c.completedAt.isAfter(filterStartDate))
+          .where((c) => c.completedAt.isAfter(filterStartDate) ||
+                        c.completedAt.isAtSameMomentAs(filterStartDate))
           .toList();
     }
 
-    // Calculate metrics from ALL completions (not filtered by course)
+    // Calculate metrics from filtered completions
     int videoCompletions = 0;
     int audioCompletions = 0;
     int textCompletions = 0;
     int quizCompletions = 0;
     int flashcardCompletions = 0;
     int totalTimeSpent = 0;
-    int filteredTimeSpent = 0;
-
-    // Time tracking per lesson type for efficiency calculation
     int totalVideoTime = 0;
     int totalAudioTime = 0;
     int totalTextTime = 0;
     int totalQuizTime = 0;
     int totalFlashcardTime = 0;
-
-    // Separate scores for quiz and flashcard
     List<int> quizScores = [];
     int quizBestScore = 0;
     List<int> flashcardScores = [];
     int flashcardBestScore = 0;
 
-    // Count by type for all completions
-    for (final completion in allCompletions) {
+    for (final completion in filteredCompletions) {
       final duration = completion.durationSeconds ?? 0;
       totalTimeSpent += duration;
 
@@ -147,50 +139,31 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       }
     }
 
-    // Calculate filtered time spent
-    for (final completion in filteredCompletions) {
-      filteredTimeSpent += completion.durationSeconds ?? 0;
-    }
+    // Calculate average scores
+    double quizAverageScore = quizScores.isNotEmpty
+        ? quizScores.reduce((a, b) => a + b) / quizScores.length
+        : 0.0;
+    double flashcardAverageScore = flashcardScores.isNotEmpty
+        ? flashcardScores.reduce((a, b) => a + b) / flashcardScores.length
+        : 0.0;
 
-    // Calculate separate average scores
-    double quizAverageScore = 0.0;
-    if (quizScores.isNotEmpty) {
-      quizAverageScore = quizScores.reduce((a, b) => a + b) / quizScores.length;
-    }
-
-    double flashcardAverageScore = 0.0;
-    if (flashcardScores.isNotEmpty) {
-      flashcardAverageScore = flashcardScores.reduce((a, b) => a + b) / flashcardScores.length;
-    }
-
-    // Calculate weekly activity (last 7 days) - use all completions
+    // Weekly activity chart (always uses all completions)
     final weeklyActivity = _calculateWeeklyActivity(allCompletions);
 
-    // Calculate course progress
+    // Course progress (always uses all completions)
     final courseProgressResult = await _calculateCourseProgress(allCompletions);
-    final courseProgressList = courseProgressResult.courseProgressList;
-    final totalCourses = courseProgressResult.totalCourses;
-    final completedCourses = courseProgressResult.completedCourses;
-    final totalLessonsAvailable = courseProgressResult.totalLessonsAvailable;
 
-    // Get recent completions (last 5)
+    // Recent completions
     final recentCompletions = _getRecentCompletions(allCompletions, 5);
 
-    // ============ CALCULATE STREAK DATA ============
+    // STREAK - always uses ALL completions, not filtered
     final streakData = _calculateStreak(allCompletions);
 
-    // ============ CALCULATE LEARNING PACE DATA ============
+    // Learning pace
     final paceData = _calculateLearningPace(allCompletions, weeklyActivity);
 
-    // ============ CALCULATE TIME EFFICIENCY DATA ============
-    final avgTimePerVideo = videoCompletions > 0 ? totalVideoTime ~/ videoCompletions : 0;
-    final avgTimePerAudio = audioCompletions > 0 ? totalAudioTime ~/ audioCompletions : 0;
-    final avgTimePerText = textCompletions > 0 ? totalTextTime ~/ textCompletions : 0;
-    final avgTimePerQuiz = quizCompletions > 0 ? totalQuizTime ~/ quizCompletions : 0;
-    final avgTimePerFlashcard = flashcardCompletions > 0 ? totalFlashcardTime ~/ flashcardCompletions : 0;
-
     return UserStatistics(
-      totalCompletions: allCompletions.length,
+      totalCompletions: filteredCompletions.length,
       videoCompletions: videoCompletions,
       audioCompletions: audioCompletions,
       textCompletions: textCompletions,
@@ -201,34 +174,34 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       quizBestScore: quizBestScore,
       flashcardAverageScore: flashcardAverageScore,
       flashcardBestScore: flashcardBestScore,
-      courseProgressList: courseProgressList,
-      totalCourses: totalCourses,
-      completedCourses: completedCourses,
+      courseProgressList: courseProgressResult.courseProgressList,
+      totalCourses: courseProgressResult.totalCourses,
+      completedCourses: courseProgressResult.completedCourses,
       weeklyActivity: weeklyActivity,
       recentCompletions: recentCompletions,
       filteredCompletions: filteredCompletions.length,
-      filteredTimeSpentSeconds: filteredTimeSpent,
-      totalLessonsAvailable: totalLessonsAvailable,
+      filteredTimeSpentSeconds: totalTimeSpent,
+      totalLessonsAvailable: courseProgressResult.totalLessonsAvailable,
       // Streak data
       currentStreak: streakData.currentStreak,
       longestStreak: streakData.longestStreak,
       lastActivityDate: streakData.lastActivityDate,
       streakAtRisk: streakData.streakAtRisk,
-      // Learning pace data
+      // Pace data
       averageLessonsPerDay: paceData.averageLessonsPerDay,
       weeklyAverageLessonsPerDay: paceData.weeklyAverageLessonsPerDay,
       daysSinceFirstLesson: paceData.daysSinceFirstLesson,
       paceTrend: paceData.paceTrend,
-      // Time efficiency data
-      avgTimePerVideo: avgTimePerVideo,
-      avgTimePerAudio: avgTimePerAudio,
-      avgTimePerText: avgTimePerText,
-      avgTimePerQuiz: avgTimePerQuiz,
-      avgTimePerFlashcard: avgTimePerFlashcard,
+      // Time per lesson type (total time, not average)
+      avgTimePerVideo: totalVideoTime,
+      avgTimePerAudio: totalAudioTime,
+      avgTimePerText: totalTextTime,
+      avgTimePerQuiz: totalQuizTime,
+      avgTimePerFlashcard: totalFlashcardTime,
     );
   }
 
-  /// Calculate streak data from completions
+  /// Calculate streak from ALL completions
   _StreakData _calculateStreak(List<LessonCompletion> completions) {
     if (completions.isEmpty) {
       return _StreakData(
@@ -239,74 +212,62 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       );
     }
 
-    // Get unique completion dates (normalized to day only)
+    // Get unique dates (normalized to midnight)
     final uniqueDates = <DateTime>{};
     for (final completion in completions) {
-      final date = DateTime(
+      uniqueDates.add(DateTime(
         completion.completedAt.year,
         completion.completedAt.month,
         completion.completedAt.day,
-      );
-      uniqueDates.add(date);
+      ));
     }
 
-    // Sort dates in descending order (most recent first)
-    final sortedDates = uniqueDates.toList()..sort((a, b) => b.compareTo(a));
-
-    final today = DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-    );
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
 
-    // Get last activity date
+    // Sort dates descending to get most recent
+    final sortedDates = uniqueDates.toList()..sort((a, b) => b.compareTo(a));
     final lastActivityDate = sortedDates.first;
 
     // Calculate current streak
     int currentStreak = 0;
-    DateTime checkDate = today;
 
-    // If last activity was today, start counting from today
-    // If last activity was yesterday, start counting from yesterday (streak at risk)
-    // If last activity was before yesterday, current streak is 0
+    // Check if last activity was today or yesterday
     if (lastActivityDate == today || lastActivityDate == yesterday) {
-      checkDate = lastActivityDate;
-
+      // Count consecutive days backwards from the last activity date
+      DateTime checkDate = lastActivityDate;
       while (uniqueDates.contains(checkDate)) {
         currentStreak++;
         checkDate = checkDate.subtract(const Duration(days: 1));
       }
     }
+    // If last activity was before yesterday, streak is 0
 
-    // Calculate longest streak (by iterating through all dates)
+    // Calculate longest streak ever
     int longestStreak = 0;
     int tempStreak = 0;
     DateTime? prevDate;
 
-    // Sort dates in ascending order for longest streak calculation
-    final ascendingDates = uniqueDates.toList()..sort((a, b) => a.compareTo(b));
-
+    final ascendingDates = uniqueDates.toList()..sort();
     for (final date in ascendingDates) {
       if (prevDate == null) {
         tempStreak = 1;
       } else {
-        final daysDiff = date.difference(prevDate).inDays;
-        if (daysDiff == 1) {
+        final diff = date.difference(prevDate).inDays;
+        if (diff == 1) {
           tempStreak++;
         } else {
           tempStreak = 1;
         }
       }
-
       if (tempStreak > longestStreak) {
         longestStreak = tempStreak;
       }
-
       prevDate = date;
     }
 
-    // Streak is at risk if last activity was yesterday (not today)
+    // Streak at risk if last activity was yesterday (not today)
     final streakAtRisk = lastActivityDate == yesterday && currentStreak > 0;
 
     return _StreakData(
@@ -317,7 +278,6 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     );
   }
 
-  /// Calculate learning pace data from completions
   _PaceData _calculateLearningPace(
     List<LessonCompletion> completions,
     List<DailyActivity> weeklyActivity,
@@ -331,39 +291,22 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       );
     }
 
-    // Sort completions by date
     final sortedCompletions = List<LessonCompletion>.from(completions)
       ..sort((a, b) => a.completedAt.compareTo(b.completedAt));
 
-    // Get first and last completion dates
     final firstCompletion = sortedCompletions.first.completedAt;
-    final today = DateTime.now();
-
-    // Calculate days since first lesson (at least 1)
-    final daysSinceFirst = today.difference(firstCompletion).inDays + 1;
-
-    // Calculate all-time average lessons per day
+    final daysSinceFirst = DateTime.now().difference(firstCompletion).inDays + 1;
     final averageLessonsPerDay = completions.length / daysSinceFirst;
 
-    // Calculate weekly average (sum of weekly activity divided by 7)
     final weeklyLessons = weeklyActivity.fold<int>(
-      0,
-      (sum, activity) => sum + activity.lessonsCompleted,
-    );
+      0, (sum, a) => sum + a.lessonsCompleted);
     final weeklyAverageLessonsPerDay = weeklyLessons / 7.0;
 
-    // Calculate pace trend by comparing this week to previous week
-    // If weekly average > all-time average by 20%+, accelerating
-    // If weekly average < all-time average by 20%+, slowing
-    // Otherwise, steady
     int paceTrend = 0;
     if (daysSinceFirst >= 7 && averageLessonsPerDay > 0) {
       final ratio = weeklyAverageLessonsPerDay / averageLessonsPerDay;
-      if (ratio >= 1.2) {
-        paceTrend = 1; // Accelerating
-      } else if (ratio <= 0.8) {
-        paceTrend = -1; // Slowing
-      }
+      if (ratio >= 1.2) paceTrend = 1;
+      else if (ratio <= 0.8) paceTrend = -1;
     }
 
     return _PaceData(
@@ -379,39 +322,32 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     final weekStart = DateTime(now.year, now.month, now.day).subtract(const Duration(days: 6));
 
     final dailyData = <DateTime, _DailyData>{};
-
-    // Initialize all 7 days
     for (int i = 0; i < 7; i++) {
       final date = weekStart.add(Duration(days: i));
-      final normalizedDate = DateTime(date.year, date.month, date.day);
-      dailyData[normalizedDate] = _DailyData(0, 0);
+      final normalized = DateTime(date.year, date.month, date.day);
+      dailyData[normalized] = _DailyData(0, 0);
     }
 
-    // Aggregate completions by day
     for (final completion in completions) {
-      final completionDate = DateTime(
+      final date = DateTime(
         completion.completedAt.year,
         completion.completedAt.month,
         completion.completedAt.day,
       );
-
-      if (dailyData.containsKey(completionDate)) {
-        final existing = dailyData[completionDate]!;
-        dailyData[completionDate] = _DailyData(
+      if (dailyData.containsKey(date)) {
+        final existing = dailyData[date]!;
+        dailyData[date] = _DailyData(
           existing.lessonsCompleted + 1,
           existing.timeSpentSeconds + (completion.durationSeconds ?? 0),
         );
       }
     }
 
-    // Convert to DailyActivity list
-    return dailyData.entries.map((entry) {
-      return DailyActivity(
-        date: entry.key,
-        lessonsCompleted: entry.value.lessonsCompleted,
-        timeSpentSeconds: entry.value.timeSpentSeconds,
-      );
-    }).toList()..sort((a, b) => a.date.compareTo(b.date));
+    return dailyData.entries.map((e) => DailyActivity(
+      date: e.key,
+      lessonsCompleted: e.value.lessonsCompleted,
+      timeSpentSeconds: e.value.timeSpentSeconds,
+    )).toList()..sort((a, b) => a.date.compareTo(b.date));
   }
 
   Future<_CourseProgressResult> _calculateCourseProgress(List<LessonCompletion> completions) async {
@@ -421,25 +357,15 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     int totalLessonsAvailable = 0;
 
     try {
-      final coursesResult = await courseRepository.getActiveCourses();
-
-      coursesResult.fold(
-        (failure) {
-          // If we can't get courses, return empty progress
-        },
+      final result = await courseRepository.getActiveCourses();
+      result.fold(
+        (failure) {},
         (courses) {
           totalCourses = courses.length;
-
           for (final course in courses) {
             final totalLessons = course.totalVideos;
             totalLessonsAvailable += totalLessons;
-
-            // Count completions for this course
-            final courseCompletions = completions
-                .where((c) => c.courseId == course.id)
-                .length;
-
-            // Ensure we don't exceed total lessons
+            final courseCompletions = completions.where((c) => c.courseId == course.id).length;
             final actualCompleted = courseCompletions > totalLessons ? totalLessons : courseCompletions;
 
             courseProgressList.add(CourseProgress(
@@ -455,9 +381,7 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
           }
         },
       );
-    } catch (e) {
-      // Silently fail, return empty progress
-    }
+    } catch (_) {}
 
     return _CourseProgressResult(
       courseProgressList: courseProgressList,
@@ -468,26 +392,22 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
   }
 
   List<RecentCompletion> _getRecentCompletions(List<LessonCompletion> completions, int limit) {
-    // Sort by completedAt descending and take the first 'limit' items
     final sorted = List<LessonCompletion>.from(completions)
       ..sort((a, b) => b.completedAt.compareTo(a.completedAt));
 
-    return sorted.take(limit).map((completion) {
-      return RecentCompletion(
-        lessonId: completion.lessonId,
-        lessonTitle: completion.lessonId, // We don't have the title, use ID
-        lessonType: completion.lessonType ?? 'video',
-        completedAt: completion.completedAt,
-        scorePercentage: completion.scorePercentage,
-      );
-    }).toList();
+    return sorted.take(limit).map((c) => RecentCompletion(
+      lessonId: c.lessonId,
+      lessonTitle: c.lessonId,
+      lessonType: c.lessonType ?? 'video',
+      completedAt: c.completedAt,
+      scorePercentage: c.scorePercentage,
+    )).toList();
   }
 }
 
 class _DailyData {
   final int lessonsCompleted;
   final int timeSpentSeconds;
-
   _DailyData(this.lessonsCompleted, this.timeSpentSeconds);
 }
 
