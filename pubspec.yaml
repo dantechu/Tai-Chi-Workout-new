@@ -2,7 +2,8 @@ name: qigong_workout
 description: "A Tai Chi workout and meditation app with video lessons, music player, and breathing exercises."
 publish_to: 'none'
 
-version: 2.0.2+6
+version: 2.1.0+1
+#android 6 build next will be 7
 
 environment:
   sdk: ^3.8.0

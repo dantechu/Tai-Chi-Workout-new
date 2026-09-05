@@ -146,6 +146,9 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
         await _audioPlayer.setSourceUrl(audioSource!);
       }
       setState(() => _isLoading = false);
+
+      // Auto-play when ready
+      await _audioPlayer.resume();
     } catch (e) {
       setState(() {
         _error = 'Failed to load audio: $e';
@@ -618,7 +621,12 @@ class _AudioLessonPageState extends State<AudioLessonPage> {
                           overlayColor: colorScheme.primary.withValues(alpha: 0.1),
                         ),
                         child: Slider(
-                          value: _position.inMilliseconds.toDouble(),
+                          value: _position.inMilliseconds.toDouble().clamp(
+                            0,
+                            _duration.inMilliseconds > 0
+                                ? _duration.inMilliseconds.toDouble()
+                                : 1,
+                          ),
                           max: _duration.inMilliseconds > 0
                               ? _duration.inMilliseconds.toDouble()
                               : 1,
