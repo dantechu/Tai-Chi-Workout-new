@@ -3,24 +3,24 @@ import 'package:flutter/foundation.dart';
 
 class AdConstants {
   // Production Banner Ads
-  static const String androidBannerId = 'ca-app-pub-9740790965972178/7987836878';
-  static const String iosBannerId = 'ca-app-pub-9740790965972178/7987836878';
+  static const String androidBannerId = 'ca-app-pub-9740790965972178/3157695075';
+  static const String iosBannerId = 'ca-app-pub-9740790965972178/2276608078';
 
   // Test Ads (for development)
   static const String testAndroidBannerId = 'ca-app-pub-3940256099942544/6300978111';
   static const String testIosBannerId = 'ca-app-pub-3940256099942544/2934735716';
 
-  // Production Interstitial Ads (replace XXXXXXXX with actual IDs when ready)
-  static const String androidInterstitialId = 'ca-app-pub-9740790965972178/XXXXXXXX';
-  static const String iosInterstitialId = 'ca-app-pub-9740790965972178/XXXXXXXX';
+  // Production Interstitial Ads
+  static const String androidInterstitialId = 'ca-app-pub-9740790965972178/6761898164';
+  static const String iosInterstitialId = 'ca-app-pub-9740790965972178/9070321133';
 
   // Test Interstitial Ads (AdMob official test IDs)
   static const String testAndroidInterstitialId = 'ca-app-pub-3940256099942544/1033173712';
   static const String testIosInterstitialId = 'ca-app-pub-3940256099942544/4411468910';
 
-  // Production Rewarded Ads (replace XXXXXXXX with actual IDs when ready)
-  static const String androidRewardedId = 'ca-app-pub-9740790965972178/XXXXXXXX';
-  static const String iosRewardedId = 'ca-app-pub-9740790965972178/XXXXXXXX';
+  // Production Rewarded Ads
+  static const String androidRewardedId = 'ca-app-pub-9740790965972178/3160835550';
+  static const String iosRewardedId = 'ca-app-pub-9740790965972178/1719761373';
 
   // Test Rewarded Ads (AdMob official test IDs)
   static const String testAndroidRewardedId = 'ca-app-pub-3940256099942544/5224354917';
