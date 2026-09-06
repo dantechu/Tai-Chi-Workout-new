@@ -348,52 +348,57 @@ class _VideoCardState extends State<VideoCard> {
     final langCode = LocalizationHelper.getCurrentLanguageCode(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return SizedBox(
-      height: 90,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 90),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Top row: PRO badge if premium
-          if (video.isPremium)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 6),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.8),
-                    ],
+          // Top section: PRO badge + Title
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // PRO badge if premium
+              if (video.isPremium)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.primary.withValues(alpha: 0.8),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)?.pro ?? 'PRO',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 9,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(4),
                 ),
-                child: Text(
-                  AppLocalizations.of(context)?.pro ?? 'PRO',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 9,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ),
-            ),
 
-          // Title
-          Expanded(
-            child: Text(
-              video.getLocalizedTitle(langCode),
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                height: 1.3,
-                color: isLocked
-                    ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
-                    : theme.colorScheme.onSurface,
+              // Title
+              Text(
+                video.getLocalizedTitle(langCode),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  height: 1.3,
+                  color: isLocked
+                      ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
+                      : theme.colorScheme.onSurface,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+            ],
           ),
 
           const SizedBox(height: 6),
