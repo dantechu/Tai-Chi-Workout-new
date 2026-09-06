@@ -2,7 +2,7 @@ name: qigong_workout
 description: "A Tai Chi workout and meditation app with video lessons, music player, and breathing exercises."
 publish_to: 'none'
 
-version: 2.1.0+1
+version: 2.1.0+8
 #android 6 build next will be 7
 
 environment:
@@ -46,7 +46,7 @@ dependencies:
   path_provider: ^2.1.1
 
   # RevenueCat SDK for in-app purchases and subscriptions
-  purchases_flutter: ^10.0.2
+  purchases_flutter: ^10.11.0
 
   # Environment variables management
   flutter_dotenv: ^5.2.1
